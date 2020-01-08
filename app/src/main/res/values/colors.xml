@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="magenta">#B200B2</color>
+    <color name="player">#FFFFFF</color>
+    <color name="enemy">#ff0000</color>
+    <color name="background">#474747</color>
+    <color name="blackWall">#000000</color>
+    <color name="greenWall">#03fc45</color>
+    <color name="purpleWall">#a39ab5</color>
+    <color name="spell">#008577</color>
+    <color name="health">#00d107</color>
+    <color name="time">#FFFFFF</color>
+    <string-array name="arenaColors">
+        <item>#a39ab5</item>
+        <item>#B200B2</item>
+        <item>#008577</item>
+    </string-array>
+</resources>
