@@ -1,4 +1,4 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 public class Utils {
 

@@ -1,4 +1,4 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 import android.graphics.Canvas;
 

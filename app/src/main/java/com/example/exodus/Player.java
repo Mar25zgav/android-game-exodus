@@ -1,11 +1,7 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 import android.content.Context;
 import androidx.core.content.ContextCompat;
-
-import com.example.exodus.GameLoop;
-import com.example.exodus.Joystick;
-import com.example.exodus.R;
 
 /* Player is the main character of the game, which the user can control with a touch joystick.
    The player class is an extension of a Circle, which is an extension of a GameObject. */
@@ -21,12 +17,11 @@ public class Player extends Circle{
     public Player(Context context, Joystick joystick, double positionX, double positionY, double radius){
         super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
         this.joystick = joystick;
-        this.health = 500;
+        this.health = 5;
     }
 
     // Update velocity based on actuator of joystick
     public void update() {
-
         tempPosX = positionX;
         tempPosY = positionY;
 

@@ -1,10 +1,7 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 import android.content.Context;
 import androidx.core.content.ContextCompat;
-import com.example.exodus.GameLoop;
-import com.example.exodus.MainActivity;
-import com.example.exodus.R;
 
 /* Enemy is a character which always moves in the direction of the player.
    The enemy class is an extension of a circle, which is an extension of a GameObject */
@@ -18,6 +15,7 @@ public class Enemy extends Circle{
     private static double updatesUntilNextSpawn = UPDATES_PER_SPAWN;
     private final Player player;
     private double timer;
+    public static int health = 1;
 
     public Enemy(Context context, Player player, double positionX, double positionY, double radius) {
         super(context, ContextCompat.getColor(context, R.color.enemy), positionX, positionY, radius);

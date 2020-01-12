@@ -7,12 +7,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
-import com.example.exodus.object.Arena;
-import com.example.exodus.object.Circle;
-import com.example.exodus.object.Enemy;
-import com.example.exodus.object.Hud;
-import com.example.exodus.object.Player;
-import com.example.exodus.object.Spell;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,7 +35,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         gameLoop = new GameLoop(this, surfaceHolder);
 
-        //Inicializacija igralca, joystika, arene, huda, timer
+        //Inicializacija igralca, joystika, arene, huda
         joystick = new Joystick(300, 800, 120, 75);
         player = new Player(getContext(), joystick, MainActivity.getScreenWidth()/2, MainActivity.getScreenHeight()/2, 30);
         arena = new Arena(getContext(), player);
@@ -107,11 +102,10 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.background));
         //drawUPS(canvas);
-        drawFPS(canvas);
+        //drawFPS(canvas);
         joystick.draw(canvas);
         arena.draw(canvas);
         player.draw(canvas);
-
 
         for (Enemy enemy : enemyList) {
             enemy.draw(canvas);
@@ -132,7 +126,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         hud.update();
 
         if(Player.health<=0){
-            Player.health = 500;
+            Player.health = 5;
             Hud.timer.stop();
             Hud.timer.start();
         }
@@ -163,7 +157,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             if(Circle.isColliding(enemy, player)){
                 // Remove enemy if colliding with player
                 iteratorEnemy.remove();
-                player.health -= 125;
+                player.health -= 1;
                 continue;
             }
 

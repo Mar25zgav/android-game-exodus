@@ -1,16 +1,10 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import androidx.core.content.ContextCompat;
-
-import com.example.exodus.Game;
-import com.example.exodus.GameLoop;
-import com.example.exodus.MainActivity;
-import com.example.exodus.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +19,7 @@ public class Arena{
     private static String[] wallColors;
     public static int screenHeight, screenWidth, wallSize;
     public static int indexDoorColor;
+    private double positionX, positionY;
 
     public Arena(Context context, Player player){
         this.player = player;
@@ -76,17 +71,37 @@ public class Arena{
         }
 
         if(leavesScreen(player)){
-            if(indexDoorColor < colors.size())
+            if(indexDoorColor < colors.size()-1)
                 indexDoorColor++;
             doorList.add(new Rect(0, screenHeight/2+-100, wallSize, screenHeight/2+100));
             doorList.add(new Rect(screenWidth/2-100, 0, screenWidth/2+100, wallSize));
             doorList.add(new Rect(screenWidth-wallSize, screenHeight/2-100, screenWidth, screenHeight/2+100));
             doorList.add(new Rect(screenWidth/2-100, screenHeight-wallSize, screenWidth/2+100, screenHeight));
-            player.positionX = MainActivity.getScreenWidth()/2;
-            player.positionY = MainActivity.getScreenHeight()/2;
+
+            positionX = player.positionX;
+            positionY = player.positionY;
+            //Set player position coming from doors
+            if(positionX < 0 && (positionY > screenHeight/2-100 && positionY < screenHeight/2+100)){
+                //left exit to right entry
+                player.positionX = screenWidth-wallSize-30;
+                player.positionY = positionY;
+            }else if((positionX > screenWidth/2-100 && positionX < screenWidth/2+100) && positionY < 0){
+                //top exit to bottom entry
+                player.positionX = positionX;
+                player.positionY = screenHeight-wallSize-30;
+            }else if(positionX > screenWidth && (positionY > screenHeight/2-100 && positionY < screenHeight/2+100)){
+                //right exit to left entry
+                player.positionX = wallSize+30;
+                player.positionY = positionY;
+            }else{
+                //bottom exit to top entry
+                player.positionX = positionX;
+                player.positionY = wallSize+30;
+            }
+
             Game.enemyList.clear();
-            if(Player.health < 500)
-                Player.health += 125;
+            if(Player.health < 5)
+                Player.health += 1;
         }
     }
 
@@ -116,10 +131,10 @@ public class Arena{
 
     public static boolean leavesScreen(Circle obj){
         boolean leaves = false;
-        if(obj.getPositionX() >=  screenWidth||
-                obj.getPositionX() <=  0||
-                obj.getPositionY() <=  0||
-                obj.getPositionY() >= screenHeight)
+        if(obj.getPositionX() - 30 >=  screenWidth||
+                obj.getPositionX() + 30 <=  0||
+                obj.getPositionY() + 30 <=  0||
+                obj.getPositionY() - 30 >= screenHeight)
         {
             leaves = true;
         }

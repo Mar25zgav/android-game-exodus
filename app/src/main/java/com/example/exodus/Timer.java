@@ -3,6 +3,7 @@ package com.example.exodus;
 public class Timer{
     private long startTime, stopTime;
     private boolean running;
+    String time = "";
 
     public Timer() {
         startTime = System.currentTimeMillis();
@@ -28,16 +29,11 @@ public class Timer{
 
     public String toString() {
         long diff = diff();
-
         long secs = (diff/1000)%60;
         long mins = (diff/(1000*60))%60;
 
-        if (mins > 0)
-            return mins+":"+secs;
+        time = String.format("%02d:%02d", mins, secs);
 
-        if (secs > 0)
-            return "0:"+secs;
-
-        return "0:"+secs;
+        return time;
     }
 }

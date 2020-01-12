@@ -1,11 +1,8 @@
-package com.example.exodus.object;
+package com.example.exodus;
 
 import android.content.Context;
 
 import androidx.core.content.ContextCompat;
-
-import com.example.exodus.GameLoop;
-import com.example.exodus.R;
 
 public class Spell extends Circle {
 
