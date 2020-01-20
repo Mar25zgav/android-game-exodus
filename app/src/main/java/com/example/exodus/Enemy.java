@@ -37,11 +37,11 @@ public class Enemy extends Circle{
     }
 
     public static double randPositionX(){
-        return Math.random()*((MainActivity.width-Arena.wallSize-30)-(Arena.wallSize+30))+(Arena.wallSize+30);
+        return Math.random()*((GameActivity.width-Arena.wallSize-30)-(Arena.wallSize+30))+(Arena.wallSize+30);
     }
 
     public static double randPositionY(){
-        return Math.random()*((MainActivity.height-Arena.wallSize-30)-(Arena.wallSize+30))+(Arena.wallSize+30);
+        return Math.random()*((GameActivity.height-Arena.wallSize-30)-(Arena.wallSize+30))+(Arena.wallSize+30);
     }
 
     // Preveri ali je že čas za novega glede na nastavljeno število spawnov na minuto

@@ -10,9 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <!--<meta-data android:name="android.max_aspect" android:value="2.4"-->/>
+
         <activity
             android:resizeableActivity="false"
-            android:name=".MainActivity"
+            android:name=".MainMenuActivity"
             android:screenOrientation="landscape">
             <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
             <intent-filter>
@@ -20,6 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:resizeableActivity="false"
+            android:name=".GameActivity"
+            android:screenOrientation="landscape">
+            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".Options" android:theme="@style/AppTheme.WindowPopUpTheme"></activity>
+
     </application>
 
 </manifest>

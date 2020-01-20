@@ -15,7 +15,7 @@ public class Hud{
     private Paint time;
     private int timeColor;
     public static Timer timer;
-    private int screenWidth = MainActivity.getScreenWidth();
+    private int screenWidth = GameActivity.getScreenWidth();
     private int wallSize;
     private Paint.FontMetrics timerSize;
 

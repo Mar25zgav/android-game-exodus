@@ -1,6 +1,12 @@
 package com.example.exodus;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+
+import androidx.constraintlayout.solver.widgets.Rectangle;
 import androidx.core.content.ContextCompat;
 
 /* Player is the main character of the game, which the user can control with a touch joystick.
@@ -43,8 +49,8 @@ public class Player extends Circle{
         if (velocityX != 0 || velocityY != 0) {
             // Normalize velocity to get direction (unit vector of velocity)
             double distance = Utils.getDistanceBetweenPoints(0, 0, velocityX, velocityY);
-            directionX = velocityX/distance;
-            directionY = velocityY/distance;
+            directionX = velocityX / distance;
+            directionY = velocityY / distance;
         }
     }
 }

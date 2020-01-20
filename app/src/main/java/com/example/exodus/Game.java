@@ -37,7 +37,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         //Inicializacija igralca, joystika, arene, huda
         joystick = new Joystick(300, 800, 120, 75);
-        player = new Player(getContext(), joystick, MainActivity.getScreenWidth()/2, MainActivity.getScreenHeight()/2, 30);
+        player = new Player(getContext(), joystick, GameActivity.getScreenWidth()/2, GameActivity.getScreenHeight()/2, 35);
         arena = new Arena(getContext(), player);
         hud = new Hud(getContext());
         enemiesKilled = 0;
@@ -102,7 +102,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.background));
         //drawUPS(canvas);
-        //drawFPS(canvas);
+        drawFPS(canvas);
         joystick.draw(canvas);
         arena.draw(canvas);
         player.draw(canvas);

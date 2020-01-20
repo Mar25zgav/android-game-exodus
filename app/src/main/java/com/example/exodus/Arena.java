@@ -33,8 +33,8 @@ public class Arena{
         }
         paint = new Paint();
 
-        screenHeight = MainActivity.getScreenHeight();
-        screenWidth = MainActivity.getScreenWidth();
+        screenHeight = GameActivity.getScreenHeight();
+        screenWidth = GameActivity.getScreenWidth();
         wallSize = (int)(screenWidth*0.03);
 
         //Creating and adding rectangles in an array - arena
