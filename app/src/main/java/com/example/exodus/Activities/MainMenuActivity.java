@@ -1,13 +1,19 @@
-package com.example.exodus;
+package com.example.exodus.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.exodus.GameLoop;
+import com.example.exodus.R;
+
 public class MainMenuActivity extends Activity implements View.OnClickListener{
     Button btn_play, btn_options, btn_scores, btn_help;
+    public static int width, height;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +27,13 @@ public class MainMenuActivity extends Activity implements View.OnClickListener{
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        setContentView(R.layout.activity_mainmenu);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        width = size.x;
+        height = size.y;
+
+        setContentView(R.layout.mainmenu_layout);
 
         //Set buttons
         btn_play = findViewById(R.id.btn_play);
@@ -36,17 +48,19 @@ public class MainMenuActivity extends Activity implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(View v){
         switch(v.getId()){
             case R.id.btn_play:
                 startGame();
                 break;
             case R.id.btn_options:
-                startActivity(new Intent(MainMenuActivity.this, Options.class));
+                startActivity(new Intent(MainMenuActivity.this, OptionsActivity.class));
                 break;
             case R.id.btn_scores:
+                startActivity(new Intent(MainMenuActivity.this, ScoresActivity.class));
                 break;
             case R.id.btn_help:
+                startActivity(new Intent(MainMenuActivity.this, HelpActivity.class));
                 break;
         }
     }

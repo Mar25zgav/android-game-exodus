@@ -13,7 +13,7 @@
 
         <activity
             android:resizeableActivity="false"
-            android:name=".MainMenuActivity"
+            android:name=".Activities.MainMenuActivity"
             android:screenOrientation="landscape">
             <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
             <intent-filter>
@@ -24,7 +24,7 @@
 
         <activity
             android:resizeableActivity="false"
-            android:name=".GameActivity"
+            android:name=".Activities.GameActivity"
             android:screenOrientation="landscape">
             <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
             <intent-filter>
@@ -33,7 +33,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Options" android:theme="@style/AppTheme.WindowPopUpTheme"></activity>
+        <activity android:name=".Activities.OptionsActivity" android:theme="@style/AppTheme.WindowPopUpTheme"></activity>
+        <activity android:name=".Activities.ScoresActivity" android:theme="@style/AppTheme.WindowPopUpTheme"></activity>
+        <activity android:name=".Activities.HelpActivity" android:theme="@style/AppTheme.WindowPopUpTheme"></activity>
 
     </application>
 

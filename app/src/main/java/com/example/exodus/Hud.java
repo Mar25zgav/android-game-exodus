@@ -5,9 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.fonts.Font;
 
 import androidx.core.content.ContextCompat;
+
+import com.example.exodus.Activities.GameActivity;
 
 import java.util.ArrayList;
 

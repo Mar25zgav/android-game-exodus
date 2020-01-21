@@ -5,28 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainMenuActivity">
+    tools:context=".Activities.MainMenuActivity"
+    android:id="@+id/constraint">
 
     <Button
         android:id="@+id/btn_scores"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginTop="335dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="19dp"
         android:background="@drawable/circle_button"
-        android:text="Scores"
+        android:text="Score"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_help"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_help" />
 
     <Button
         android:id="@+id/btn_help"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="18dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="19dp"
         android:background="@drawable/circle_button"
         android:text="Help"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -36,14 +34,12 @@
         android:id="@+id/btn_options"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="335dp"
-        android:layout_marginBottom="18dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginBottom="19dp"
         android:background="@drawable/circle_button"
         android:text="Options"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_play"

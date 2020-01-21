@@ -8,6 +8,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 
+import com.example.exodus.Activities.GameActivity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.exodus;
+package com.example.exodus.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,6 +11,9 @@ import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.exodus.Game;
+import com.example.exodus.GameLoop;
 
 //class MainActivity je vstopna točka za aplikacijo
 public class GameActivity extends Activity{

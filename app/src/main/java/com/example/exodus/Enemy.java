@@ -3,6 +3,8 @@ package com.example.exodus;
 import android.content.Context;
 import androidx.core.content.ContextCompat;
 
+import com.example.exodus.Activities.GameActivity;
+
 /* Enemy is a character which always moves in the direction of the player.
    The enemy class is an extension of a circle, which is an extension of a GameObject */
 public class Enemy extends Circle{
