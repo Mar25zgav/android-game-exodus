@@ -4,18 +4,18 @@ import android.content.Context;
 import androidx.core.content.ContextCompat;
 
 import com.example.exodus.Activities.GameActivity;
+import com.example.exodus.Activities.MainActivity;
 
 /* Enemy is a character which always moves in the direction of the player.
    The enemy class is an extension of a circle, which is an extension of a GameObject */
 public class Enemy extends Circle{
-
     private static double SPEED_PIXELS_PER_SECOND = Player.SPEED_PIXELS_PER_SECOND * 0.4;
     private static double MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static double SPAWNS_PER_MINUTE = 20;
     private static final double SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60.0;
     private static final double UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static double updatesUntilNextSpawn = UPDATES_PER_SPAWN;
-    private final Player player;
+    private static Player player;
     private double timer;
     public static int health = 1;
 

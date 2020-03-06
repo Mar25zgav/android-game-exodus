@@ -2,22 +2,22 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
-    tools:context=".Activities.MainMenuActivity"
-    android:id="@+id/constraint">
+    android:background="@color/mm_background"
+    android:backgroundTint="#2D2F31"
+    tools:context=".Activities.MainActivity">
 
     <Button
         android:id="@+id/btn_scores"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginStart="19dp"
         android:layout_marginBottom="19dp"
-        android:background="@drawable/circle_button"
-        android:text="Score"
+        android:background="@drawable/baseline_score_white_48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_help" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_help"
@@ -25,33 +25,53 @@
         android:layout_height="50dp"
         android:layout_marginEnd="19dp"
         android:layout_marginBottom="19dp"
-        android:background="@drawable/circle_button"
-        android:text="Help"
+        android:background="@drawable/baseline_help_outline_white_48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/btn_options" />
 
     <Button
         android:id="@+id/btn_options"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
         android:layout_marginBottom="19dp"
-        android:background="@drawable/circle_button"
-        android:text="Options"
+        android:background="@drawable/baseline_settings_white_48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/btn_play"
         android:layout_width="140dp"
         android:layout_height="60dp"
         android:layout_marginStart="275dp"
-        android:layout_marginTop="175dp"
+        android:layout_marginTop="88dp"
         android:layout_marginEnd="276dp"
-        android:layout_marginBottom="176dp"
+        android:layout_marginBottom="150dp"
+        android:background="@android:color/white"
+        android:fontFamily="@font/titan_one"
         android:text="Play"
+        android:textColor="@color/background"
+        android:textSize="35sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="296dp"
+        android:layout_height="107dp"
+        android:layout_marginStart="291dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="292dp"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="@font/titan_one"
+        android:text="EXODUS"
+        android:textColor="@android:color/white"
+        android:textSize="70sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_play"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

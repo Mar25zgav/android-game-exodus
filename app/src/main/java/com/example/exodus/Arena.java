@@ -7,12 +7,12 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 
 import com.example.exodus.Activities.GameActivity;
+import com.example.exodus.Activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Arena{
-
     private Paint paint;
     private Player player;
     private static List<Rect> wallList = new ArrayList<Rect>();
@@ -35,9 +35,9 @@ public class Arena{
         }
         paint = new Paint();
 
-        screenHeight = GameActivity.getScreenHeight();
         screenWidth = GameActivity.getScreenWidth();
-        wallSize = (int)(screenWidth*0.03);
+        screenHeight = GameActivity.getScreenHeight();
+        wallSize = (int)(screenWidth*0.025);
 
         //Creating and adding rectangles in an array - arena
         wallList.add(new Rect(0,0, wallSize, screenHeight/2-100));
@@ -85,20 +85,20 @@ public class Arena{
             //Set player position coming from doors
             if(positionX < 0 && (positionY > screenHeight/2-100 && positionY < screenHeight/2+100)){
                 //left exit to right entry
-                player.positionX = screenWidth-wallSize-30;
+                player.positionX = screenWidth-wallSize-35;
                 player.positionY = positionY;
             }else if((positionX > screenWidth/2-100 && positionX < screenWidth/2+100) && positionY < 0){
                 //top exit to bottom entry
                 player.positionX = positionX;
-                player.positionY = screenHeight-wallSize-30;
+                player.positionY = screenHeight-wallSize-35;
             }else if(positionX > screenWidth && (positionY > screenHeight/2-100 && positionY < screenHeight/2+100)){
                 //right exit to left entry
-                player.positionX = wallSize+30;
+                player.positionX = wallSize+35;
                 player.positionY = positionY;
             }else{
                 //bottom exit to top entry
                 player.positionX = positionX;
-                player.positionY = wallSize+30;
+                player.positionY = wallSize+35;
             }
 
             Game.enemyList.clear();
@@ -133,10 +133,10 @@ public class Arena{
 
     public static boolean leavesScreen(Circle obj){
         boolean leaves = false;
-        if(obj.getPositionX() - 30 >=  screenWidth||
-                obj.getPositionX() + 30 <=  0||
-                obj.getPositionY() + 30 <=  0||
-                obj.getPositionY() - 30 >= screenHeight)
+        if(obj.getPositionX() - 35 >=  screenWidth||
+                obj.getPositionX() + 35 <=  0||
+                obj.getPositionY() + 35 <=  0||
+                obj.getPositionY() - 35 >= screenHeight)
         {
             leaves = true;
         }

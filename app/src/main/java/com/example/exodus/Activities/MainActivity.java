@@ -1,15 +1,19 @@
 package com.example.exodus.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.exodus.Game;
 import com.example.exodus.GameLoop;
+import com.example.exodus.R;
 
-public class GameActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener{
+    Button btn_play, btn_options, btn_scores, btn_help;
     public static int width, height;
     private static Display display;
     private static Point size;
@@ -17,13 +21,21 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.mainmenu_layout);
 
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
 
-        hideSystemUI();
+        //Set buttons
+        btn_play = findViewById(R.id.btn_play);
+        btn_options = findViewById(R.id.btn_options);
+        btn_scores = findViewById(R.id.btn_scores);
+        btn_help = findViewById(R.id.btn_help);
 
-        setContentView(new Game(this));
+        btn_play.setOnClickListener(this);
+        btn_options.setOnClickListener(this);
+        btn_scores.setOnClickListener(this);
+        btn_help.setOnClickListener(this);
     }
 
     @Override
@@ -45,14 +57,28 @@ public class GameActivity extends Activity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
+
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        GameLoop.isRunning = false;
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.btn_play:
+                startActivity(new Intent(MainActivity.this, GameActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_options:
+                startActivity(new Intent(MainActivity.this, OptionsActivity.class));
+                break;
+            case R.id.btn_scores:
+                startActivity(new Intent(MainActivity.this, ScoresActivity.class));
+                break;
+            case R.id.btn_help:
+                startActivity(new Intent(MainActivity.this, HelpActivity.class));
+                break;
+        }
     }
 
     public static int getScreenWidth(){
-        display.getSize(size);
+        display.getRealSize(size);
         return width = size.x;
     }
 

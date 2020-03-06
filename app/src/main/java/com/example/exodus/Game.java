@@ -9,6 +9,7 @@ import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 
 import com.example.exodus.Activities.GameActivity;
+import com.example.exodus.Activities.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,8 +26,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private int joystickPointerId = 0;
     private int numberOfSpellsToCast = 0;
     public static int enemiesKilled;
-    public static List<Enemy> enemyList = new ArrayList<Enemy>();
-    private List<Spell> spellList = new ArrayList<Spell>();
+    public static boolean gameOver = false;
+    public static List<Enemy> enemyList;
+    private List<Spell> spellList;
 
     public Game(Context context) {
         super(context);
@@ -43,7 +45,8 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         arena = new Arena(getContext(), player);
         hud = new Hud(getContext());
         enemiesKilled = 0;
-
+        enemyList = new ArrayList<Enemy>();
+        spellList = new ArrayList<Spell>();
         setFocusable(true);
     }
 
@@ -104,7 +107,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.background));
         //drawUPS(canvas);
-        drawFPS(canvas);
+        //drawFPS(canvas);
         joystick.draw(canvas);
         arena.draw(canvas);
         player.draw(canvas);
@@ -134,12 +137,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Spawn enemy if it is time
-        if (Enemy.readyToSpawn()){
-            enemyList.add(new Enemy(getContext(), player));
+        if(Enemy.readyToSpawn()){
+            Enemy newEnemy = new Enemy(getContext(), player);
+            enemyList.add(newEnemy);
         }
 
         // Update state of each enemy
-        for (Enemy enemy : enemyList){
+        for(Enemy enemy : enemyList){
             enemy.update();
         }
 

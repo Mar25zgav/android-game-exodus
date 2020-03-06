@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import androidx.core.content.ContextCompat;
 
 import com.example.exodus.Activities.GameActivity;
+import com.example.exodus.Activities.MainActivity;
 
 import java.util.ArrayList;
 

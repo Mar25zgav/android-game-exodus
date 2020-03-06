@@ -12,6 +12,7 @@ public class GameLoop extends Thread{
     public static boolean isRunning = false;
     private double avarageUPS;
     private double avarageFPS;
+    private Canvas canvas;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
@@ -43,7 +44,7 @@ public class GameLoop extends Thread{
         long sleepTime;
 
         //Game loop
-        Canvas canvas = null;
+        canvas = null;
         startTime = System.currentTimeMillis();
         while(isRunning){
 
