@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
@@ -20,39 +21,50 @@ public class Hud{
     private int screenWidth = GameActivity.getScreenWidth();
     private int wallSize;
     private Paint.FontMetrics timerSize;
+    private Typeface font;
 
     private Drawable life, emptyLife;
-    private int lifeWidth = 60;
-    private int top, right;
-    private int left = (int)(screenWidth*0.25);
-    private ArrayList<Rect> livesPos = new ArrayList<Rect>();
+    private int left, top, right, bottom, lifeWidth;
+    private ArrayList<Rect> livesPos = new ArrayList<>();
     private float timerHeight, timerWidth;
 
     public Hud(Context context){
         // Timer
-        time = new Paint();
+        font = Typeface.createFromAsset(context.getAssets(),"fonts/titan_one.ttf");
         timeColor = ContextCompat.getColor(context, R.color.time);
+        time = new Paint();
         time.setColor(timeColor);
-        time.setTextSize(75);
+        timeColor = context.getResources().getDimensionPixelSize(R.dimen.timerFontSize);
+        time.setTextSize(timeColor);
+        time.setTypeface(font);
+        time.setTextAlign(Paint.Align.CENTER);
+        time.setAntiAlias(true);
+        time.setSubpixelText(true);
         timerSize = new Paint.FontMetrics();
         timer = new Timer();
         timer.start();
 
         //Set vars
-        wallSize = (int)(screenWidth*0.03);
+        wallSize = Arena.wallSize;
         timerSize = time.getFontMetrics();
         timerHeight = Math.abs(timerSize.ascent);
         timerWidth = time.getFontMetrics(timerSize);
-        top = wallSize+(int)timerHeight/2;
+        top = (int)(wallSize * 1.5);
+        bottom = top * 2;
+        right = screenWidth / 2 - (int)timerWidth * 2;
+        left = right - (bottom - top);
+
+        System.out.println(timerHeight + " "+timerWidth);
+        System.out.println((int)timerHeight + " "+(int)timerWidth);
 
         // Healthbar
         life = context.getResources().getDrawable(R.drawable.life_filled);
         emptyLife = context.getResources().getDrawable(R.drawable.life_empty);
 
-        for(int i=0; i<5; i++){
-            right = left+lifeWidth;
-            livesPos.add(new Rect(left,top,right,top+lifeWidth));
-            left += lifeWidth;
+        for(int i = 0; i < 5; i++){
+            livesPos.add(new Rect(left,top,right,bottom));
+            right -= (bottom - top);
+            left -= (bottom - top);
         }
     }
 
@@ -71,8 +83,8 @@ public class Hud{
         }
 
         // Timer
-        canvas.drawText(timer.toString(), screenWidth/2-timerWidth, (float)(wallSize*1.37)+Math.abs(timerHeight), time);
+        canvas.drawText(timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
     }
 
-    public void update(){};
+    public void update(){}
 }

@@ -5,6 +5,7 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.example.exodus.Game;
 import com.example.exodus.GameLoop;
@@ -17,13 +18,11 @@ public class GameActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
-
         hideSystemUI();
-
         setContentView(new Game(this));
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

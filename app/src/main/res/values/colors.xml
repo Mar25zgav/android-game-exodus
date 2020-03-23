@@ -17,6 +17,7 @@
     <color name="time">#FFFFFF</color>
     <color name="gameOver">#FF0000</color>
     <string-array name="arenaColors">
+        <item>#FFFFFF</item>
         <item>#a39ab5</item>
         <item>#B200B2</item>
         <item>#008577</item>
