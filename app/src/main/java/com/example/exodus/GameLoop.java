@@ -1,22 +1,24 @@
 package com.example.exodus;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread{
-
     private SurfaceHolder surfaceHolder;
     private Game game;
-    public static final double MAX_UPS = 60;
+
+    public static final float MAX_UPS = 60;
     private static final double UPS_PERIOD = 1E+3 / MAX_UPS;
     public static boolean isRunning = false;
+    public static Timer timer;
     private double avarageUPS;
     private double avarageFPS;
-    private Canvas canvas;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
         this.surfaceHolder = surfaceHolder;
+        timer = new Timer();
     }
 
     public double getAvarageUPS() {
@@ -28,12 +30,15 @@ public class GameLoop extends Thread{
     }
 
     public void startLoop() {
+        Log.d("GameLoop.java", "startLoop()");
+        timer.start();
         isRunning = true;
         start();
     }
 
     @Override
     public void run() {
+        Log.d("GameLoop.java", "run()");
         super.run();
 
         //Declare time and cycle count variables
@@ -44,10 +49,9 @@ public class GameLoop extends Thread{
         long sleepTime;
 
         //Game loop
-        canvas = null;
+        Canvas canvas = null;
         startTime = System.currentTimeMillis();
         while(isRunning){
-
             //Poskusi posodobiti in render game
             try{
                 canvas = surfaceHolder.lockCanvas();
@@ -97,6 +101,17 @@ public class GameLoop extends Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
+        }
+    }
+
+    public void stopLoop() {
+        Log.d("GameLoop.java", "stopLoop()");
+        timer.stop();
+        isRunning = false;
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }

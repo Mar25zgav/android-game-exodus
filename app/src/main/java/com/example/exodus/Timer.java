@@ -7,7 +7,7 @@ public class Timer{
 
     public Timer() {
         startTime = System.currentTimeMillis();
-        running = true;
+        stopTime = System.currentTimeMillis();
     }
 
     public void start() {
@@ -21,8 +21,8 @@ public class Timer{
     }
 
     public long diff() {
-        if (running)
-            return System.currentTimeMillis()-startTime;
+        if(running)
+            return System.currentTimeMillis() - startTime;
         else
             return stopTime-startTime;
     }

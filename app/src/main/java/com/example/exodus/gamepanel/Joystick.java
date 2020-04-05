@@ -1,26 +1,24 @@
-package com.example.exodus;
+package com.example.exodus.gamepanel;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
 public class Joystick {
-
     private Paint outerCirclePaint;
     private Paint innerCirclePaint;
-    private int outerCircleRadius;
-    private int innerCircleRadius;
-    private int outerCircleCenterPositionX;
-    private int outerCircleCenterPositionY;
-    private int innerCircleCenterPositionX;
-    private int innerCircleCenterPositionY;
-    private double joystickCenterToTouchDistance;
+    private float outerCircleRadius;
+    private float innerCircleRadius;
+    private float outerCircleCenterPositionX;
+    private float outerCircleCenterPositionY;
+    private float innerCircleCenterPositionX;
+    private float innerCircleCenterPositionY;
+    private float joystickCenterToTouchDistance;
+    private float actuatorX;
+    private float actuatorY;
     private boolean isPressed;
-    private double actuatorX;
-    private double actuatorY;
 
-    public Joystick(int centerPositionX, int centerPositionY, int outerCircleRadius, int innerCircleRadius){
-
+    public Joystick(float centerPositionX, float centerPositionY, float outerCircleRadius, float innerCircleRadius){
         //Outer and inner circle make up the joystick
         outerCircleCenterPositionX = centerPositionX;
         outerCircleCenterPositionY = centerPositionY;
@@ -54,12 +52,12 @@ public class Joystick {
     }
 
     private void updateInnerCirclePosition() {
-        innerCircleCenterPositionX = (int) (outerCircleCenterPositionX + actuatorX * outerCircleRadius);
-        innerCircleCenterPositionY = (int) (outerCircleCenterPositionY + actuatorY * outerCircleRadius);
+        innerCircleCenterPositionX = outerCircleCenterPositionX + actuatorX * outerCircleRadius;
+        innerCircleCenterPositionY = outerCircleCenterPositionY + actuatorY * outerCircleRadius;
     }
 
-    public boolean isPressed(double touchPositionX, double touchPositionY) {
-        joystickCenterToTouchDistance = Math.sqrt(
+    public boolean isPressed(float touchPositionX, float touchPositionY) {
+        joystickCenterToTouchDistance = (float)Math.sqrt(
                 Math.pow(outerCircleCenterPositionX - touchPositionX, 2) +
                 Math.pow(outerCircleCenterPositionY - touchPositionY, 2)
         );
@@ -74,10 +72,10 @@ public class Joystick {
         return isPressed;
     }
 
-    public void setActuator(double touchPositionX, double touchPositionY) {
-        double deltaX = touchPositionX - outerCircleCenterPositionX;
-        double deltaY = touchPositionY - outerCircleCenterPositionY;
-        double deltaDistance = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+    public void setActuator(float touchPositionX, float touchPositionY) {
+        float deltaX = touchPositionX - outerCircleCenterPositionX;
+        float deltaY = touchPositionY - outerCircleCenterPositionY;
+        float deltaDistance = (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
         if(deltaDistance < outerCircleRadius){
             actuatorX = deltaX / outerCircleRadius;
@@ -89,8 +87,8 @@ public class Joystick {
     }
 
     public void resetActuator() {
-        actuatorX = 0.0;
-        actuatorY = 0.0;
+        actuatorX = 0;
+        actuatorY = 0;
     }
 
     public double getActuatorX() {

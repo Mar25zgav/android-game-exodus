@@ -1,4 +1,4 @@
-package com.example.exodus.Activities;
+package com.example.exodus.menupanel;
 
 import android.app.Activity;
 import android.graphics.Point;

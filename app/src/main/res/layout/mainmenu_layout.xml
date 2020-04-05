@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/mm_background"
     android:backgroundTint="#2D2F31"
-    tools:context=".Activities.MainActivity">
+    tools:context=".menupanel.MainActivity">
 
     <Button
         android:id="@+id/btn_scores"

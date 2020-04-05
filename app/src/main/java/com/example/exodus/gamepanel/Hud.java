@@ -1,4 +1,4 @@
-package com.example.exodus;
+package com.example.exodus.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,23 +9,26 @@ import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.exodus.Activities.GameActivity;
-import com.example.exodus.Activities.MainActivity;
+import com.example.exodus.GameLoop;
+import com.example.exodus.gameobject.Arena;
+import com.example.exodus.menupanel.GameActivity;
+import com.example.exodus.gameobject.Player;
+import com.example.exodus.R;
 
 import java.util.ArrayList;
+import java.util.Timer;
 
 public class Hud{
     private Paint time;
-    private int timeColor;
-    public static Timer timer;
-    private int screenWidth = GameActivity.getScreenWidth();
-    private int wallSize;
     private Paint.FontMetrics timerSize;
     private Typeface font;
-
     private Drawable life, emptyLife;
-    private int left, top, right, bottom, lifeWidth;
+    private int timeColor;
+
     private ArrayList<Rect> livesPos = new ArrayList<>();
+    private int screenWidth = GameActivity.getScreenWidth();
+    private int wallSize;
+    private int left, top, right, bottom;
     private float timerHeight, timerWidth;
 
     public Hud(Context context){
@@ -34,18 +37,16 @@ public class Hud{
         timeColor = ContextCompat.getColor(context, R.color.time);
         time = new Paint();
         time.setColor(timeColor);
-        timeColor = context.getResources().getDimensionPixelSize(R.dimen.timerFontSize);
+        timeColor = context.getResources().getDimensionPixelSize(R.dimen.timer);
         time.setTextSize(timeColor);
         time.setTypeface(font);
         time.setTextAlign(Paint.Align.CENTER);
         time.setAntiAlias(true);
         time.setSubpixelText(true);
         timerSize = new Paint.FontMetrics();
-        timer = new Timer();
-        timer.start();
 
         //Set vars
-        wallSize = Arena.wallSize;
+        wallSize = Arena.getWallSize();
         timerSize = time.getFontMetrics();
         timerHeight = Math.abs(timerSize.ascent);
         timerWidth = time.getFontMetrics(timerSize);
@@ -53,9 +54,6 @@ public class Hud{
         bottom = top * 2;
         right = screenWidth / 2 - (int)timerWidth * 2;
         left = right - (bottom - top);
-
-        System.out.println(timerHeight + " "+timerWidth);
-        System.out.println((int)timerHeight + " "+(int)timerWidth);
 
         // Healthbar
         life = context.getResources().getDrawable(R.drawable.life_filled);
@@ -72,7 +70,7 @@ public class Hud{
         // Healthbar
         int i=0;
         while(i < 5){
-            if(i<Player.health){
+            if(i < Player.getHealth()){
                 life.setBounds(livesPos.get(i));
                 life.draw(canvas);
             }else{
@@ -83,8 +81,6 @@ public class Hud{
         }
 
         // Timer
-        canvas.drawText(timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
+        canvas.drawText(GameLoop.timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
     }
-
-    public void update(){}
 }

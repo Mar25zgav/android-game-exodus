@@ -1,14 +1,13 @@
-package com.example.exodus.Activities;
+package com.example.exodus.menupanel;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 
 import androidx.annotation.Nullable;
 
 import com.example.exodus.R;
+import com.example.exodus.menupanel.MainActivity;
 
 public class OptionsActivity extends Activity{
 

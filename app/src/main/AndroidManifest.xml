@@ -11,7 +11,7 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".menupanel.MainActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -22,24 +22,24 @@
         </activity>
 
         <activity
-            android:name=".Activities.GameActivity"
+            android:name=".menupanel.GameActivity"
             android:screenOrientation="landscape"
             tools:ignore="LockedOrientationActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
         <activity
-            android:name=".Activities.OptionsActivity"
+            android:name=".menupanel.OptionsActivity"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
         <activity
-            android:name=".Activities.ScoresActivity"
+            android:name=".menupanel.ScoresActivity"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
         <activity
-            android:name=".Activities.HelpActivity"
+            android:name=".menupanel.HelpActivity"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
