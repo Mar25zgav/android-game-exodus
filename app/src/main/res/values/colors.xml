@@ -24,6 +24,6 @@
     </string-array>
 
     <!--Main menu colors-->
-    <color name="mm_background">#000000</color>
-    <color name="options_background">#FFD3AE</color>
+    <color name="mainmenu">#313638</color>
+    <color name="popup">#FFFFFF</color>
 </resources>

@@ -7,7 +7,6 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.example.exodus.R;
-import com.example.exodus.menupanel.MainActivity;
 
 public class OptionsActivity extends Activity{
 

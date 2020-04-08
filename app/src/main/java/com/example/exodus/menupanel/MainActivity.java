@@ -11,7 +11,7 @@ import android.widget.Button;
 import com.example.exodus.R;
 
 public class MainActivity extends Activity implements View.OnClickListener{
-    Button btn_play, btn_options, btn_scores, btn_help;
+    Button btn_play, btn_shop,  btn_options, btn_scores, btn_help;
     public static int width, height;
     private static Display display;
     private static Point size;
@@ -26,11 +26,13 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
         //Set buttons
         btn_play = findViewById(R.id.btn_play);
+        btn_shop = findViewById(R.id.btn_shop);
         btn_options = findViewById(R.id.btn_options);
         btn_scores = findViewById(R.id.btn_scores);
         btn_help = findViewById(R.id.btn_help);
 
         btn_play.setOnClickListener(this);
+        btn_shop.setOnClickListener(this);
         btn_options.setOnClickListener(this);
         btn_scores.setOnClickListener(this);
         btn_help.setOnClickListener(this);
@@ -62,6 +64,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.btn_play:
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_shop:
+                startActivity(new Intent(MainActivity.this, ShopActivity.class));
                 break;
             case R.id.btn_options:
                 startActivity(new Intent(MainActivity.this, OptionsActivity.class));

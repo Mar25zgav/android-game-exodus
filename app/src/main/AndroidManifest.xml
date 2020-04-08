@@ -29,6 +29,11 @@
         </activity>
 
         <activity
+            android:name=".menupanel.ShopActivity"
+            android:theme="@style/AppTheme.WindowPopUpTheme">
+        </activity>
+
+        <activity
             android:name=".menupanel.OptionsActivity"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
@@ -46,7 +51,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

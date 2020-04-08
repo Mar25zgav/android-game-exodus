@@ -8,8 +8,7 @@ import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 
 public class Spell extends Circle {
-
-    public static final float SPEED_PIXELS_PER_SECOND = 800;
+    private static final float SPEED_PIXELS_PER_SECOND = 800;
     private static final float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
 
     public Spell(Context context, Player spellcaster){

@@ -14,15 +14,15 @@ public class Player extends Circle {
     private final Joystick joystick;
 
     public static final float SPEED_PIXELS_PER_SECOND = 250;
-    public static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static int health;
     private int kills;
 
     public Player(Context context, Joystick joystick, float positionX, float positionY, float radius){
         super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
         this.joystick = joystick;
-        this.health = 5;
         kills = 0;
+        health = 5;
     }
 
     public void update() {
@@ -49,6 +49,12 @@ public class Player extends Circle {
         }
     }
 
+    public int getKills() { return kills; }
+
+    public void setKills(int kills) { this.kills = kills; }
+
+    public void addKill() { this.kills++; }
+
     public static int getHealth() { return health; }
 
     public void setHealth(int health) { this.health = health; }
@@ -56,10 +62,4 @@ public class Player extends Circle {
     public void addHealth() { this.health++; }
 
     public void subHealth() { this.health--; }
-
-    public int getKills() { return kills; }
-
-    public void setKills(int kills) { this.kills = kills; }
-
-    public void addKill() { this.kills++; }
 }

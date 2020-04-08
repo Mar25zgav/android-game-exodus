@@ -29,7 +29,7 @@ public class PVector implements Serializable {
         this.z = 0;
     }
 
-    public static PVector getRandomPos(Player player, List<Enemy> enemyList) {
+    public static PVector getRandomEnemyPos(Player player, List<Enemy> enemyList) {
         int i;
         PVector position = new PVector();
         do{
@@ -40,6 +40,23 @@ public class PVector implements Serializable {
             }
             for(Enemy enemy : enemyList){
                 if(position.dist(enemy.getPVector()) > 65)
+                    i++;
+            }
+        }while(i < enemyList.size());
+        return position;
+    }
+
+    public static PVector getRandomChestPos(Player player, List<Enemy> enemyList) {
+        int i;
+        PVector position = new PVector();
+        do{
+            i = 0;
+            position.randomPVector();
+            while(position.dist(player.getPVector()) < 300) {
+                position.randomPVector();
+            }
+            for(Enemy enemy : enemyList){
+                if(position.dist(enemy.getPVector()) > 100)
                     i++;
             }
         }while(i < enemyList.size());

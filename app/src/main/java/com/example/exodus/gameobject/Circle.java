@@ -30,11 +30,11 @@ public abstract class Circle extends GameObject {
             return false;
     }
 
-    private float getRadius() {
-        return radius;
-    }
-
     public void draw(Canvas canvas) {
         canvas.drawCircle(position.x, position.y, radius, paint);
+    }
+
+    private float getRadius() {
+        return radius;
     }
 }

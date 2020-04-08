@@ -9,8 +9,10 @@ import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 
 import com.example.exodus.gameobject.Arena;
+import com.example.exodus.gameobject.Chest;
 import com.example.exodus.gameobject.Circle;
 import com.example.exodus.gameobject.Enemy;
+import com.example.exodus.gameobject.GunContainer;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.gameobject.Spell;
 import com.example.exodus.gamepanel.GameOver;
@@ -33,13 +35,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private Performance performance;
     private GameOver gameOver;
     private LevelManager levelManager;
-    private PVector randomEnemyPos;
+    private GunContainer gunContainer;
+    private PVector randomEnemyPos, randomChestPos;
 
     public static List<Enemy> enemyList;
     private List<Spell> spellList;
+    private List<Chest> chestList;
     private int joystickPointerId = 0;
     private int numberOfSpellsToCast = 0;
-    private float enemyRadius = 30;
 
     public Game(Context context) {
         super(context);
@@ -61,8 +64,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         hud = new Hud(getContext());
         enemyList = new ArrayList<>();
         spellList = new ArrayList<>();
-
-        levelManager = new LevelManager(player, enemyList, arena);
+        chestList = new ArrayList<>();
+        gunContainer = new GunContainer();
+        levelManager = new LevelManager(player, enemyList, chestList, arena);
 
         setFocusable(true);
     }
@@ -125,10 +129,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         canvas.drawColor(ContextCompat.getColor(getContext(), R.color.background));
 
-        // Draw game objects
         joystick.draw(canvas);
+
         arena.draw(canvas);
+
+        for (Chest chest : chestList) {
+            chest.draw(canvas);
+        }
+
         player.draw(canvas);
+
+        levelManager.draw(canvas);
 
         for (Enemy enemy : enemyList) {
             enemy.draw(canvas);
@@ -139,7 +150,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Draw game panels
-        //performance.draw(canvas);
+        performance.draw(canvas);
         hud.draw(canvas);
 
         // Draw Game over if the player is dead
@@ -154,14 +165,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             gameLoop.stopLoop();
         }
 
-        // Update object state
+        // Update game state
         joystick.update();
         player.update();
 
         // Spawn enemy if it is time, but not on top of each other
         if(Enemy.readyToSpawn()) {
-            randomEnemyPos = PVector.getRandomPos(player, enemyList);
-            enemyList.add(new Enemy(getContext(), player, randomEnemyPos.x, randomEnemyPos.y, enemyRadius));
+            randomEnemyPos = PVector.getRandomEnemyPos(player, enemyList);
+            enemyList.add(new Enemy(getContext(), player, randomEnemyPos.x, randomEnemyPos.y, levelManager.getEnemyRadius()));
         }
 
         // Update state of each enemy
@@ -178,10 +189,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             spell.update();
         }
 
+        // Spawn chest if it is time
+        if(Chest.readyToSpawn()) {
+            randomChestPos = PVector.getRandomChestPos(player, enemyList);
+            chestList.add(new Chest(getContext(), randomChestPos));
+        }
+
         // Iterate through enemyList and check for collision between each enemy and the player
         Iterator<Enemy> iteratorEnemy = enemyList.iterator();
+        Enemy enemy;
         while(iteratorEnemy.hasNext()) {
-            Circle enemy = iteratorEnemy.next();
+            enemy = iteratorEnemy.next();
             if(Circle.isColliding(enemy, player)){
                 // Remove enemy if colliding with player
                 iteratorEnemy.remove();
@@ -192,11 +210,17 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             Iterator<Spell> iteratorSpell = spellList.iterator();
             while(iteratorSpell.hasNext()) {
                 Circle spell = iteratorSpell.next();
-                // Remove enemy if it collides with a spell
+                // Check if enemy collides with spell
                 if (Circle.isColliding(spell, enemy)) {
-                    iteratorSpell.remove();
-                    iteratorEnemy.remove();
-                    player.addKill();
+                    // Remove enemy if lost all lives
+                    if(enemy.getHealth() <= 1) {
+                        iteratorSpell.remove();
+                        iteratorEnemy.remove();
+                        player.addKill();
+                    } else {
+                        iteratorSpell.remove();
+                        enemy.subHealth();
+                    }
                 }
             }
         }
@@ -205,8 +229,25 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         Iterator<Spell> iteratorSpell = spellList.iterator();
         while(iteratorSpell.hasNext()) {
             Circle spell = iteratorSpell.next();
-            if (Arena.collision(spell)) {
+            // If spell hit arena
+            if(Arena.collision(spell)) {
                 iteratorSpell.remove();
+            }
+            // If there is a chest, check for collision
+            if(chestList.size() != 0) {
+                Iterator<Chest> chestIterator = chestList.iterator();
+                while(chestIterator.hasNext()) {
+                    Chest chest = chestIterator.next();
+                    // If bullet hit chest
+                    if(Chest.intersects(spell, chest)) {
+                        chest.subHealth();
+                        iteratorSpell.remove();
+                        // If chest out of lives - open it
+                        if(chest.getHealth() <= 0) {
+                            chest.open();
+                        }
+                    }
+                }
             }
         }
 

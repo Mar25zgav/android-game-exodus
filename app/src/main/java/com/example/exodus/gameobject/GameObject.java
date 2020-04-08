@@ -11,7 +11,7 @@ public abstract class GameObject {
     public GameObject(float positionX, float positionY){
         this.position = new PVector(positionX, positionY);
         this.velocity = new PVector(0, 0);
-        this.direction = new PVector(0, 0);
+        this.direction = new PVector(1, 0);
     }
 
     protected static float getDistanceBetweenObjects(GameObject obj1, GameObject obj2) {

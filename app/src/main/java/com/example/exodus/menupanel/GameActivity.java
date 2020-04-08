@@ -3,6 +3,7 @@ package com.example.exodus.menupanel;
 import android.app.Activity;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,14 +15,17 @@ public class GameActivity extends Activity {
     public static int width, height;
     private static Display display;
     private static Point size;
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("MainActivity.java", "onCreate()");
         super.onCreate(savedInstanceState);
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
         hideSystemUI();
-        setContentView(new Game(this));
+        game = new Game(this);
+        setContentView(game);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -45,9 +49,40 @@ public class GameActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        Log.d("GameActivity.java", "onStart()");
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d("GameActivity.java", "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("GameActivity.java", "onPause()");
+        game.pause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("GameActivity.java", "onStop()");
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("GameActivity.java", "onDestroy()");
+        super.onDestroy();
+    }
+
+    @Override
     public void onBackPressed() {
+        Log.d("GameActivity.java", "onDestroy()");
         super.onBackPressed();
-        GameLoop.isRunning = false;
     }
 
     public static int getScreenWidth(){
