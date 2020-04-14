@@ -12,10 +12,12 @@ import com.example.exodus.gamepanel.Joystick;
    The player class is an extension of a Circle, which is an extension of a GameObject. */
 public class Player extends Circle {
     private final Joystick joystick;
+    private Gun gun;
 
     public static final float SPEED_PIXELS_PER_SECOND = 250;
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static int health;
+    private boolean hasGun = false;
     private int kills;
 
     public Player(Context context, Joystick joystick, float positionX, float positionY, float radius){
@@ -48,6 +50,18 @@ public class Player extends Circle {
             direction.y = velocity.y / distance;
         }
     }
+
+    public void setGun(Gun gun) {
+        this.gun = gun;
+        hasGun = true;
+
+    }
+
+    public Gun getGun() { return gun; }
+
+    public boolean hasGun() { return hasGun; }
+
+    public void takeAwayGun() { hasGun = false; }
 
     public int getKills() { return kills; }
 

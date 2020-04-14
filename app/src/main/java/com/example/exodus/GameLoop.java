@@ -7,6 +7,7 @@ import android.view.SurfaceHolder;
 public class GameLoop extends Thread{
     private SurfaceHolder surfaceHolder;
     private Game game;
+    private BackgroundGame backgroundGame;
 
     public static final float MAX_UPS = 60;
     private static final double UPS_PERIOD = 1E+3 / MAX_UPS;
@@ -19,6 +20,11 @@ public class GameLoop extends Thread{
         this.game = game;
         this.surfaceHolder = surfaceHolder;
         timer = new Timer();
+    }
+
+    public GameLoop(BackgroundGame game, SurfaceHolder surfaceHolder) {
+        backgroundGame = game;
+        this.surfaceHolder = surfaceHolder;
     }
 
     public double getAvarageUPS() {

@@ -59,10 +59,6 @@ public class LevelManager {
         }
     }
 
-    public void draw(Canvas canvas) {
-
-    }
-
     public static int getEnemyHealth() { return enemyHealth; }
 
     public  float getEnemyRadius() { return enemyRadius; }

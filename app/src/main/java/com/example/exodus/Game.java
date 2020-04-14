@@ -2,6 +2,7 @@ package com.example.exodus;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,6 +18,7 @@ import com.example.exodus.gameobject.Player;
 import com.example.exodus.gameobject.Spell;
 import com.example.exodus.gamepanel.GameOver;
 import com.example.exodus.gamepanel.Hud;
+import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
 import com.example.exodus.gamepanel.Performance;
 import com.example.exodus.menupanel.GameActivity;
@@ -36,6 +38,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private GameOver gameOver;
     private LevelManager levelManager;
     private GunContainer gunContainer;
+    private Inventory inventory;
     private PVector randomEnemyPos, randomChestPos;
 
     public static List<Enemy> enemyList;
@@ -62,10 +65,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player = new Player(getContext(), joystick, GameActivity.getScreenWidth()/2, GameActivity.getScreenHeight()/2, 35);
         arena = new Arena(getContext());
         hud = new Hud(getContext());
+        gunContainer = new GunContainer(getContext());
         enemyList = new ArrayList<>();
         spellList = new ArrayList<>();
         chestList = new ArrayList<>();
-        gunContainer = new GunContainer();
+        inventory = new Inventory(context, player);
         levelManager = new LevelManager(player, enemyList, chestList, arena);
 
         setFocusable(true);
@@ -139,7 +143,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         player.draw(canvas);
 
-        levelManager.draw(canvas);
 
         for (Enemy enemy : enemyList) {
             enemy.draw(canvas);
@@ -150,8 +153,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Draw game panels
-        performance.draw(canvas);
+        //performance.draw(canvas);
         hud.draw(canvas);
+        inventory.draw(canvas);
 
         // Draw Game over if the player is dead
         if (player.getHealth() <= 0) {
@@ -191,7 +195,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         // Spawn chest if it is time
         if(Chest.readyToSpawn()) {
-            randomChestPos = PVector.getRandomChestPos(player, enemyList);
+            randomChestPos = PVector.getRandomChestPos(player, enemyList, chestList);
             chestList.add(new Chest(getContext(), randomChestPos));
         }
 
@@ -212,14 +216,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 Circle spell = iteratorSpell.next();
                 // Check if enemy collides with spell
                 if (Circle.isColliding(spell, enemy)) {
-                    // Remove enemy if lost all lives
+                    // Remove enemy if lost all lives else subtract health
                     if(enemy.getHealth() <= 1) {
                         iteratorSpell.remove();
                         iteratorEnemy.remove();
                         player.addKill();
                     } else {
                         iteratorSpell.remove();
-                        enemy.subHealth();
+                        enemy.subHealth(((Spell)spell).getDamage());
                     }
                 }
             }
@@ -238,15 +242,29 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 Iterator<Chest> chestIterator = chestList.iterator();
                 while(chestIterator.hasNext()) {
                     Chest chest = chestIterator.next();
-                    // If bullet hit chest
-                    if(Chest.intersects(spell, chest)) {
+                    // If bullet hits chest open
+                    if(Chest.intersects(spell, chest) && chest.isOpen() == false) {
                         chest.subHealth();
                         iteratorSpell.remove();
-                        // If chest out of lives - open it
-                        if(chest.getHealth() <= 0) {
-                            chest.open();
-                        }
                     }
+                    // If chest out of lives -> open it
+                    if(chest.getHealth() <= 0 && chest.isOpen() == false) {
+                        chest.open();
+                    }
+                }
+            }
+        }
+
+        // Iterate through chests and check for collision between player and chest
+        Iterator<Chest> chestIterator = chestList.iterator();
+        while(chestIterator.hasNext()) {
+            Chest chest = chestIterator.next();
+            // Check if chest open
+            if(chest.isOpen()) {
+                // If player touches open chest -> equip weapon
+                if(Chest.intersects(player, chest)) {
+                    inventory.addItem(chest.getGun());
+                    chestIterator.remove();
                 }
             }
         }

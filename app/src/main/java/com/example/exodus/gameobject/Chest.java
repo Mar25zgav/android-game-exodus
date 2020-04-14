@@ -8,34 +8,31 @@ import android.graphics.drawable.Drawable;
 import com.example.exodus.GameLoop;
 import com.example.exodus.PVector;
 import com.example.exodus.R;
+import com.example.exodus.gamepanel.Hud;
+import com.example.exodus.menupanel.GameActivity;
 
 public class Chest{
-    private static float SPAWNS_PER_MINUTE = 2;
+    private Context context;
+    private Gun gun;
+    private Drawable img;
+    private Rect rect;
+
+    private static float SPAWNS_PER_MINUTE = 10;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
     private static float UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static float updatesUntilNextSpawn = UPDATES_PER_SPAWN;
     private int left, top, right, bottom;
     private int health = 3;
-
-    private String gunName;
-    private Context context;
-    private PVector position;
-    private Gun gun;
-    private Drawable img;
-    private Rect rect;
+    private boolean isOpen = false;
 
     public Chest(Context context, PVector position) {
         this.context = context;
-        this.position = position;
-
-        gun = GunContainer.getRandomGun();
-        gunName = "R.drawable."+gun.getName()+".png";
 
         // Set rect size
         top = (int)position.y;
         left = (int)position.x;
-        bottom = (int)position.y + 50;
-        right = (int)position.x + 50;
+        bottom = (int)position.y + 80;
+        right = (int)position.x + 80;
 
         rect = new Rect(left, top, right, bottom);
 
@@ -51,18 +48,21 @@ public class Chest{
     }
 
     public static boolean readyToSpawn() {
-        if(updatesUntilNextSpawn <= 0){
+        if(updatesUntilNextSpawn <= 0) {
             updatesUntilNextSpawn += UPDATES_PER_SPAWN;
             return true;
-        }else{
-            updatesUntilNextSpawn --;
+        } else {
+            updatesUntilNextSpawn--;
             return false;
         }
     }
 
     public void open() {
-        img = context.getResources().getDrawable(R.drawable.pistol);
+        gun = GunContainer.getRandomGun();
+        int id = context.getResources().getIdentifier(gun.getName(), "drawable", context.getPackageName());
+        img = context.getResources().getDrawable(id);
         img.setBounds(rect);
+        isOpen = true;
     }
 
     public static boolean intersects(Circle obj, Chest chest) {
@@ -80,4 +80,10 @@ public class Chest{
     public void subHealth() { health--; }
 
     public int getHealth() { return health; }
+
+    public boolean isOpen() { return isOpen; }
+
+    public Gun getGun() { return gun; }
+
+    public PVector getPVector() { return new PVector(rect.exactCenterX(), rect.exactCenterY()); }
 }

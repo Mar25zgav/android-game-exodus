@@ -8,8 +8,13 @@ import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 
 public class Spell extends Circle {
-    private static final float SPEED_PIXELS_PER_SECOND = 800;
-    private static final float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private Gun gun;
+    private Player spellcaster;
+
+    private static float SPEED = 800; // per seconds
+    private static float MAX_SPEED = SPEED / GameLoop.MAX_UPS;
+    private static float radius = 10;
+    private static int damage = 1;
 
     public Spell(Context context, Player spellcaster){
         super(
@@ -17,8 +22,9 @@ public class Spell extends Circle {
             ContextCompat.getColor(context, R.color.player),
             spellcaster.getPositionX(),
             spellcaster.getPositionY(),
-            10
+            radius
         );
+        this.spellcaster = spellcaster;
 
         velocity.x = spellcaster.getDirectionX() * MAX_SPEED;
         velocity.y = spellcaster.getDirectionY() * MAX_SPEED;
@@ -26,7 +32,20 @@ public class Spell extends Circle {
 
     @Override
     public void update() {
-        position.x += velocity.x;
-        position.y += velocity.y;
+        position.add(velocity);
     }
+
+    public static void reset() {
+        MAX_SPEED = SPEED / GameLoop.MAX_UPS;;
+        radius = 10;
+        damage = 1;
+    }
+
+    public static int getDamage() { return damage; }
+
+    public static void setSpeed(float speed) { MAX_SPEED = speed; }
+
+    public static void setRadius(float r) { radius = r; }
+
+    public static void setDamage(int d) { damage = d; }
 }

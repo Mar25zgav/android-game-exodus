@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Exodus</string>
+    <string name="play">Play</string>
+    <string name="shop">Shop</string>
+    <string name="exodus">EXODUS</string>
+    <string name="instructions">Instructions</string>
+    <string name="options">Options</string>
+    <string name="scoreboard">Scoreboard</string>
+    <string name="pistol">Pistol</string>
+    <string name="submachine">Submachine</string>
+    <string name="musket">Musket</string>
+    <string name="rifle">Rifle</string>
+    <string name="sniper">Sniper</string>
+    <string name="machine_gun">Machine gun</string>
+    <string name="instructions_text">The goal of the game is to stay alive for as long as possible and defeat all your enemies that come you way!</string>
+    <string name="moving_player">Moving player</string>
+    <string name="touch_to_shoot">Touch to shoot</string>
+    <string name="todo">TODO</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.exodus;
 
 import com.example.exodus.gameobject.Arena;
+import com.example.exodus.gameobject.Chest;
 import com.example.exodus.gameobject.Enemy;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.menupanel.GameActivity;
@@ -34,9 +35,9 @@ public class PVector implements Serializable {
         PVector position = new PVector();
         do{
             i = 0;
-            position.randomPVector();
+            position.randomEnemyPVector();
             while(position.dist(player.getPVector()) < 360) {
-                position.randomPVector();
+                position.randomEnemyPVector();
             }
             for(Enemy enemy : enemyList){
                 if(position.dist(enemy.getPVector()) > 65)
@@ -46,27 +47,39 @@ public class PVector implements Serializable {
         return position;
     }
 
-    public static PVector getRandomChestPos(Player player, List<Enemy> enemyList) {
+    public static PVector getRandomChestPos(Player player, List<Enemy> enemyList, List<Chest> chestList) {
         int i;
         PVector position = new PVector();
         do{
             i = 0;
-            position.randomPVector();
+            position.randomChestPVector();
             while(position.dist(player.getPVector()) < 300) {
-                position.randomPVector();
+                position.randomChestPVector();
             }
-            for(Enemy enemy : enemyList){
+            for(Enemy enemy : enemyList) {
                 if(position.dist(enemy.getPVector()) > 100)
                     i++;
             }
-        }while(i < enemyList.size());
+            for(Chest chest : chestList) {
+                if(position.dist(chest.getPVector()) > 160)
+                    i++;
+            }
+        }while(i < enemyList.size() + chestList.size());
         return position;
     }
 
-    public PVector randomPVector() {
+    public PVector randomEnemyPVector() {
         RandomInRanges rir = new RandomInRanges(Arena.getWallSize() + 30, GameActivity.getScreenWidth() - Arena.getWallSize() - 30);
         x = rir.getRandom();
         rir = new RandomInRanges(Arena.getWallSize() + 30, GameActivity.getScreenHeight() - Arena.getWallSize() - 30);
+        y = rir.getRandom();
+        return this;
+    }
+
+    public PVector randomChestPVector() {
+        RandomInRanges rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenWidth() - Arena.getWallSize() - 80);
+        x = rir.getRandom();
+        rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenHeight() - Arena.getWallSize() - 80);
         y = rir.getRandom();
         return this;
     }

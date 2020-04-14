@@ -2,8 +2,10 @@ package com.example.exodus.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
@@ -11,6 +13,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.exodus.GameLoop;
 import com.example.exodus.gameobject.Arena;
+import com.example.exodus.gameobject.Chest;
+import com.example.exodus.gameobject.Gun;
 import com.example.exodus.menupanel.GameActivity;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.R;
@@ -23,13 +27,17 @@ public class Hud{
     private Paint.FontMetrics timerSize;
     private Typeface font;
     private Drawable life, emptyLife;
-    private int timeColor;
+    private Paint paint;
+    private RectF rectF;
 
     private ArrayList<Rect> livesPos = new ArrayList<>();
     private int screenWidth = GameActivity.getScreenWidth();
     private int wallSize;
+    private int timeColor;
     private int left, top, right, bottom;
-    private float timerHeight, timerWidth;
+    private float topF, leftF, bottomF, rightF;
+    private int borderRadius = 10;
+    private static float timerHeight, timerWidth;
 
     public Hud(Context context){
         // Timer
@@ -45,7 +53,7 @@ public class Hud{
         time.setSubpixelText(true);
         timerSize = new Paint.FontMetrics();
 
-        //Set vars
+        //Size for healthbar  and timer
         wallSize = Arena.getWallSize();
         timerSize = time.getFontMetrics();
         timerHeight = Math.abs(timerSize.ascent);
@@ -64,16 +72,29 @@ public class Hud{
             right -= (bottom - top);
             left -= (bottom - top);
         }
+
+        // Set rectF size with border for inventory
+        topF = (float)(wallSize * 1.45);
+        leftF = screenWidth / 2 + timerWidth * 2;
+        bottomF = (float)(wallSize + timerHeight * 1.1);
+        rightF = (float)(leftF + topF * 1.35);
+        rectF = new RectF(leftF, topF, rightF, bottomF);
+
+        // RectF stroke
+        paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(4);
     }
 
     public void draw(Canvas canvas){
         // Healthbar
         int i=0;
-        while(i < 5){
-            if(i < Player.getHealth()){
+        while(i < 5) {
+            if(i < Player.getHealth()) {
                 life.setBounds(livesPos.get(i));
                 life.draw(canvas);
-            }else{
+            } else {
                 emptyLife.setBounds(livesPos.get(i));
                 emptyLife.draw(canvas);
             }
@@ -82,5 +103,12 @@ public class Hud{
 
         // Timer
         canvas.drawText(GameLoop.timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
+
+        // Inventory rect with borders for weapon
+        canvas.drawRoundRect(rectF, borderRadius, borderRadius, paint);
     }
+
+    public static float getTimerWidth() { return timerWidth; }
+
+    public static float getTimerHeight() { return timerHeight; }
 }

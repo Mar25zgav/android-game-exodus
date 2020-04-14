@@ -11,6 +11,10 @@ import com.example.exodus.R;
 /* Enemy is a character which always moves in the direction of the player.
    The enemy class is an extension of a circle, which is an extension of a GameObject */
 public class Enemy extends Circle {
+    private Player player;
+    private PVector distanceToPlayerV;
+    private Context context;
+
     private static float SPEED_PIXELS_PER_SECOND = (float)(Player.SPEED_PIXELS_PER_SECOND * 0.55);
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static float SPAWNS_PER_MINUTE = 10;
@@ -20,12 +24,13 @@ public class Enemy extends Circle {
     public static int health;
     private double timer;
     private boolean hit = false;
-    private Player player;
-    private PVector distanceToPlayerV;
 
     public Enemy(Context context, Player player, float positionX, float positionY, float radius) {
         super(context, ContextCompat.getColor(context, R.color.enemy), positionX, positionY, radius);
+
         this.player = player;
+        this.context = context;
+
         timer = System.currentTimeMillis();
         health = LevelManager.getEnemyHealth();
     }
@@ -56,24 +61,34 @@ public class Enemy extends Circle {
 
             // Set velocity in the direction to the player.
             if(distanceToPlayer > 0) // Avoid division by 0
-                velocity.set(direction.mult(MAX_SPEED ));
+                velocity.set(direction.mult(MAX_SPEED));
             else
                 velocity.set(0,0);
 
             // If enemy hit then knockback with weapon force
-            if(hit){
-                velocity.set(direction.mult(-MAX_SPEED * 2));
+            if(hit && player.hasGun()){
+                velocity.normalize().mult(-player.getGun().getForce());
                 hit = false;
             }
 
-            position.add(velocity);
+            // Save current position, if collides set position to previous
+            position.x += velocity.x;
+            if(Arena.collision(this)){
+                position.x -= velocity.x;
+            }
+            position.y += velocity.y;
+            if(Arena.collision(this)){
+                position.y -= velocity.y;
+            }
         }
     }
 
+
+
     public static int getHealth() { return health; }
 
-    public void subHealth() {
-        health--;
+    public void subHealth(int damage) {
+        health -= damage;
         hit = true;
     }
 }

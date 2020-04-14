@@ -10,8 +10,8 @@ import android.widget.Button;
 
 import com.example.exodus.R;
 
-public class MainActivity extends Activity implements View.OnClickListener{
-    Button btn_play, btn_shop,  btn_options, btn_scores, btn_help;
+public class MainActivity extends Activity implements View.OnClickListener {
+    Button btn_play, btn_shop, btn_options, btn_scores, btn_help;
     public static int width, height;
     private static Display display;
     private static Point size;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    private void hideSystemUI(){
+    private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -59,8 +59,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
     @Override
-    public void onClick(View v){
-        switch(v.getId()){
+    public void onClick(View v) {
+        switch (v.getId()) {
             case R.id.btn_play:
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -80,12 +80,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    public static int getScreenWidth(){
+    public static int getScreenWidth() {
         display.getRealSize(size);
         return width = size.x;
     }
 
-    public static int getScreenHeight(){
+    public static int getScreenHeight() {
         display.getRealSize(size);
         return height = size.y;
     }
