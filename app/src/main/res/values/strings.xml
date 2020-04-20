@@ -16,4 +16,13 @@
     <string name="moving_player">Moving player</string>
     <string name="touch_to_shoot">Touch to shoot</string>
     <string name="todo">TODO</string>
+    <string name="sound">Sound</string>
+    <string name="difficulty">Difficulty</string>
+    <string name="credits">Credits</string>
+
+    <string-array name="difficulty">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>

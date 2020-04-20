@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/mainmenu"
-    android:backgroundTint="#2D2F31"
     tools:context=".menupanel.MainActivity">
 
     <Button

@@ -77,7 +77,7 @@ public class Hud{
         topF = (float)(wallSize * 1.45);
         leftF = screenWidth / 2 + timerWidth * 2;
         bottomF = (float)(wallSize + timerHeight * 1.1);
-        rightF = (float)(leftF + topF * 1.35);
+        rightF = leftF + (bottomF - topF); //(float)(leftF + topF * 1.35);
         rectF = new RectF(leftF, topF, rightF, bottomF);
 
         // RectF stroke
