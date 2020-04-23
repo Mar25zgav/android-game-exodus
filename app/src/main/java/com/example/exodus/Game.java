@@ -17,6 +17,7 @@ import com.example.exodus.gameobject.GunContainer;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.gameobject.Spell;
 import com.example.exodus.gamepanel.GameOver;
+import com.example.exodus.gamepanel.GamePaused;
 import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
@@ -36,11 +37,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private Joystick joystick;
     private Performance performance;
     private GameOver gameOver;
+    private GamePaused gamePaused;
     private LevelManager levelManager;
     private GunContainer gunContainer;
     private Inventory inventory;
     private PVector randomEnemyPos, randomChestPos;
-
+    private Timer timer;
     public static List<Enemy> enemyList;
     private List<Spell> spellList;
     private List<Chest> chestList;
@@ -60,17 +62,20 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         joystick = new Joystick(300, 800, 120, 75);
         performance = new Performance(context, gameLoop);
         gameOver = new GameOver(context);
+        gamePaused = new GamePaused(context);
 
         // Initialize game objects
         player = new Player(getContext(), joystick, GameActivity.getScreenWidth()/2, GameActivity.getScreenHeight()/2, 35);
         arena = new Arena(getContext());
-        hud = new Hud(getContext());
+        timer = new Timer();
+        hud = new Hud(getContext(), timer);
         gunContainer = new GunContainer(getContext());
         enemyList = new ArrayList<>();
         spellList = new ArrayList<>();
         chestList = new ArrayList<>();
         inventory = new Inventory(context, player);
         levelManager = new LevelManager(player, enemyList, chestList, arena);
+        timer.start();
 
         setFocusable(true);
     }
@@ -153,12 +158,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Draw game panels
-        //performance.draw(canvas);
         hud.draw(canvas);
+        //performance.draw(canvas);
         inventory.draw(canvas);
 
         // Draw Game over if the player is dead
-        if (player.getHealth() <= 0) {
+        if(player.getHealth() <= 0) {
             gameOver.draw(canvas);
         }
     }
@@ -243,12 +248,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 while(chestIterator.hasNext()) {
                     Chest chest = chestIterator.next();
                     // If bullet hits chest open
-                    if(Chest.intersects(spell, chest) && chest.isOpen() == false) {
+                    if(Chest.intersects(spell, chest) && !chest.isOpen()) {
                         chest.subHealth();
                         iteratorSpell.remove();
                     }
                     // If chest out of lives -> open it
-                    if(chest.getHealth() <= 0 && chest.isOpen() == false) {
+                    if(chest.getHealth() <= 0 && !chest.isOpen()) {
                         chest.open();
                     }
                 }
@@ -274,6 +279,11 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void pause() {
+        timer.pause();
         gameLoop.stopLoop();
     }
+
+    public void resume() {
+        timer.resume();
+        gameLoop.startLoop(); }
 }

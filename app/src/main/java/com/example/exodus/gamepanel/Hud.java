@@ -11,16 +11,13 @@ import android.graphics.drawable.Drawable;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.exodus.GameLoop;
+import com.example.exodus.Timer;
 import com.example.exodus.gameobject.Arena;
-import com.example.exodus.gameobject.Chest;
-import com.example.exodus.gameobject.Gun;
 import com.example.exodus.menupanel.GameActivity;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.R;
 
 import java.util.ArrayList;
-import java.util.Timer;
 
 public class Hud{
     private Paint time;
@@ -29,6 +26,7 @@ public class Hud{
     private Drawable life, emptyLife;
     private Paint paint;
     private RectF rectF;
+    private Timer timer;
 
     private ArrayList<Rect> livesPos = new ArrayList<>();
     private int screenWidth = GameActivity.getScreenWidth();
@@ -37,10 +35,12 @@ public class Hud{
     private int left, top, right, bottom;
     private float topF, leftF, bottomF, rightF;
     private int borderRadius = 10;
+    private int inventoryPadding = 4;
     private static float timerHeight, timerWidth;
 
-    public Hud(Context context){
+    public Hud(Context context, Timer timer){
         // Timer
+        this.timer = timer;
         font = Typeface.createFromAsset(context.getAssets(),"fonts/titan_one.ttf");
         timeColor = ContextCompat.getColor(context, R.color.time);
         time = new Paint();
@@ -76,8 +76,9 @@ public class Hud{
         // Set rectF size with border for inventory
         topF = (float)(wallSize * 1.45);
         leftF = screenWidth / 2 + timerWidth * 2;
-        bottomF = (float)(wallSize + timerHeight * 1.1);
-        rightF = leftF + (bottomF - topF); //(float)(leftF + topF * 1.35);
+        bottomF = (float)(wallSize + timerHeight * 1.1) + inventoryPadding;
+        rightF = leftF + (bottomF - topF) + inventoryPadding;
+
         rectF = new RectF(leftF, topF, rightF, bottomF);
 
         // RectF stroke
@@ -102,13 +103,13 @@ public class Hud{
         }
 
         // Timer
-        canvas.drawText(GameLoop.timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
+        canvas.drawText(timer.toString(), screenWidth / 2, wallSize + timerHeight, time);
 
         // Inventory rect with borders for weapon
         canvas.drawRoundRect(rectF, borderRadius, borderRadius, paint);
     }
 
-    public static float getTimerWidth() { return timerWidth; }
+    static float getTimerWidth() { return timerWidth; }
 
-    public static float getTimerHeight() { return timerHeight; }
+    static float getTimerHeight() { return timerHeight; }
 }

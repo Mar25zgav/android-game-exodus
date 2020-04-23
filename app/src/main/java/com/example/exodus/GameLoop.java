@@ -5,25 +5,17 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class GameLoop extends Thread{
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
     private Game game;
-    private BackgroundGame backgroundGame;
 
     public static final float MAX_UPS = 60;
     private static final double UPS_PERIOD = 1E+3 / MAX_UPS;
     public static boolean isRunning = false;
-    public static Timer timer;
     private double avarageUPS;
     private double avarageFPS;
 
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game = game;
-        this.surfaceHolder = surfaceHolder;
-        timer = new Timer();
-    }
-
-    public GameLoop(BackgroundGame game, SurfaceHolder surfaceHolder) {
-        backgroundGame = game;
         this.surfaceHolder = surfaceHolder;
     }
 
@@ -35,9 +27,8 @@ public class GameLoop extends Thread{
         return avarageFPS;
     }
 
-    public void startLoop() {
+    void startLoop() {
         Log.d("GameLoop.java", "startLoop()");
-        timer.start();
         isRunning = true;
         start();
     }
@@ -110,10 +101,10 @@ public class GameLoop extends Thread{
         }
     }
 
-    public void stopLoop() {
+    void stopLoop() {
         Log.d("GameLoop.java", "stopLoop()");
-        timer.stop();
         isRunning = false;
+        // Wait for thread to join
         try {
             join();
         } catch (InterruptedException e) {

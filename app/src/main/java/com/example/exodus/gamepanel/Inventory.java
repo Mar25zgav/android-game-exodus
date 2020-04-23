@@ -2,16 +2,11 @@ package com.example.exodus.gamepanel;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 
-import com.example.exodus.R;
 import com.example.exodus.Timer;
 import com.example.exodus.gameobject.Arena;
-import com.example.exodus.gameobject.Chest;
 import com.example.exodus.gameobject.Gun;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.gameobject.Spell;
@@ -29,6 +24,7 @@ public class Inventory {
     private float timerWidth = Hud.getTimerWidth();
     private float timerHeight = Hud.getTimerHeight();
     private float screenWidth = GameActivity.getScreenWidth();
+    private int padding = 5;
 
     public Inventory(Context context, Player player) {
         this.player = player;
@@ -37,10 +33,11 @@ public class Inventory {
         timer = new Timer();
 
         // Set rect size for gun
-        top = (int)(wallSize * 1.45);
-        left = (int)(screenWidth / 2 + timerWidth * 2.05);
+        top = (int)(wallSize * 1.45) + padding;
+        left = (int)(screenWidth / 2 + timerWidth * 2) + padding;
         bottom = (int)(wallSize + timerHeight * 1.1);
-        right = (int)(left + top * 1.30);
+        right = left + (bottom - top);
+
         rect = new Rect(left, top, right, bottom);
     }
 
@@ -48,10 +45,10 @@ public class Inventory {
         // If player has picked up a weapon
         if(player.hasGun()) {
             // Player can use weapon only for 12s
-            if(timer.diff() <= 12000) {
+            if(timer.getElapsedTime() <= 12000) {
                 gunImage.draw(canvas);
             } else {
-                timer.stop();
+                timer.cancel();
                 player.takeAwayGun();
                 Spell.reset();
             }

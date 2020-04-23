@@ -31,8 +31,8 @@ public class Chest{
         // Set rect size
         top = (int)position.y;
         left = (int)position.x;
-        bottom = (int)position.y + 80;
-        right = (int)position.x + 80;
+        bottom = (int)position.y + 90;
+        right = (int)position.x + 90;
 
         rect = new Rect(left, top, right, bottom);
 

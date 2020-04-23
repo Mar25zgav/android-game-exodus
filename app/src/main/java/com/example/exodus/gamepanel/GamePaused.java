@@ -10,17 +10,16 @@ import androidx.core.content.ContextCompat;
 import com.example.exodus.R;
 import com.example.exodus.menupanel.GameActivity;
 
-// GameOver is a panel which draws the text Game Over to the screen.
-public class GameOver {
+// GamePaused is a panel which draws the text Paused to the screen when game is paused.
+public class GamePaused {
     private Typeface font;
     private Paint paint;
-
     private String text;
     private float x, y;
     private int textColor;
 
-    public GameOver(Context context) {
-        text = "Game Over";
+    public GamePaused(Context context) {
+        text = "Paused";
         x = (float)(GameActivity.getScreenWidth() / 2);
         y = (float)(GameActivity.getScreenHeight() / 2);
         font = Typeface.createFromAsset(context.getAssets(),"fonts/titan_one.ttf");

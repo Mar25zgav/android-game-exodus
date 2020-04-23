@@ -22,7 +22,7 @@ public class BackgroundGame extends SurfaceView implements SurfaceHolder.Callbac
         SurfaceHolder surfaceHolder = getHolder();
         surfaceHolder.addCallback(this);
 
-        gameLoop = new GameLoop(this, surfaceHolder);
+        //gameLoop = new GameLoop(this, surfaceHolder);
 
         arena = new Arena(getContext());
     }

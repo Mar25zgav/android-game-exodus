@@ -16,6 +16,8 @@
     <color name="health">#00d107</color>
     <color name="time">#FFFFFF</color>
     <color name="gameOver">#FFFFFF</color>
+
+    <!--Arena colors-->
     <string-array name="arenaColors">
         <item>#FFFFFF</item>
         <item>#a39ab5</item>

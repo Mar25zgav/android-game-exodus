@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:background="@color/mainmenu"
-    android:backgroundTint="#2D2F31">
+    android:background="@color/mainmenu">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

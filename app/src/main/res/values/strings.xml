@@ -19,6 +19,10 @@
     <string name="sound">Sound</string>
     <string name="difficulty">Difficulty</string>
     <string name="credits">Credits</string>
+    <string name="paused">Paused</string>
+    <string name="resume">Resume</string>
+    <string name="restart">Restart</string>
+    <string name="main_menu">Main Menu</string>
 
     <string-array name="difficulty">
         <item>Easy</item>
