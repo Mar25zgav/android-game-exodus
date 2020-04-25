@@ -40,7 +40,7 @@
                 android:layout_marginTop="25dp">
 
                 <Button
-                    android:id="@+id/resume"
+                    android:id="@+id/btn_resume"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_style"
@@ -61,7 +61,7 @@
                 android:layout_marginRight="10dp">
 
                 <Button
-                    android:id="@+id/restart"
+                    android:id="@+id/btn_restart"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_style"
@@ -82,7 +82,7 @@
                 android:layout_marginTop="10dp">
 
                 <Button
-                    android:id="@+id/mainmenu"
+                    android:id="@+id/btn_mainmenu"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_style"

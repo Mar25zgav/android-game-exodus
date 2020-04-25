@@ -79,9 +79,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="195dp"
         android:layout_marginTop="80dp"
-        android:layout_marginEnd="196dp"
         android:layout_marginBottom="10dp"
         android:fontFamily="@font/titan_one"
         android:text="@string/exodus"
@@ -89,7 +87,6 @@
         android:textSize="80sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_play"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -2,7 +2,6 @@ package com.example.exodus;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -17,7 +16,6 @@ import com.example.exodus.gameobject.GunContainer;
 import com.example.exodus.gameobject.Player;
 import com.example.exodus.gameobject.Spell;
 import com.example.exodus.gamepanel.GameOver;
-import com.example.exodus.gamepanel.GamePaused;
 import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
@@ -37,7 +35,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private Joystick joystick;
     private Performance performance;
     private GameOver gameOver;
-    private GamePaused gamePaused;
     private LevelManager levelManager;
     private GunContainer gunContainer;
     private Inventory inventory;
@@ -62,7 +59,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         joystick = new Joystick(300, 800, 120, 75);
         performance = new Performance(context, gameLoop);
         gameOver = new GameOver(context);
-        gamePaused = new GamePaused(context);
 
         // Initialize game objects
         player = new Player(getContext(), joystick, GameActivity.getScreenWidth()/2, GameActivity.getScreenHeight()/2, 35);
@@ -171,7 +167,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void update() {
         // Stop updating the game if the player is dead
         if(player.getHealth() <= 0) {
-            gameLoop.stopLoop();
+            //gameLoop.stopLoop();
         }
 
         // Update game state
@@ -285,5 +281,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
     public void resume() {
         timer.resume();
-        gameLoop.startLoop(); }
+        gameLoop.startLoop();
+    }
 }

@@ -4,9 +4,10 @@ import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-public class GameLoop extends Thread{
+public class GameLoop extends Thread {
     private final SurfaceHolder surfaceHolder;
     private Game game;
+    private Thread thread;
 
     public static final float MAX_UPS = 60;
     private static final double UPS_PERIOD = 1E+3 / MAX_UPS;
@@ -30,7 +31,8 @@ public class GameLoop extends Thread{
     void startLoop() {
         Log.d("GameLoop.java", "startLoop()");
         isRunning = true;
-        start();
+        thread = new Thread(this);
+        thread.start();
     }
 
     @Override
