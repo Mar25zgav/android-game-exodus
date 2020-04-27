@@ -12,18 +12,17 @@ import com.example.exodus.R;
    The enemy class is an extension of a circle, which is an extension of a GameObject */
 public class Enemy extends Circle {
     private Player player;
-    private PVector distanceToPlayerV;
     private Context context;
-
+    private PVector distanceToPlayerV;
+    private double timer;
+    private boolean hit = false;
+    private static double health;
     private static float SPEED_PIXELS_PER_SECOND = (float)(Player.SPEED_PIXELS_PER_SECOND * 0.55);
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static float SPAWNS_PER_MINUTE = 10;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
     private static float UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static float updatesUntilNextSpawn = UPDATES_PER_SPAWN;
-    public static int health;
-    private double timer;
-    private boolean hit = false;
 
     public Enemy(Context context, Player player, float positionX, float positionY, float radius) {
         super(context, ContextCompat.getColor(context, R.color.enemy), positionX, positionY, radius);
@@ -84,10 +83,11 @@ public class Enemy extends Circle {
     }
 
 
+    public static double getHealth() {
+        return health;
+    }
 
-    public static int getHealth() { return health; }
-
-    public void subHealth(int damage) {
+    public void subHealth(double damage) {
         health -= damage;
         hit = true;
     }

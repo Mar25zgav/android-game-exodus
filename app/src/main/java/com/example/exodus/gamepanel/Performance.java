@@ -3,9 +3,7 @@ package com.example.exodus.gamepanel;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import androidx.core.content.ContextCompat;
-
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 
@@ -23,7 +21,7 @@ public class Performance {
         drawFPS(canvas);
     }
 
-    public void drawFPS(Canvas canvas) {
+    private void drawFPS(Canvas canvas) {
         String avarageFPS = Double.toString((int) gameLoop.getAvarageFPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);
@@ -32,7 +30,7 @@ public class Performance {
         canvas.drawText("FPS: " + avarageFPS, 100, 150, paint);
     }
 
-    public void drawUPS(Canvas canvas) {
+    private void drawUPS(Canvas canvas) {
         String avarageUPS = Double.toString(gameLoop.getAvarageUPS());
         Paint paint = new Paint();
         int color = ContextCompat.getColor(context, R.color.magenta);

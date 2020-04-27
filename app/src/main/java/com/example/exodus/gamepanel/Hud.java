@@ -27,11 +27,10 @@ public class Hud{
     private Paint paint;
     private RectF rectF;
     private Timer timer;
-
     private ArrayList<Rect> livesPos = new ArrayList<>();
     private int screenWidth = GameActivity.getScreenWidth();
-    private int wallSize;
     private int timeColor;
+    private float wallSize;
     private int left, top, right, bottom;
     private float topF, leftF, bottomF, rightF;
     private int borderRadius = 10;

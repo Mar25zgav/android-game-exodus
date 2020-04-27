@@ -16,11 +16,11 @@ public class Chest{
     private Gun gun;
     private Drawable img;
     private Rect rect;
-
     private static float SPAWNS_PER_MINUTE = 10;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
     private static float UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static float updatesUntilNextSpawn = UPDATES_PER_SPAWN;
+    private static float chestSize = GameActivity.getScreenHeight() / 12;
     private int left, top, right, bottom;
     private int health = 3;
     private boolean isOpen = false;
@@ -31,8 +31,8 @@ public class Chest{
         // Set rect size
         top = (int)position.y;
         left = (int)position.x;
-        bottom = (int)position.y + 90;
-        right = (int)position.x + 90;
+        bottom = (int) (position.y + chestSize);
+        right = (int) (position.x + chestSize);
 
         rect = new Rect(left, top, right, bottom);
 
@@ -77,7 +77,9 @@ public class Chest{
         return intersects;
     }
 
-    public void subHealth() { health--; }
+    public void subHealth(double damage) {
+        health -= damage;
+    }
 
     public int getHealth() { return health; }
 
@@ -86,4 +88,8 @@ public class Chest{
     public Gun getGun() { return gun; }
 
     public PVector getPVector() { return new PVector(rect.exactCenterX(), rect.exactCenterY()); }
+
+    public static float getSize() {
+        return chestSize;
+    }
 }

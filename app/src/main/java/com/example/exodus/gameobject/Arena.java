@@ -4,24 +4,22 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-
-import com.example.exodus.Game;
+import android.graphics.RectF;
 import com.example.exodus.menupanel.GameActivity;
 import com.example.exodus.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Arena{
     private Paint paint = new Paint();
-    private List<Integer> colors = new ArrayList<Integer>();
     private String[] wallColors;
-    private static List<Rect> wallList = new ArrayList<Rect>();
-    private static List<Rect> doorList = new ArrayList<Rect>();
-    private static int screenHeight = GameActivity.getScreenHeight();
-    private static int screenWidth = GameActivity.getScreenWidth();
-    private static int wallSize = (int)(screenWidth*0.025);
+    private List<Integer> colors = new ArrayList<>();
+    private static List<RectF> wallList = new ArrayList<>();
+    private static List<RectF> doorList = new ArrayList<>();
+    private static float screenHeight = GameActivity.getScreenHeight();
+    private static float screenWidth = GameActivity.getScreenWidth();
+    private static float wallSize = (float) (screenHeight * 0.04);
+    private float doorSize = Player.getStaticRadius() * 3;
     private int indexDoorColor = 0;
 
     public Arena(Context context){
@@ -33,34 +31,34 @@ public class Arena{
 
     public void draw(Canvas canvas){
         // Draw walls
-        for(Rect r : wallList){
+        for (RectF r : wallList) {
             canvas.drawRect(r, paint);
         }
 
         // Draw doors
-        for(Rect r : doorList){
+        for (RectF r : doorList) {
             canvas.drawRect(r, paint);
         }
     }
 
-    public void addWalls() {
+    private void addWalls() {
         //Creating and adding rectangles in an array - arena
-        wallList.add(new Rect(0,0, wallSize, screenHeight/2-100));
-        wallList.add(new Rect(0, screenHeight/2+100, wallSize, screenHeight));
-        wallList.add(new Rect(0,0,screenWidth/2-100, wallSize));
-        wallList.add(new Rect(screenWidth/2+100, 0, screenWidth, wallSize));
-        wallList.add(new Rect(screenWidth-wallSize, 0, screenWidth, screenHeight/2-100));
-        wallList.add(new Rect(screenWidth-wallSize, screenHeight/2+100, screenWidth, screenHeight));
-        wallList.add(new Rect(0, screenHeight-wallSize, screenWidth/2-100, screenHeight));
-        wallList.add(new Rect(screenWidth/2+100, screenHeight-wallSize, screenWidth, screenHeight));
+        wallList.add(new RectF(0, 0, wallSize, screenHeight / 2 - doorSize));
+        wallList.add(new RectF(0, screenHeight / 2 + doorSize, wallSize, screenHeight));
+        wallList.add(new RectF(0, 0, screenWidth / 2 - doorSize, wallSize));
+        wallList.add(new RectF(screenWidth / 2 + doorSize, 0, screenWidth, wallSize));
+        wallList.add(new RectF(screenWidth - wallSize, 0, screenWidth, screenHeight / 2 - doorSize));
+        wallList.add(new RectF(screenWidth - wallSize, screenHeight / 2 + doorSize, screenWidth, screenHeight));
+        wallList.add(new RectF(0, screenHeight - wallSize, screenWidth / 2 - doorSize, screenHeight));
+        wallList.add(new RectF(screenWidth / 2 + doorSize, screenHeight - wallSize, screenWidth, screenHeight));
     }
 
     public void addDoors() {
         //Arena doors
-        doorList.add(new Rect(0, screenHeight/2+-100, wallSize, screenHeight/2+100));
-        doorList.add(new Rect(screenWidth/2-100, 0, screenWidth/2+100, wallSize));
-        doorList.add(new Rect(screenWidth-wallSize, screenHeight/2-100, screenWidth, screenHeight/2+100));
-        doorList.add(new Rect(screenWidth/2-100, screenHeight-wallSize, screenWidth/2+100, screenHeight));
+        doorList.add(new RectF(0, screenHeight / 2 - doorSize, wallSize, screenHeight / 2 + doorSize));
+        doorList.add(new RectF(screenWidth / 2 - doorSize, 0, screenWidth / 2 + doorSize, wallSize));
+        doorList.add(new RectF(screenWidth - wallSize, screenHeight / 2 - doorSize, screenWidth, screenHeight / 2 + doorSize));
+        doorList.add(new RectF(screenWidth / 2 - doorSize, screenHeight - wallSize, screenWidth / 2 + doorSize, screenHeight));
     }
 
     public void openDoors() {
@@ -68,18 +66,18 @@ public class Arena{
     }
 
     public static boolean collision(Circle obj){
-        for(Rect r : wallList){
+        for (RectF r : wallList) {
             if(intersects(obj, r))
                 return true;
         }
-        for(Rect r : doorList){
+        for (RectF r : doorList) {
             if(intersects(obj, r))
                 return true;
         }
         return false;
     }
 
-    public static boolean intersects(Circle obj, Rect rect) {
+    private static boolean intersects(Circle obj, RectF rect) {
         boolean intersects = false;
         if(obj.getPositionX() + obj.radius >= rect.left &&
                 obj.getPositionX() - obj.radius <= rect.right &&
@@ -93,10 +91,10 @@ public class Arena{
 
     public boolean leavesArena(Circle obj){
         boolean leaves = false;
-        if(obj.getPositionX() - 35 >=  screenWidth ||
-                obj.getPositionX() + 35 <=  0 ||
-                obj.getPositionY() + 35 <=  0 ||
-                obj.getPositionY() - 35 >= screenHeight)
+        if (obj.getPositionX() - obj.getRadius() >= screenWidth ||
+                obj.getPositionX() + obj.getRadius() <= 0 ||
+                obj.getPositionY() + obj.getRadius() <= 0 ||
+                obj.getPositionY() - obj.getRadius() >= screenHeight)
         {
             leaves = true;
         }
@@ -105,29 +103,29 @@ public class Arena{
 
     public void setPlayerPosition(Player player) {
         //Set player position coming from doors
-        if (player.getPositionX() < 0 && (player.getPositionY() > screenHeight / 2 - 100 && player.getPositionY() < screenHeight / 2 + 100)) {
+        if (player.getPositionX() < 0 && (player.getPositionY() > screenHeight / 2 - doorSize && player.getPositionY() < screenHeight / 2 + doorSize)) {
             //left exit to right entry
-            player.position.x = screenWidth - wallSize - 35;
+            player.position.x = screenWidth - wallSize - player.getRadius();
             player.position.y = player.getPositionY();
-        } else if ((player.getPositionX() > screenWidth / 2 - 100 && player.getPositionX() < screenWidth / 2 + 100) && player.getPositionY() < 0) {
+        } else if ((player.getPositionX() > screenWidth / 2 - doorSize && player.getPositionX() < screenWidth / 2 + doorSize) && player.getPositionY() < 0) {
             //top exit to bottom entry
             player.position.x = player.getPositionX();
-            player.position.y = screenHeight - wallSize - 35;
-        } else if (player.getPositionX() > screenWidth && (player.getPositionY() > screenHeight / 2 - 100 && player.getPositionY() < screenHeight / 2 + 100)) {
+            player.position.y = screenHeight - wallSize - player.getRadius();
+        } else if (player.getPositionX() > screenWidth && (player.getPositionY() > screenHeight / 2 - doorSize && player.getPositionY() < screenHeight / 2 + doorSize)) {
             //right exit to left entry
-            player.position.x = wallSize + 35;
+            player.position.x = wallSize + player.getRadius();
             player.position.y = player.getPositionY();
         } else {
             //bottom exit to top entry
             player.position.x = player.getPositionX();
-            player.position.y = wallSize + 35;
+            player.position.y = wallSize + player.getRadius();
         }
     }
 
     public void changeColor() {
         //Set color
-        for(int i = 0; i < wallColors.length; i++) {
-            int newColor = Color.parseColor(wallColors[i]);
+        for (String wallColor : wallColors) {
+            int newColor = Color.parseColor(wallColor);
             colors.add(newColor);
         }
 
@@ -138,5 +136,7 @@ public class Arena{
             indexDoorColor++;
     }
 
-    public static int getWallSize() { return wallSize; }
+    public static float getWallSize() {
+        return wallSize;
+    }
 }

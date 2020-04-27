@@ -4,6 +4,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.example.exodus.gameobject.Arena;
+import com.example.exodus.menupanel.GameActivity;
+
 public class Joystick {
     private Paint outerCirclePaint;
     private Paint innerCirclePaint;
@@ -18,16 +21,16 @@ public class Joystick {
     private float actuatorY;
     private boolean isPressed;
 
-    public Joystick(float centerPositionX, float centerPositionY, float outerCircleRadius, float innerCircleRadius){
+    public Joystick() {
         //Outer and inner circle make up the joystick
-        outerCircleCenterPositionX = centerPositionX;
-        outerCircleCenterPositionY = centerPositionY;
-        innerCircleCenterPositionX = centerPositionX;
-        innerCircleCenterPositionY = centerPositionY;
+        outerCircleCenterPositionX = Arena.getWallSize() * 5.5f;
+        outerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 5.5f;
+        innerCircleCenterPositionX = Arena.getWallSize() * 5.5f;
+        innerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 5.5f;
 
         //Radius of each circle
-        this.outerCircleRadius = outerCircleRadius;
-        this.innerCircleRadius = innerCircleRadius;
+        this.outerCircleRadius = Arena.getWallSize() * 2.8f;
+        this.innerCircleRadius = Arena.getWallSize() * 1.8f;
 
         //Paint of circles
         outerCirclePaint = new Paint();

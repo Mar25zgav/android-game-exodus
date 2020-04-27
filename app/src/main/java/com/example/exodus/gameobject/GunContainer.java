@@ -6,18 +6,19 @@ import java.util.ArrayList;
 public class GunContainer {
     private static Gun pistol, musket, uzi, rifle, sniper, machine;
     private static ArrayList<Gun> guns = new ArrayList<>();
+    private float spellRadius = Bullet.getStaticRadius();
 
     public GunContainer(Context context) {
-        pistol = new Gun("pistol", 900,2, 8, 10);
-        musket = new Gun("musket", 600,2, 15, 20);
-        uzi = new Gun("uzi", 1600, 1, 10, 5);
-        rifle = new Gun("rifle", 1300, 3,16, 30);
-        sniper = new Gun("sniper", 2000, 5, 18, 50);
-        machine = new Gun("machine", 1300, 3,18, 40);
+        pistol = new Gun("pistol", 1400, 2, spellRadius * 0.90f, 50, 2.5);
+        uzi = new Gun("uzi", 1800, 0.2, spellRadius * 0.65f, 30, 8);
+        musket = new Gun("musket", 1400, 3, spellRadius * 0.95f, 80, 1.5);
+        rifle = new Gun("rifle", 1600, 3, spellRadius, 40, 6);
+        sniper = new Gun("sniper", 2000, 30, spellRadius * 1.1f, 100, 1);
+        machine = new Gun("machine", 1800, 2, spellRadius, 50, 10);
 
         guns.add(pistol);
-        guns.add(musket);
         guns.add(uzi);
+        guns.add(musket);
         guns.add(rifle);
         guns.add(sniper);
         guns.add(machine);
@@ -28,7 +29,7 @@ public class GunContainer {
     }
 
     static Gun getRandomGun() {
-        int x = (int) (Math.random()* guns.size());
+        int x = (int) (Math.random() * guns.size());
         return guns.get(x);
     }
 }

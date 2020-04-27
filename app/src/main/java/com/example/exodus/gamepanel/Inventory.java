@@ -1,5 +1,6 @@
 package com.example.exodus.gamepanel;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -7,9 +8,9 @@ import android.graphics.drawable.Drawable;
 
 import com.example.exodus.Timer;
 import com.example.exodus.gameobject.Arena;
+import com.example.exodus.gameobject.Bullet;
 import com.example.exodus.gameobject.Gun;
 import com.example.exodus.gameobject.Player;
-import com.example.exodus.gameobject.Spell;
 import com.example.exodus.menupanel.GameActivity;
 
 public class Inventory {
@@ -45,12 +46,12 @@ public class Inventory {
         // If player has picked up a weapon
         if(player.hasGun()) {
             // Player can use weapon only for 12s
-            if(timer.getElapsedTime() <= 12000) {
+            if (timer.getElapsedTime() <= 10000) {
                 gunImage.draw(canvas);
             } else {
                 timer.cancel();
                 player.takeAwayGun();
-                Spell.reset();
+                Bullet.reset();
             }
         }
     }
@@ -62,14 +63,16 @@ public class Inventory {
         gunImage.setBounds(rect);
 
         // Start timer for weapon
+        timer.cancel();
         timer.start();
 
         // Give player the gun
         player.setGun(gun);
 
-        // Set spell to match gun properties
-        Spell.setSpeed(gun.getSpeed());
-        Spell.setRadius(gun.getRadius());
-        Spell.setDamage(gun.getDamage());
+        // Set bullet to match gun properties
+        Bullet.setSpeed(gun.getSpeed());
+        Bullet.setRadius(gun.getRadius());
+        Bullet.setDamage(gun.getDamage());
+        Bullet.setBps(gun.getFireRate());
     }
 }

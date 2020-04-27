@@ -1,12 +1,10 @@
 package com.example.exodus;
 
-import android.graphics.Canvas;
-
 import com.example.exodus.gameobject.Arena;
 import com.example.exodus.gameobject.Chest;
 import com.example.exodus.gameobject.Enemy;
 import com.example.exodus.gameobject.Player;
-
+import com.example.exodus.menupanel.GameActivity;
 import java.util.List;
 
 public class LevelManager {
@@ -14,10 +12,11 @@ public class LevelManager {
     private Arena arena;
     private List<Enemy> enemyList;
     private List<Chest> chestList;
-
+    private static float gameHeight = GameActivity.getScreenHeight();
+    private static float gameWidth = GameActivity.getScreenWidth();
+    private static float enemyRadius = gameHeight / 40;
+    private static double enemyHealth = 2;
     private int killsTarget = 10;
-    private float enemyRadius = 30;
-    private static int enemyHealth = 2;
 
     public LevelManager(Player player, List<Enemy> enemyList, List<Chest> chestList, Arena arena) {
         this.player = player;
@@ -59,7 +58,11 @@ public class LevelManager {
         }
     }
 
-    public static int getEnemyHealth() { return enemyHealth; }
+    public static double getEnemyHealth() {
+        return enemyHealth;
+    }
 
-    public  float getEnemyRadius() { return enemyRadius; }
+    public static float getEnemyRadius() {
+        return enemyRadius;
+    }
 }

@@ -2,29 +2,33 @@ package com.example.exodus.gameobject;
 
 import android.content.Context;
 import androidx.core.content.ContextCompat;
-
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 import com.example.exodus.Utils;
 import com.example.exodus.gamepanel.Joystick;
+import com.example.exodus.menupanel.GameActivity;
 
 /* Player is the main character of the game, which the user can control with a touch joystick.
    The player class is an extension of a Circle, which is an extension of a GameObject. */
 public class Player extends Circle {
-    private final Joystick joystick;
     private Gun gun;
-
-    public static final float SPEED_PIXELS_PER_SECOND = 250;
-    private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private Joystick joystick;
+    private int kills;
     private static int health;
     private boolean hasGun = false;
-    private int kills;
+    public static final float SPEED_PIXELS_PER_SECOND = 250;
+    private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    private static float radius = GameActivity.getScreenHeight() * 0.035f;
 
-    public Player(Context context, Joystick joystick, float positionX, float positionY, float radius){
-        super(context, ContextCompat.getColor(context, R.color.player), positionX, positionY, radius);
+    public Player(Context context, Joystick joystick) {
+        super(context,
+                ContextCompat.getColor(context, R.color.player),
+                GameActivity.getScreenWidth() * 0.5f,
+                GameActivity.getScreenHeight() * 0.5f,
+                GameActivity.getScreenHeight() * 0.035f);
         this.joystick = joystick;
-        kills = 0;
         health = 5;
+        kills = 0;
     }
 
     public void update() {
@@ -65,15 +69,21 @@ public class Player extends Circle {
 
     public int getKills() { return kills; }
 
-    public void setKills(int kills) { this.kills = kills; }
-
     public void addKill() { this.kills++; }
 
-    public static int getHealth() { return health; }
+    public void addHealth() {
+        health++;
+    }
 
-    public void setHealth(int health) { this.health = health; }
+    public void subHealth() {
+        health--;
+    }
 
-    public void addHealth() { this.health++; }
+    public static int getHealth() {
+        return health;
+    }
 
-    public void subHealth() { this.health--; }
+    public static float getStaticRadius() {
+        return radius;
+    }
 }

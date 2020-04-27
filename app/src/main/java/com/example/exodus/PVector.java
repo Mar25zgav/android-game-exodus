@@ -8,17 +8,18 @@ import com.example.exodus.menupanel.GameActivity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
 
 public class PVector implements Serializable {
-
     public float x;
     public float y;
-    public float z;
-    transient protected float[] array;
+    private float z;
+    private transient float[] array;
 
-    public PVector() { }
+    private PVector() {
+    }
 
-    public PVector(float x, float y, float z) {
+    private PVector(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -36,11 +37,11 @@ public class PVector implements Serializable {
         do{
             i = 0;
             position.randomEnemyPVector();
-            while(position.dist(player.getPVector()) < 360) {
+            while (position.dist(player.getPVector()) < player.getRadius() * 10) {
                 position.randomEnemyPVector();
             }
             for(Enemy enemy : enemyList){
-                if(position.dist(enemy.getPVector()) > 65)
+                if (position.dist(enemy.getPVector()) > enemy.getRadius() * 2)
                     i++;
             }
         }while(i < enemyList.size());
@@ -53,33 +54,33 @@ public class PVector implements Serializable {
         do{
             i = 0;
             position.randomChestPVector();
-            while(position.dist(player.getPVector()) < 300) {
+            while (position.dist(player.getPVector()) < player.getRadius() * 9) {
                 position.randomChestPVector();
             }
             for(Enemy enemy : enemyList) {
-                if(position.dist(enemy.getPVector()) > 100)
+                if (position.dist(enemy.getPVector()) > enemy.getRadius() * 4)
                     i++;
             }
             for(Chest chest : chestList) {
-                if(position.dist(chest.getPVector()) > 160)
+                if (position.dist(chest.getPVector()) > Chest.getSize() * 2)
                     i++;
             }
         }while(i < enemyList.size() + chestList.size());
         return position;
     }
 
-    public PVector randomEnemyPVector() {
-        RandomInRanges rir = new RandomInRanges(Arena.getWallSize() + 30, GameActivity.getScreenWidth() - Arena.getWallSize() - 30);
+    private PVector randomEnemyPVector() {
+        RandomInRanges rir = new RandomInRanges(Arena.getWallSize() + LevelManager.getEnemyRadius(), GameActivity.getScreenWidth() - Arena.getWallSize() - LevelManager.getEnemyRadius());
         x = rir.getRandom();
-        rir = new RandomInRanges(Arena.getWallSize() + 30, GameActivity.getScreenHeight() - Arena.getWallSize() - 30);
+        rir = new RandomInRanges(Arena.getWallSize() + LevelManager.getEnemyRadius(), GameActivity.getScreenHeight() - Arena.getWallSize() - LevelManager.getEnemyRadius());
         y = rir.getRandom();
         return this;
     }
 
-    public PVector randomChestPVector() {
-        RandomInRanges rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenWidth() - Arena.getWallSize() - 80);
+    private PVector randomChestPVector() {
+        RandomInRanges rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenWidth() - Arena.getWallSize() - Chest.getSize());
         x = rir.getRandom();
-        rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenHeight() - Arena.getWallSize() - 80);
+        rir = new RandomInRanges(Arena.getWallSize(), GameActivity.getScreenHeight() - Arena.getWallSize() - Chest.getSize());
         y = rir.getRandom();
         return this;
     }
@@ -119,7 +120,7 @@ public class PVector implements Serializable {
         return fromAngle(angle,null);
     }
 
-    static public PVector fromAngle(float angle, PVector target) {
+    private static PVector fromAngle(float angle, PVector target) {
         if (target == null) {
             target = new PVector((float)Math.cos(angle),(float)Math.sin(angle),0);
         } else {
@@ -128,7 +129,7 @@ public class PVector implements Serializable {
         return target;
     }
 
-    public PVector copy() {
+    private PVector copy() {
         return new PVector(x, y, z);
     }
 
@@ -152,11 +153,11 @@ public class PVector implements Serializable {
         return target;
     }
 
-    public float mag() {
+    private float mag() {
         return (float) Math.sqrt(x*x + y*y + z*z);
     }
 
-    public float magSq() {
+    private float magSq() {
         return (x*x + y*y + z*z);
     }
 
@@ -217,7 +218,7 @@ public class PVector implements Serializable {
         return sub(v1, v2, null);
     }
 
-    static public PVector sub(PVector v1, PVector v2, PVector target) {
+    private static PVector sub(PVector v1, PVector v2, PVector target) {
         if (target == null) {
             target = new PVector(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
         } else {
@@ -237,7 +238,7 @@ public class PVector implements Serializable {
         return mult(v, n, null);
     }
 
-    static public PVector mult(PVector v, float n, PVector target) {
+    private static PVector mult(PVector v, float n, PVector target) {
         if (target == null) {
             target = new PVector(v.x*n, v.y*n, v.z*n);
         } else {
@@ -257,7 +258,7 @@ public class PVector implements Serializable {
         return div(v, n, null);
     }
 
-    static public PVector div(PVector v, float n, PVector target) {
+    private static PVector div(PVector v, float n, PVector target) {
         if (target == null) {
             target = new PVector(v.x/n, v.y/n, v.z/n);
         } else {
@@ -266,7 +267,7 @@ public class PVector implements Serializable {
         return target;
     }
 
-    public float dist(PVector v) {
+    private float dist(PVector v) {
         float dx = x - v.x;
         float dy = y - v.y;
         float dz = z - v.z;
@@ -296,7 +297,7 @@ public class PVector implements Serializable {
         return cross(v, null);
     }
 
-    public PVector cross(PVector v, PVector target) {
+    private PVector cross(PVector v, PVector target) {
         float crossX = y * v.z - v.y * z;
         float crossY = z * v.x - v.z * x;
         float crossZ = x * v.y - v.x * y;
@@ -330,7 +331,7 @@ public class PVector implements Serializable {
         return this;
     }
 
-    public PVector normalize(PVector target) {
+    private PVector normalize(PVector target) {
         if (target == null) {
             target = new PVector();
         }
@@ -363,7 +364,7 @@ public class PVector implements Serializable {
         return target;
     }
 
-    public float heading() {
+    private float heading() {
         float angle = (float) Math.atan2(y, x);
         return angle;
     }

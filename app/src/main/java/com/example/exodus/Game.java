@@ -7,21 +7,19 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
-
 import com.example.exodus.gameobject.Arena;
+import com.example.exodus.gameobject.Bullet;
 import com.example.exodus.gameobject.Chest;
 import com.example.exodus.gameobject.Circle;
 import com.example.exodus.gameobject.Enemy;
 import com.example.exodus.gameobject.GunContainer;
 import com.example.exodus.gameobject.Player;
-import com.example.exodus.gameobject.Spell;
 import com.example.exodus.gamepanel.GameOver;
 import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
 import com.example.exodus.gamepanel.Performance;
 import com.example.exodus.menupanel.GameActivity;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -40,11 +38,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     private Inventory inventory;
     private PVector randomEnemyPos, randomChestPos;
     private Timer timer;
-    public static List<Enemy> enemyList;
-    private List<Spell> spellList;
+    private List<Bullet> bullets;
     private List<Chest> chestList;
+    public static List<Enemy> enemyList;
     private int joystickPointerId = 0;
-    private int numberOfSpellsToCast = 0;
+    private boolean shooting = false;
+    private float gameHeight = GameActivity.getScreenHeight();
+    private float gameWidth = GameActivity.getScreenWidth();
 
     public Game(Context context) {
         super(context);
@@ -56,18 +56,18 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         gameLoop = new GameLoop(this, surfaceHolder);
 
         // Initialize game panels
-        joystick = new Joystick(300, 800, 120, 75);
+        joystick = new Joystick();
         performance = new Performance(context, gameLoop);
         gameOver = new GameOver(context);
 
         // Initialize game objects
-        player = new Player(getContext(), joystick, GameActivity.getScreenWidth()/2, GameActivity.getScreenHeight()/2, 35);
+        player = new Player(getContext(), joystick);
         arena = new Arena(getContext());
         timer = new Timer();
         hud = new Hud(getContext(), timer);
         gunContainer = new GunContainer(getContext());
         enemyList = new ArrayList<>();
-        spellList = new ArrayList<>();
+        bullets = new ArrayList<>();
         chestList = new ArrayList<>();
         inventory = new Inventory(context, player);
         levelManager = new LevelManager(player, enemyList, chestList, arena);
@@ -84,14 +84,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (joystick.getIsPressed()) {
                     // Joystick was pressed before this event -> cast spell
-                    numberOfSpellsToCast++;
+                    shooting = true;
                 } else if (joystick.isPressed(event.getX(), event.getY())) {
                     // Joystick is pressed in this event -> setIsPressed(true) and store pointer id
                     joystickPointerId = event.getPointerId(event.getActionIndex());
                     joystick.setIsPressed(true);
                 } else {
                     // Joystick was not previously, and is not pressed in this event -> cast spell
-                    numberOfSpellsToCast++;
+                    shooting = true;
                 }
                 return true;
             case MotionEvent.ACTION_MOVE:
@@ -107,6 +107,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     joystick.setIsPressed(false);
                     joystick.resetActuator();
                 }
+                shooting = false;
                 return true;
         }
         return super.onTouchEvent(event);
@@ -149,24 +150,24 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             enemy.draw(canvas);
         }
 
-        for (Spell spell : spellList) {
-            spell.draw(canvas);
+        for (Bullet bullet : bullets) {
+            bullet.draw(canvas);
         }
 
         // Draw game panels
         hud.draw(canvas);
-        //performance.draw(canvas);
+        performance.draw(canvas);
         inventory.draw(canvas);
 
         // Draw Game over if the player is dead
-        if(player.getHealth() <= 0) {
+        if (Player.getHealth() <= 0) {
             gameOver.draw(canvas);
         }
     }
 
     public void update() {
         // Stop updating the game if the player is dead
-        if(player.getHealth() <= 0) {
+        if (Player.getHealth() <= 0) {
             //gameLoop.stopLoop();
         }
 
@@ -177,7 +178,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         // Spawn enemy if it is time, but not on top of each other
         if(Enemy.readyToSpawn()) {
             randomEnemyPos = PVector.getRandomEnemyPos(player, enemyList);
-            enemyList.add(new Enemy(getContext(), player, randomEnemyPos.x, randomEnemyPos.y, levelManager.getEnemyRadius()));
+            enemyList.add(new Enemy(getContext(), player, randomEnemyPos.x, randomEnemyPos.y, LevelManager.getEnemyRadius()));
         }
 
         // Update state of each enemy
@@ -185,13 +186,14 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
             enemy.update();
         }
 
-        // Update states of all spells
-        while (numberOfSpellsToCast > 0) {
-            spellList.add(new Spell(getContext(), player));
-            numberOfSpellsToCast--;
+        // Add spell if it is time
+        if (shooting && Bullet.readyToShoot()) {
+            bullets.add(new Bullet(getContext(), player));
         }
-        for (Spell spell : spellList) {
-            spell.update();
+
+        // Update spell pozitions
+        for (Bullet bullet : bullets) {
+            bullet.update();
         }
 
         // Spawn chest if it is time
@@ -212,31 +214,32 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 continue;
             }
 
-            Iterator<Spell> iteratorSpell = spellList.iterator();
-            while(iteratorSpell.hasNext()) {
-                Circle spell = iteratorSpell.next();
+            Iterator<Bullet> iteratorBullet = bullets.iterator();
+            while (iteratorBullet.hasNext()) {
+                Circle bullet = iteratorBullet.next();
                 // Check if enemy collides with spell
-                if (Circle.isColliding(spell, enemy)) {
+                if (Circle.isColliding(bullet, enemy)) {
+                    // Hit enemy with bullet
+                    enemy.subHealth(Bullet.getDamage());
                     // Remove enemy if lost all lives else subtract health
                     if(enemy.getHealth() <= 1) {
-                        iteratorSpell.remove();
+                        iteratorBullet.remove();
                         iteratorEnemy.remove();
                         player.addKill();
                     } else {
-                        iteratorSpell.remove();
-                        enemy.subHealth(((Spell)spell).getDamage());
+                        iteratorBullet.remove();
                     }
                 }
             }
         }
 
         // Iterate through spellList and check for collision between spell and arena
-        Iterator<Spell> iteratorSpell = spellList.iterator();
-        while(iteratorSpell.hasNext()) {
-            Circle spell = iteratorSpell.next();
+        Iterator<Bullet> iteratorBullet = bullets.iterator();
+        while (iteratorBullet.hasNext()) {
+            Circle bullet = iteratorBullet.next();
             // If spell hit arena
-            if(Arena.collision(spell)) {
-                iteratorSpell.remove();
+            if (Arena.collision(bullet)) {
+                iteratorBullet.remove();
             }
             // If there is a chest, check for collision
             if(chestList.size() != 0) {
@@ -244,9 +247,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 while(chestIterator.hasNext()) {
                     Chest chest = chestIterator.next();
                     // If bullet hits chest open
-                    if(Chest.intersects(spell, chest) && !chest.isOpen()) {
-                        chest.subHealth();
-                        iteratorSpell.remove();
+                    if (Chest.intersects(bullet, chest) && !chest.isOpen()) {
+                        chest.subHealth(Bullet.getDamage());
+                        iteratorBullet.remove();
                     }
                     // If chest out of lives -> open it
                     if(chest.getHealth() <= 0 && !chest.isOpen()) {
