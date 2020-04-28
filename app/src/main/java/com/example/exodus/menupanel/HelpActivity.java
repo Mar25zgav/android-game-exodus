@@ -3,10 +3,12 @@ package com.example.exodus.menupanel;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+
 import androidx.annotation.Nullable;
+
 import com.example.exodus.R;
 
-public class HelpActivity extends Activity{
+public class HelpActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -16,7 +18,7 @@ public class HelpActivity extends Activity{
 
         setContentView(R.layout.help_layout);
 
-        getWindow().setLayout((int)(MainActivity.getScreenWidth()*.55), (int)(MainActivity.getScreenHeight()*.85));
+        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .55), (int) (MainActivity.getScreenHeight() * .85));
     }
 
     @Override

@@ -17,7 +17,9 @@ public class Gun {
         this.fireRate = fireRate;
     }
 
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     public float getSpeed() {
         return speed;
@@ -27,9 +29,13 @@ public class Gun {
         return damage;
     }
 
-    public float getRadius() { return radius; }
+    public float getRadius() {
+        return radius;
+    }
 
-    public int getForce() { return force; }
+    public int getForce() {
+        return force;
+    }
 
     public double getFireRate() {
         return fireRate;

@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -38,7 +36,7 @@ public class OptionsActivity extends Activity implements AdapterView.OnItemSelec
 
         setContentView(R.layout.options_layout);
 
-        getWindow().setLayout((int)(MainActivity.getScreenWidth()*.55), (int)(MainActivity.getScreenHeight()*.85));
+        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .55), (int) (MainActivity.getScreenHeight() * .85));
 
         // Music switch
         musicSwitch = findViewById(R.id.musicSwitch);

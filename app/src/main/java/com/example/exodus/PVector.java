@@ -8,7 +8,6 @@ import com.example.exodus.menupanel.GameActivity;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.logging.Level;
 
 public class PVector implements Serializable {
     public float x;
@@ -34,38 +33,38 @@ public class PVector implements Serializable {
     public static PVector getRandomEnemyPos(Player player, List<Enemy> enemyList) {
         int i;
         PVector position = new PVector();
-        do{
+        do {
             i = 0;
             position.randomEnemyPVector();
             while (position.dist(player.getPVector()) < player.getRadius() * 10) {
                 position.randomEnemyPVector();
             }
-            for(Enemy enemy : enemyList){
+            for (Enemy enemy : enemyList) {
                 if (position.dist(enemy.getPVector()) > enemy.getRadius() * 2)
                     i++;
             }
-        }while(i < enemyList.size());
+        } while (i < enemyList.size());
         return position;
     }
 
     public static PVector getRandomChestPos(Player player, List<Enemy> enemyList, List<Chest> chestList) {
         int i;
         PVector position = new PVector();
-        do{
+        do {
             i = 0;
             position.randomChestPVector();
             while (position.dist(player.getPVector()) < player.getRadius() * 9) {
                 position.randomChestPVector();
             }
-            for(Enemy enemy : enemyList) {
+            for (Enemy enemy : enemyList) {
                 if (position.dist(enemy.getPVector()) > enemy.getRadius() * 4)
                     i++;
             }
-            for(Chest chest : chestList) {
+            for (Chest chest : chestList) {
                 if (position.dist(chest.getPVector()) > Chest.getSize() * 2)
                     i++;
             }
-        }while(i < enemyList.size() + chestList.size());
+        } while (i < enemyList.size() + chestList.size());
         return position;
     }
 
@@ -117,14 +116,14 @@ public class PVector implements Serializable {
     }
 
     static public PVector fromAngle(float angle) {
-        return fromAngle(angle,null);
+        return fromAngle(angle, null);
     }
 
     private static PVector fromAngle(float angle, PVector target) {
         if (target == null) {
-            target = new PVector((float)Math.cos(angle),(float)Math.sin(angle),0);
+            target = new PVector((float) Math.cos(angle), (float) Math.sin(angle), 0);
         } else {
-            target.set((float)Math.cos(angle),(float)Math.sin(angle),0);
+            target.set((float) Math.cos(angle), (float) Math.sin(angle), 0);
         }
         return target;
     }
@@ -141,7 +140,7 @@ public class PVector implements Serializable {
 
     public float[] get(float[] target) {
         if (target == null) {
-            return new float[] { x, y, z };
+            return new float[]{x, y, z};
         }
         if (target.length >= 2) {
             target[0] = x;
@@ -154,11 +153,11 @@ public class PVector implements Serializable {
     }
 
     private float mag() {
-        return (float) Math.sqrt(x*x + y*y + z*z);
+        return (float) Math.sqrt(x * x + y * y + z * z);
     }
 
     private float magSq() {
-        return (x*x + y*y + z*z);
+        return (x * x + y * y + z * z);
     }
 
     public PVector add(PVector v) {
@@ -187,7 +186,7 @@ public class PVector implements Serializable {
 
     static public PVector add(PVector v1, PVector v2, PVector target) {
         if (target == null) {
-            target = new PVector(v1.x + v2.x,v1.y + v2.y, v1.z + v2.z);
+            target = new PVector(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
         } else {
             target.set(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
         }
@@ -240,9 +239,9 @@ public class PVector implements Serializable {
 
     private static PVector mult(PVector v, float n, PVector target) {
         if (target == null) {
-            target = new PVector(v.x*n, v.y*n, v.z*n);
+            target = new PVector(v.x * n, v.y * n, v.z * n);
         } else {
-            target.set(v.x*n, v.y*n, v.z*n);
+            target.set(v.x * n, v.y * n, v.z * n);
         }
         return target;
     }
@@ -260,9 +259,9 @@ public class PVector implements Serializable {
 
     private static PVector div(PVector v, float n, PVector target) {
         if (target == null) {
-            target = new PVector(v.x/n, v.y/n, v.z/n);
+            target = new PVector(v.x / n, v.y / n, v.z / n);
         } else {
-            target.set(v.x/n, v.y/n, v.z/n);
+            target.set(v.x / n, v.y / n, v.z / n);
         }
         return target;
     }
@@ -271,26 +270,26 @@ public class PVector implements Serializable {
         float dx = x - v.x;
         float dy = y - v.y;
         float dz = z - v.z;
-        return (float) Math.sqrt(dx*dx + dy*dy + dz*dz);
+        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     static public float dist(PVector v1, PVector v2) {
         float dx = v1.x - v2.x;
         float dy = v1.y - v2.y;
         float dz = v1.z - v2.z;
-        return (float) Math.sqrt(dx*dx + dy*dy + dz*dz);
+        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
     public float dot(PVector v) {
-        return x*v.x + y*v.y + z*v.z;
+        return x * v.x + y * v.y + z * v.z;
     }
 
     public float dot(float x, float y, float z) {
-        return this.x*x + this.y*y + this.z*z;
+        return this.x * x + this.y * y + this.z * z;
     }
 
     static public float dot(PVector v1, PVector v2) {
-        return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+        return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
     }
 
     public PVector cross(PVector v) {
@@ -337,7 +336,7 @@ public class PVector implements Serializable {
         }
         float m = mag();
         if (m > 0) {
-            target.set(x/m, y/m, z/m);
+            target.set(x / m, y / m, z / m);
         } else {
             target.set(x, y, z);
         }
@@ -345,7 +344,7 @@ public class PVector implements Serializable {
     }
 
     public PVector limit(float max) {
-        if (magSq() > max*max) {
+        if (magSq() > max * max) {
             normalize();
             mult(max);
         }
@@ -379,8 +378,8 @@ public class PVector implements Serializable {
 
         // We get NaN if we pass in a zero vector which can cause problems
         // Zero seems like a reasonable angle between a (0,0,0) vector and something else
-        if (v1.x == 0 && v1.y == 0 && v1.z == 0 ) return 0.0f;
-        if (v2.x == 0 && v2.y == 0 && v2.z == 0 ) return 0.0f;
+        if (v1.x == 0 && v1.y == 0 && v1.z == 0) return 0.0f;
+        if (v2.x == 0 && v2.y == 0 && v2.z == 0) return 0.0f;
 
         double dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
         double v1mag = Math.sqrt(v1.x * v1.x + v1.y * v1.y + v1.z * v1.z);
@@ -392,7 +391,7 @@ public class PVector implements Serializable {
         // Otherwise if outside the range, acos() will return NaN
         // http://www.cppreference.com/wiki/c/math/acos
         if (amt <= -1) {
-            return (float)Math.PI;
+            return (float) Math.PI;
         } else if (amt >= 1) {
             // http://code.google.com/p/processing/issues/detail?id=435
             return 0;

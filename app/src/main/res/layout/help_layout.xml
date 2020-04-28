@@ -18,91 +18,84 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/titan_one"
+                android:text="@string/instructions"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textSize="28sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/instructions_text"
+                android:textSize="17sp"
+                android:fontFamily="@font/titan_one"
+                android:padding="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp">
+                android:orientation="horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:baselineAligned="false">
 
-                <TextView
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/titan_one"
-                    android:text="@string/instructions"
-                    android:textAlignment="center"
-                    android:textAllCaps="true"
-                    android:textSize="28sp" />
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:padding="10dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="@string/instructions_text"
-                    android:textSize="17sp"
-                    android:fontFamily="@font/titan_one"
-                    android:padding="20dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="10dp"
-                    android:baselineAligned="false">
-
-                    <RelativeLayout
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".5"
-                        android:padding="10dp">
+                        android:layout_height="wrap_content"
+                        android:text="@string/moving_player"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/titan_one"
+                        android:textAlignment="center" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/moving_player"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/titan_one"
-                            android:textAlignment="center"/>
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:src="@drawable/joystick_img"
-                            android:layout_marginTop="35dp"
-                            android:contentDescription="@string/todo" />
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".5"
-                        android:padding="10dp">
+                        android:layout_height="70dp"
+                        android:src="@drawable/joystick_img"
+                        android:layout_marginTop="35dp"
+                        android:contentDescription="@string/todo" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/touch_to_shoot"
-                            android:textSize="16sp"
-                            android:fontFamily="@font/titan_one"
-                            android:textAlignment="center"/>
+                </RelativeLayout>
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="70dp"
-                            android:src="@drawable/touch_img"
-                            android:layout_marginTop="35dp"
-                            android:contentDescription="@string/todo" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:padding="10dp">
 
-                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/touch_to_shoot"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/titan_one"
+                        android:textAlignment="center" />
 
-                </LinearLayout>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:src="@drawable/touch_img"
+                        android:layout_marginTop="35dp"
+                        android:contentDescription="@string/todo" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

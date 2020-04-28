@@ -8,15 +8,14 @@ import android.graphics.drawable.Drawable;
 import com.example.exodus.GameLoop;
 import com.example.exodus.PVector;
 import com.example.exodus.R;
-import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.menupanel.GameActivity;
 
-public class Chest{
+public class Chest {
     private Context context;
     private Gun gun;
     private Drawable img;
     private Rect rect;
-    private static float SPAWNS_PER_MINUTE = 10;
+    private static float SPAWNS_PER_MINUTE = 2;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
     private static float UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static float updatesUntilNextSpawn = UPDATES_PER_SPAWN;
@@ -29,8 +28,8 @@ public class Chest{
         this.context = context;
 
         // Set rect size
-        top = (int)position.y;
-        left = (int)position.x;
+        top = (int) position.y;
+        left = (int) position.x;
         bottom = (int) (position.y + chestSize);
         right = (int) (position.x + chestSize);
 
@@ -48,7 +47,7 @@ public class Chest{
     }
 
     public static boolean readyToSpawn() {
-        if(updatesUntilNextSpawn <= 0) {
+        if (updatesUntilNextSpawn <= 0) {
             updatesUntilNextSpawn += UPDATES_PER_SPAWN;
             return true;
         } else {
@@ -67,11 +66,10 @@ public class Chest{
 
     public static boolean intersects(Circle obj, Chest chest) {
         boolean intersects = false;
-        if(obj.getPositionX() + obj.radius >= chest.left &&
+        if (obj.getPositionX() + obj.radius >= chest.left &&
                 obj.getPositionX() - obj.radius <= chest.right &&
                 obj.getPositionY() - obj.radius <= chest.bottom &&
-                obj.getPositionY() + obj.radius >= chest.top)
-        {
+                obj.getPositionY() + obj.radius >= chest.top) {
             intersects = true;
         }
         return intersects;
@@ -81,15 +79,30 @@ public class Chest{
         health -= damage;
     }
 
-    public int getHealth() { return health; }
+    public int getHealth() {
+        return health;
+    }
 
-    public boolean isOpen() { return isOpen; }
+    public boolean isOpen() {
+        return isOpen;
+    }
 
-    public Gun getGun() { return gun; }
+    public Gun getGun() {
+        return gun;
+    }
 
-    public PVector getPVector() { return new PVector(rect.exactCenterX(), rect.exactCenterY()); }
+    public PVector getPVector() {
+        return new PVector(rect.exactCenterX(), rect.exactCenterY());
+    }
 
     public static float getSize() {
         return chestSize;
+    }
+
+    public static void addSpawns(float spawns) {
+        SPAWNS_PER_MINUTE += spawns;
+        SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
+        UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
+        updatesUntilNextSpawn = UPDATES_PER_SPAWN;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.exodus.gameobject;
 
 import android.content.Context;
+
 import androidx.core.content.ContextCompat;
 
 import com.example.exodus.GameLoop;
@@ -17,16 +18,15 @@ public class Enemy extends Circle {
     private double timer;
     private boolean hit = false;
     private static double health;
-    private static float SPEED_PIXELS_PER_SECOND = (float)(Player.SPEED_PIXELS_PER_SECOND * 0.55);
+    private static float SPEED_PIXELS_PER_SECOND = 125;
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
-    private static float SPAWNS_PER_MINUTE = 10;
+    private static float SPAWNS_PER_MINUTE = 20;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
     private static float UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
     private static float updatesUntilNextSpawn = UPDATES_PER_SPAWN;
 
     public Enemy(Context context, Player player, float positionX, float positionY, float radius) {
         super(context, ContextCompat.getColor(context, R.color.enemy), positionX, positionY, radius);
-
         this.player = player;
         this.context = context;
 
@@ -36,18 +36,18 @@ public class Enemy extends Circle {
 
     // Preveri ali je že čas za novega glede na nastavljeno število spawnov na minuto
     public static boolean readyToSpawn() {
-        if(updatesUntilNextSpawn <= 0){
+        if (updatesUntilNextSpawn <= 0) {
             updatesUntilNextSpawn += UPDATES_PER_SPAWN;
             return true;
-        }else{
-            updatesUntilNextSpawn --;
+        } else {
+            updatesUntilNextSpawn--;
             return false;
         }
     }
 
     @Override
     public void update() {
-        if(System.currentTimeMillis() - timer > 500){
+        if (System.currentTimeMillis() - timer > 500) {
             // Update velocity of the player, so that the velocity is in the direction of the player.
             // Calculate vector from enemy to player (in x and y).
             distanceToPlayerV = new PVector(player.getPositionX() - position.x, player.getPositionY() - position.y);
@@ -59,24 +59,24 @@ public class Enemy extends Circle {
             direction.set(distanceToPlayerV.div(distanceToPlayer));
 
             // Set velocity in the direction to the player.
-            if(distanceToPlayer > 0) // Avoid division by 0
+            if (distanceToPlayer > 0) // Avoid division by 0
                 velocity.set(direction.mult(MAX_SPEED));
             else
-                velocity.set(0,0);
+                velocity.set(0, 0);
 
             // If enemy hit then knockback with weapon force
-            if(hit && player.hasGun()){
+            if (hit && player.hasGun()) {
                 velocity.normalize().mult(-player.getGun().getForce());
                 hit = false;
             }
 
             // Save current position, if collides set position to previous
             position.x += velocity.x;
-            if(Arena.collision(this)){
+            if (Arena.collision(this)) {
                 position.x -= velocity.x;
             }
             position.y += velocity.y;
-            if(Arena.collision(this)){
+            if (Arena.collision(this)) {
                 position.y -= velocity.y;
             }
         }
@@ -85,6 +85,18 @@ public class Enemy extends Circle {
 
     public static double getHealth() {
         return health;
+    }
+
+    public static void addSpeed(float speed) {
+        SPEED_PIXELS_PER_SECOND += speed;
+        MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    }
+
+    public static void addSpawns(float spawns) {
+        SPAWNS_PER_MINUTE += spawns;
+        SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
+        UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
+        updatesUntilNextSpawn = UPDATES_PER_SPAWN;
     }
 
     public void subHealth(double damage) {

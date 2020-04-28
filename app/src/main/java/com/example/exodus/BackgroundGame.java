@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.exodus.gameobject.Arena;
 
-public class BackgroundGame extends SurfaceView implements SurfaceHolder.Callback{
+public class BackgroundGame extends SurfaceView implements SurfaceHolder.Callback {
     private Arena arena;
     private GameLoop gameLoop;
 
@@ -27,7 +27,8 @@ public class BackgroundGame extends SurfaceView implements SurfaceHolder.Callbac
         arena = new Arena(getContext());
     }
 
-    public void update() {}
+    public void update() {
+    }
 
     @Override
     public void draw(Canvas canvas) {

@@ -1,221 +1,315 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="horizontal"
     android:background="@color/mainmenu">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/pop_up"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="58dp">
+        android:layout_height="wrap_content"
+        android:background="@color/player"
+        app:cardCornerRadius="15dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/titan_one"
-            android:gravity="center_horizontal"
+            android:textAlignment="center"
             android:text="@string/shop"
-            android:textSize="30sp" />
+            android:fontFamily="@font/titan_one"
+            android:textSize="28dp"
+            android:textAllCaps="true" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp">
 
-        <RelativeLayout
-            android:layout_width="250dp"
-            android:layout_height="100dp"
-            android:orientation="horizontal"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true">
-
-            <HorizontalScrollView
+            <ScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="100dp"
+                android:layout_centerHorizontal="true">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:elevation="6dp"
-                            app:cardCornerRadius="6dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/pistolID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Pistol" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBaseline="@+id/pistolID"
                                     android:src="@drawable/pistol"
                                     android:contentDescription="@string/pistol" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:elevation="6dp"
-                            app:cardCornerRadius="6dp">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/uziID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Uzi" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:src="@drawable/uzi_block"
+                                    android:layout_alignBaseline="@+id/uziID"
                                     android:contentDescription="@string/submachine" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:elevation="6dp"
-                            app:cardCornerRadius="6dp">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/musketID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Musket" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:src="@drawable/musket_block"
+                                    android:layout_alignBaseline="@id/musketID"
                                     android:contentDescription="@string/musket" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/rifleID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Rifle" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:src="@drawable/rifle_block"
+                                    android:layout_alignBaseline="@id/rifleID"
                                     android:contentDescription="@string/rifle" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/sniperID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Sniper" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:src="@drawable/sniper_block"
+                                    android:layout_alignBaseline="@id/sniperID"
                                     android:contentDescription="@string/sniper" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    </RelativeLayout>
 
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp">
+                    <RelativeLayout
+                        android:layout_width="250dp"
+                        android:layout_height="wrap_content"
+                        android:elevation="6dp">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical"
-                                android:paddingLeft="12dp"
-                                android:paddingRight="12dp">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/machineID"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textAlignment="center"
+                                    android:fontFamily="@font/titan_one"
+                                    android:textSize="18dp"
+                                    android:text="Machine gun" />
 
                                 <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="100dp"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
                                     android:src="@drawable/machine_block"
+                                    android:layout_alignBaseline="@id/machineID"
                                     android:contentDescription="@string/machine_gun" />
 
-                            </LinearLayout>
+                            </RelativeLayout>
 
-                        </androidx.cardview.widget.CardView>
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:orientation="vertical"></RelativeLayout>
 
-                    </LinearLayout>
+                        </LinearLayout>
+
+                    </RelativeLayout>
 
                 </LinearLayout>
 
-            </HorizontalScrollView>
+            </ScrollView>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

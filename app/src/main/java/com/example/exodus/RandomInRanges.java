@@ -13,7 +13,7 @@ public class RandomInRanges {
     }
 
     final void addRange(float min, float max) {
-        for(float i = min; i <= max; i++) {
+        for (float i = min; i <= max; i++) {
             this.range.add(i);
         }
     }

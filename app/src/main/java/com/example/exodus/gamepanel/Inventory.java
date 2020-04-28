@@ -1,6 +1,5 @@
 package com.example.exodus.gamepanel;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -19,13 +18,12 @@ public class Inventory {
     private Timer timer;
     private Player player;
     private Context context;
-
     private int top, left, bottom, right;
     private float wallSize = Arena.getWallSize();
     private float timerWidth = Hud.getTimerWidth();
     private float timerHeight = Hud.getTimerHeight();
     private float screenWidth = GameActivity.getScreenWidth();
-    private int padding = 5;
+    private int padding = (int) (GameActivity.getScreenHeight() * 0.005);
 
     public Inventory(Context context, Player player) {
         this.player = player;
@@ -34,9 +32,9 @@ public class Inventory {
         timer = new Timer();
 
         // Set rect size for gun
-        top = (int)(wallSize * 1.45) + padding;
-        left = (int)(screenWidth / 2 + timerWidth * 2) + padding;
-        bottom = (int)(wallSize + timerHeight * 1.1);
+        top = (int) (wallSize * 1.45) + padding;
+        left = (int) (screenWidth / 2 + timerWidth * 2) + padding;
+        bottom = (int) (wallSize + timerHeight * 1.1);
         right = left + (bottom - top);
 
         rect = new Rect(left, top, right, bottom);
@@ -44,8 +42,8 @@ public class Inventory {
 
     public void draw(Canvas canvas) {
         // If player has picked up a weapon
-        if(player.hasGun()) {
-            // Player can use weapon only for 12s
+        if (player.hasGun()) {
+            // Player can use weapon only for 10s
             if (timer.getElapsedTime() <= 10000) {
                 gunImage.draw(canvas);
             } else {

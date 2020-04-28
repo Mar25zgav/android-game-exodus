@@ -3,7 +3,9 @@ package com.example.exodus.gamepanel;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 

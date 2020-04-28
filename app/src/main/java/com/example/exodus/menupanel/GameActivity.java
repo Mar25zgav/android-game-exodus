@@ -12,12 +12,14 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
+
 import com.example.exodus.Game;
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
+
 import java.util.Objects;
 
-public class GameActivity extends Activity implements View.OnClickListener{
+public class GameActivity extends Activity implements View.OnClickListener {
     private static Display display;
     private static Point size;
     private Game game;
@@ -57,7 +59,7 @@ public class GameActivity extends Activity implements View.OnClickListener{
     @Override
     public void onBackPressed() {
         // Pause game if it is running and show pause menu
-        if(GameLoop.isRunning) {
+        if (GameLoop.isRunning) {
             game.pause();
             showPauseMenu();
         } else { // If back button pressed twice in 2 seconds exit app
@@ -114,17 +116,17 @@ public class GameActivity extends Activity implements View.OnClickListener{
         }
     }
 
-    public static int getScreenWidth(){
+    public static int getScreenWidth() {
         display.getSize(size);
         return width = size.x;
     }
 
-    public static int getScreenHeight(){
+    public static int getScreenHeight() {
         display.getRealSize(size);
         return height = size.y;
     }
 
-    private void hideSystemUI(){
+    private void hideSystemUI() {
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE

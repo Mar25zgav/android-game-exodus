@@ -60,9 +60,9 @@ public class Joystick {
     }
 
     public boolean isPressed(float touchPositionX, float touchPositionY) {
-        joystickCenterToTouchDistance = (float)Math.sqrt(
+        joystickCenterToTouchDistance = (float) Math.sqrt(
                 Math.pow(outerCircleCenterPositionX - touchPositionX, 2) +
-                Math.pow(outerCircleCenterPositionY - touchPositionY, 2)
+                        Math.pow(outerCircleCenterPositionY - touchPositionY, 2)
         );
         return joystickCenterToTouchDistance < outerCircleRadius;
     }
@@ -78,12 +78,12 @@ public class Joystick {
     public void setActuator(float touchPositionX, float touchPositionY) {
         float deltaX = touchPositionX - outerCircleCenterPositionX;
         float deltaY = touchPositionY - outerCircleCenterPositionY;
-        float deltaDistance = (float)Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        float deltaDistance = (float) Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
 
-        if(deltaDistance < outerCircleRadius){
+        if (deltaDistance < outerCircleRadius) {
             actuatorX = deltaX / outerCircleRadius;
             actuatorY = deltaY / outerCircleRadius;
-        } else{
+        } else {
             actuatorX = deltaX / deltaDistance;
             actuatorY = deltaY / deltaDistance;
         }

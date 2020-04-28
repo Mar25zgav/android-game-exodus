@@ -2,16 +2,13 @@ package com.example.exodus.menupanel;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.exodus.R;
-import com.example.exodus.menupanel.MainActivity;
 
-public class ScoresActivity extends Activity{
+public class ScoresActivity extends Activity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -21,7 +18,7 @@ public class ScoresActivity extends Activity{
 
         setContentView(R.layout.scores_layout);
 
-        getWindow().setLayout((int)(MainActivity.getScreenWidth()*.55), (int)(MainActivity.getScreenHeight()*.85));
+        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .55), (int) (MainActivity.getScreenHeight() * .85));
     }
 
     @Override

@@ -38,7 +38,7 @@ public class Timer {
                 onTick();
                 elapsedTime += interval;
                 if (duration > 0) {
-                    if(elapsedTime >=duration){
+                    if (elapsedTime >= duration) {
                         onFinish();
                         future.cancel(false);
                     }
@@ -49,7 +49,7 @@ public class Timer {
 
     // Paused the timer. If the timer is not running, this call is ignored.
     void pause() {
-        if(!isRunning) return;
+        if (!isRunning) return;
         future.cancel(false);
         isRunning = false;
     }
@@ -60,10 +60,12 @@ public class Timer {
     }
 
     // This method is called periodically with the interval set as the delay between subsequent calls.
-    private void onTick() {}
+    private void onTick() {
+    }
 
     // This method is called once the timer has run for the specified duration. If the duration was set as infinity, then this method is never called.
-    private void onFinish() {}
+    private void onFinish() {
+    }
 
     // Stops the timer. If the timer is not running, then this call does nothing.
     public void cancel() {
@@ -78,7 +80,7 @@ public class Timer {
 
     // Return the time remaining (in millis) for the timer to stop. If the duration was set to DURATION_INFINITY, then -1 is returned.
     public long getRemainingTime() {
-        if(this.duration < 0) {
+        if (this.duration < 0) {
             return DURATION_INFINITY;
         } else {
             return duration - elapsedTime;

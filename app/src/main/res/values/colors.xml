@@ -17,12 +17,17 @@
     <color name="time">#FFFFFF</color>
     <color name="gameOver">#FFFFFF</color>
 
-    <!--Arena colors-->
+    <!--Arena wall colors-->
     <string-array name="arenaColors">
         <item>#FFFFFF</item>
-        <item>#a39ab5</item>
-        <item>#B200B2</item>
-        <item>#008577</item>
+        <item>#33FFBD</item>
+        <item>#FFBD33</item>
+        <item>#DBFF33</item>
+        <item>#FF5733</item>
+        <item>#75FF33</item>
+        <item>#33DBFF</item>
+        <item>#BD33FF</item>
+        <item>#496DDB</item>
     </string-array>
 
     <!--Main menu colors-->

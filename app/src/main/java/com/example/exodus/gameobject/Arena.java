@@ -5,12 +5,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import com.example.exodus.menupanel.GameActivity;
+
+import androidx.core.content.ContextCompat;
+
 import com.example.exodus.R;
+import com.example.exodus.menupanel.GameActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arena{
+public class Arena {
+    private Context context;
     private Paint paint = new Paint();
     private String[] wallColors;
     private List<Integer> colors = new ArrayList<>();
@@ -20,16 +25,20 @@ public class Arena{
     private static float screenWidth = GameActivity.getScreenWidth();
     private static float wallSize = (float) (screenHeight * 0.04);
     private float doorSize = Player.getStaticRadius() * 3;
-    private int indexDoorColor = 0;
+    private int indexColor = 0;
 
-    public Arena(Context context){
+    public Arena(Context context) {
+        this.context = context;
         this.wallColors = context.getResources().getStringArray(R.array.arenaColors);
         changeColor();
         addWalls();
         addDoors();
     }
 
-    public void draw(Canvas canvas){
+    public void draw(Canvas canvas) {
+        // Draw floor
+        canvas.drawColor(ContextCompat.getColor(context, R.color.background));
+
         // Draw walls
         for (RectF r : wallList) {
             canvas.drawRect(r, paint);
@@ -65,13 +74,13 @@ public class Arena{
         doorList.clear();
     }
 
-    public static boolean collision(Circle obj){
+    public static boolean collision(Circle obj) {
         for (RectF r : wallList) {
-            if(intersects(obj, r))
+            if (intersects(obj, r))
                 return true;
         }
         for (RectF r : doorList) {
-            if(intersects(obj, r))
+            if (intersects(obj, r))
                 return true;
         }
         return false;
@@ -79,23 +88,21 @@ public class Arena{
 
     private static boolean intersects(Circle obj, RectF rect) {
         boolean intersects = false;
-        if(obj.getPositionX() + obj.radius >= rect.left &&
+        if (obj.getPositionX() + obj.radius >= rect.left &&
                 obj.getPositionX() - obj.radius <= rect.right &&
                 obj.getPositionY() - obj.radius <= rect.bottom &&
-                obj.getPositionY() + obj.radius >= rect.top)
-        {
+                obj.getPositionY() + obj.radius >= rect.top) {
             intersects = true;
         }
         return intersects;
     }
 
-    public boolean leavesArena(Circle obj){
+    public boolean leavesArena(Circle obj) {
         boolean leaves = false;
         if (obj.getPositionX() - obj.getRadius() >= screenWidth ||
                 obj.getPositionX() + obj.getRadius() <= 0 ||
                 obj.getPositionY() + obj.getRadius() <= 0 ||
-                obj.getPositionY() - obj.getRadius() >= screenHeight)
-        {
+                obj.getPositionY() - obj.getRadius() >= screenHeight) {
             leaves = true;
         }
         return leaves;
@@ -123,17 +130,23 @@ public class Arena{
     }
 
     public void changeColor() {
-        //Set color
+        //Set wall color
         for (String wallColor : wallColors) {
             int newColor = Color.parseColor(wallColor);
             colors.add(newColor);
         }
 
-        paint.setColor(colors.get(indexDoorColor));
+        paint.setColor(colors.get(indexColor));
+
+        if (indexColor >= colors.size()) {
+            indexColor = 0;
+        }
 
         // Increment index color
-        if(indexDoorColor < colors.size()-1)
-            indexDoorColor++;
+        if (indexColor < colors.size() - 1) {
+            indexColor++;
+        }
+
     }
 
     public static float getWallSize() {

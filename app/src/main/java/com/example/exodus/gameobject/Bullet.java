@@ -1,25 +1,27 @@
 package com.example.exodus.gameobject;
 
 import android.content.Context;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 
 public class Bullet extends Circle {
-    private static float SPEED = 600; // per seconds
+    private static float SPEED = 650; // per seconds
     private static float MAX_SPEED = SPEED / GameLoop.MAX_UPS;
     private static float radius = Player.getStaticRadius() / 3;
-    private static double bps = 2; // bullets per second
+    private static double bps = 3; // bullets per second
     private static double damage = 1;
     private static long lastShot;
 
     public Bullet(Context context, Player spellcaster) {
         super(
-            context,
-            ContextCompat.getColor(context, R.color.player),
-            spellcaster.getPositionX(),
-            spellcaster.getPositionY(),
-            radius
+                context,
+                ContextCompat.getColor(context, R.color.player),
+                spellcaster.getPositionX(),
+                spellcaster.getPositionY(),
+                radius
         );
 
         velocity.x = spellcaster.getDirectionX() * MAX_SPEED;
@@ -58,7 +60,9 @@ public class Bullet extends Circle {
         return radius;
     }
 
-    public static void setRadius(float r) { radius = r; }
+    public static void setRadius(float r) {
+        radius = r;
+    }
 
     public static void setDamage(double d) {
         damage = d;

@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import androidx.core.content.ContextCompat;
+
 import com.example.exodus.gameobject.Arena;
 import com.example.exodus.gameobject.Bullet;
 import com.example.exodus.gameobject.Chest;
@@ -19,13 +19,13 @@ import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
 import com.example.exodus.gamepanel.Performance;
-import com.example.exodus.menupanel.GameActivity;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 //Game class manages all objects in the game and is responsible for updating all states and render all objects to the screen
-public class Game extends SurfaceView implements SurfaceHolder.Callback{
+public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Arena arena;
     private Hud hud;
     private GameLoop gameLoop;
@@ -43,8 +43,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public static List<Enemy> enemyList;
     private int joystickPointerId = 0;
     private boolean shooting = false;
-    private float gameHeight = GameActivity.getScreenHeight();
-    private float gameWidth = GameActivity.getScreenWidth();
 
     public Game(Context context) {
         super(context);
@@ -133,18 +131,15 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-        canvas.drawColor(ContextCompat.getColor(getContext(), R.color.background));
+        arena.draw(canvas);
 
         joystick.draw(canvas);
-
-        arena.draw(canvas);
 
         for (Chest chest : chestList) {
             chest.draw(canvas);
         }
 
         player.draw(canvas);
-
 
         for (Enemy enemy : enemyList) {
             enemy.draw(canvas);
@@ -168,7 +163,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
     public void update() {
         // Stop updating the game if the player is dead
         if (Player.getHealth() <= 0) {
-            //gameLoop.stopLoop();
+            gameLoop.stopLoop();
         }
 
         // Update game state
@@ -176,13 +171,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         player.update();
 
         // Spawn enemy if it is time, but not on top of each other
-        if(Enemy.readyToSpawn()) {
+        if (Enemy.readyToSpawn()) {
             randomEnemyPos = PVector.getRandomEnemyPos(player, enemyList);
             enemyList.add(new Enemy(getContext(), player, randomEnemyPos.x, randomEnemyPos.y, LevelManager.getEnemyRadius()));
         }
 
         // Update state of each enemy
-        for(Enemy enemy : enemyList) {
+        for (Enemy enemy : enemyList) {
             enemy.update();
         }
 
@@ -197,7 +192,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         }
 
         // Spawn chest if it is time
-        if(Chest.readyToSpawn()) {
+        if (Chest.readyToSpawn()) {
             randomChestPos = PVector.getRandomChestPos(player, enemyList, chestList);
             chestList.add(new Chest(getContext(), randomChestPos));
         }
@@ -205,9 +200,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
         // Iterate through enemyList and check for collision between each enemy and the player
         Iterator<Enemy> iteratorEnemy = enemyList.iterator();
         Enemy enemy;
-        while(iteratorEnemy.hasNext()) {
+        while (iteratorEnemy.hasNext()) {
             enemy = iteratorEnemy.next();
-            if(Circle.isColliding(enemy, player)){
+            if (Circle.isColliding(enemy, player)) {
                 // Remove enemy if colliding with player
                 iteratorEnemy.remove();
                 player.subHealth();
@@ -222,7 +217,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                     // Hit enemy with bullet
                     enemy.subHealth(Bullet.getDamage());
                     // Remove enemy if lost all lives else subtract health
-                    if(enemy.getHealth() <= 1) {
+                    if (enemy.getHealth() <= 0) {
                         iteratorBullet.remove();
                         iteratorEnemy.remove();
                         player.addKill();
@@ -242,9 +237,9 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                 iteratorBullet.remove();
             }
             // If there is a chest, check for collision
-            if(chestList.size() != 0) {
+            if (chestList.size() != 0) {
                 Iterator<Chest> chestIterator = chestList.iterator();
-                while(chestIterator.hasNext()) {
+                while (chestIterator.hasNext()) {
                     Chest chest = chestIterator.next();
                     // If bullet hits chest open
                     if (Chest.intersects(bullet, chest) && !chest.isOpen()) {
@@ -252,7 +247,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
                         iteratorBullet.remove();
                     }
                     // If chest out of lives -> open it
-                    if(chest.getHealth() <= 0 && !chest.isOpen()) {
+                    if (chest.getHealth() <= 0 && !chest.isOpen()) {
                         chest.open();
                     }
                 }
@@ -261,12 +256,12 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback{
 
         // Iterate through chests and check for collision between player and chest
         Iterator<Chest> chestIterator = chestList.iterator();
-        while(chestIterator.hasNext()) {
+        while (chestIterator.hasNext()) {
             Chest chest = chestIterator.next();
             // Check if chest open
-            if(chest.isOpen()) {
+            if (chest.isOpen()) {
                 // If player touches open chest -> equip weapon
-                if(Chest.intersects(player, chest)) {
+                if (Chest.intersects(player, chest)) {
                     inventory.addItem(chest.getGun());
                     chestIterator.remove();
                 }

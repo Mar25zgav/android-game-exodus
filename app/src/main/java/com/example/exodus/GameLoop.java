@@ -50,23 +50,23 @@ public class GameLoop extends Thread {
         //Game loop
         Canvas canvas = null;
         startTime = System.currentTimeMillis();
-        while(isRunning){
+        while (isRunning) {
             //Poskusi posodobiti in render game
-            try{
+            try {
                 canvas = surfaceHolder.lockCanvas();
-                synchronized (surfaceHolder){
+                synchronized (surfaceHolder) {
                     game.update();
                     updateCount++;
                     game.draw(canvas);
                 }
-            }catch(IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 e.printStackTrace();
-            }finally {
-                if(canvas != null){
-                    try{
+            } finally {
+                if (canvas != null) {
+                    try {
                         surfaceHolder.unlockCanvasAndPost(canvas);
                         frameCount++;
-                    }catch(Exception e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -75,7 +75,7 @@ public class GameLoop extends Thread {
             //Pause game loop to not exceed target UPS
             elapsedTime = System.currentTimeMillis() - startTime;
             sleepTime = (long) (updateCount * UPS_PERIOD - elapsedTime);
-            if(sleepTime > 0){
+            if (sleepTime > 0) {
                 try {
                     sleep(sleepTime);
                 } catch (InterruptedException e) {
@@ -84,7 +84,7 @@ public class GameLoop extends Thread {
             }
 
             //Skip frames to keep up with target UPS
-            while(sleepTime < 0 && updateCount < MAX_UPS-1){
+            while (sleepTime < 0 && updateCount < MAX_UPS - 1) {
                 game.update();
                 updateCount++;
                 elapsedTime = System.currentTimeMillis() - startTime;
@@ -93,7 +93,7 @@ public class GameLoop extends Thread {
 
             //Calculate avarage UPS in FPS
             elapsedTime = System.currentTimeMillis() - startTime;
-            if(elapsedTime >= 1000){
+            if (elapsedTime >= 1000) {
                 avarageUPS = updateCount / (1E-3 * elapsedTime);
                 avarageFPS = frameCount / (1E-3 * elapsedTime);
                 updateCount = 0;

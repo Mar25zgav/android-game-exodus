@@ -4,21 +4,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.Nullable;
-
 import com.example.exodus.R;
 
 public class ShopActivity extends Activity {
-
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         hideSystemUI();
-
         setContentView(R.layout.shop_layout);
-
-        getWindow().setLayout((int)(MainActivity.getScreenWidth()*.55), (int)(MainActivity.getScreenHeight()*.85));
+        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .55), (int) (MainActivity.getScreenHeight() * .85));
     }
 
     @Override
