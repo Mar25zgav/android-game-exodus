@@ -18,7 +18,7 @@ public class Enemy extends Circle {
     private double timer;
     private boolean hit = false;
     private static double health;
-    private static float SPEED_PIXELS_PER_SECOND = 125;
+    private static float SPEED_PIXELS_PER_SECOND = 130;
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     private static float SPAWNS_PER_MINUTE = 20;
     private static float SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;

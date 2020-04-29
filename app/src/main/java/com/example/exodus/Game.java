@@ -14,11 +14,11 @@ import com.example.exodus.gameobject.Circle;
 import com.example.exodus.gameobject.Enemy;
 import com.example.exodus.gameobject.GunContainer;
 import com.example.exodus.gameobject.Player;
-import com.example.exodus.gamepanel.GameOver;
 import com.example.exodus.gamepanel.Hud;
 import com.example.exodus.gamepanel.Inventory;
 import com.example.exodus.gamepanel.Joystick;
 import com.example.exodus.gamepanel.Performance;
+import com.example.exodus.menupanel.GameActivity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +32,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private Player player;
     private Joystick joystick;
     private Performance performance;
-    private GameOver gameOver;
     private LevelManager levelManager;
     private GunContainer gunContainer;
     private Inventory inventory;
@@ -41,6 +40,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     private List<Bullet> bullets;
     private List<Chest> chestList;
     public static List<Enemy> enemyList;
+    public static int SCORE;
     private int joystickPointerId = 0;
     private boolean shooting = false;
 
@@ -56,7 +56,6 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         // Initialize game panels
         joystick = new Joystick();
         performance = new Performance(context, gameLoop);
-        gameOver = new GameOver(context);
 
         // Initialize game objects
         player = new Player(getContext(), joystick);
@@ -153,17 +152,13 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         hud.draw(canvas);
         performance.draw(canvas);
         inventory.draw(canvas);
-
-        // Draw Game over if the player is dead
-        if (Player.getHealth() <= 0) {
-            gameOver.draw(canvas);
-        }
     }
 
     public void update() {
-        // Stop updating the game if the player is dead
+        // Stop game and show death screen if played dead
         if (Player.getHealth() <= 0) {
-            gameLoop.stopLoop();
+            pause();
+            GameActivity.getInstance().showGameOver();
         }
 
         // Update game state
@@ -221,6 +216,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                         iteratorBullet.remove();
                         iteratorEnemy.remove();
                         player.addKill();
+                        SCORE += 20;
                     } else {
                         iteratorBullet.remove();
                     }
@@ -249,6 +245,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
                     // If chest out of lives -> open it
                     if (chest.getHealth() <= 0 && !chest.isOpen()) {
                         chest.open();
+                        SCORE += 10;
                     }
                 }
             }

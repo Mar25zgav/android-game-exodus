@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/button_style"
                     android:fontFamily="@font/titan_one"
-                    android:text="@string/main_menu"
+                    android:text="@string/quit"
                     android:textAllCaps="false"
                     android:textSize="20sp"
                     android:textColor="@color/player"

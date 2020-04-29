@@ -2,6 +2,7 @@ package com.example.exodus.menupanel;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.exodus.Game;
@@ -20,19 +22,24 @@ import com.example.exodus.R;
 import java.util.Objects;
 
 public class GameActivity extends Activity implements View.OnClickListener {
+    private Button btn_resume, btn_restart, btn_mainmenu, btn_exit, btn_playagain;
+    private Dialog pauseDialog, gameoverDialog;
     private static Display display;
     private static Point size;
-    private Game game;
-    private Dialog pauseDialog;
+    static GameActivity instance;
     private Toast backToast;
-    private Button btn_resume, btn_restart, btn_mainmenu;
+    private TextView scoreLabel, bestScoreLabel;
+    private Game game;
     private long backPressedTime;
     public static int width, height;
-
+    private String SHARED_PREFS = "sharedPrefs";
+    private String BEST_SCORE = "bestScore";
+    private int best_score;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        instance = this;
 
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
@@ -42,7 +49,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         pauseDialog = new Dialog(this);
+        gameoverDialog = new Dialog(this);
         pauseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        gameoverDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         game = new Game(this);
         setContentView(game);
@@ -79,7 +88,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     public void showPauseMenu() {
         // Hide nav bar
-        dialogHideNav();
+        dialogHideNav(pauseDialog);
 
         pauseDialog.setCanceledOnTouchOutside(false);
         pauseDialog.setContentView(R.layout.pause_layout);
@@ -94,6 +103,56 @@ public class GameActivity extends Activity implements View.OnClickListener {
         btn_mainmenu.setOnClickListener(this);
 
         pauseDialog.show();
+    }
+
+    public void showGameOver() {
+        this.runOnUiThread(() -> {
+            // Hide nav bar
+            dialogHideNav(gameoverDialog);
+
+            gameoverDialog.setContentView(R.layout.gameover_layout);
+            gameoverDialog.setCanceledOnTouchOutside(false);
+            Objects.requireNonNull(gameoverDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            btn_exit = gameoverDialog.findViewById(R.id.btn_exit);
+            btn_playagain = gameoverDialog.findViewById(R.id.btn_playagain);
+            scoreLabel = gameoverDialog.findViewById(R.id.score_label);
+            bestScoreLabel = gameoverDialog.findViewById(R.id.best_score_label);
+            btn_exit.setOnClickListener(instance);
+            btn_playagain.setOnClickListener(instance);
+
+            loadData();
+            // Save score if higher than best
+            if (Game.SCORE > best_score) {
+                saveData();
+            }
+            updateViews();
+
+            gameoverDialog.show();
+        });
+    }
+
+    private void saveData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(BEST_SCORE, Game.SCORE);
+        editor.apply();
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        // Get best score
+        best_score = sharedPreferences.getInt(BEST_SCORE, 0);
+    }
+
+    private void updateViews() {
+        // Set score labels
+        bestScoreLabel.setText(best_score + "");
+        scoreLabel.setText(Game.SCORE + "");
+    }
+
+    public static GameActivity getInstance() {
+        return instance;
     }
 
     @Override
@@ -112,6 +171,16 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 pauseDialog.dismiss();
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_exit:
+                gameoverDialog.dismiss();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_playagain:
+                gameoverDialog.dismiss();
+                game = new Game(this);
+                setContentView(game);
                 break;
         }
     }
@@ -137,10 +206,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    private void dialogHideNav() {
-        Objects.requireNonNull(pauseDialog.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        pauseDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        pauseDialog.getWindow().getDecorView().setSystemUiVisibility(
+    private static void dialogHideNav(Dialog d) {
+        Objects.requireNonNull(d.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        d.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        d.getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

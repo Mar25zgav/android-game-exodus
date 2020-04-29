@@ -22,7 +22,12 @@
     <string name="paused">Paused</string>
     <string name="resume">Resume</string>
     <string name="restart">Restart</string>
+    <string name="game_over">Game over</string>
+    <string name="score">Score:</string>
+    <string name="best_score">Best score:</string>
     <string name="main_menu">Main Menu</string>
+    <string name="play_again">Play again</string>
+    <string name="quit">Quit</string>
 
     <string-array name="difficulty">
         <item>Easy</item>

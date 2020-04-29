@@ -24,6 +24,7 @@ public class LevelManager {
         this.arena = arena;
         this.enemyList = enemyList;
         this.chestList = chestList;
+        Game.SCORE = 100;
     }
 
     public void update() {
@@ -34,6 +35,9 @@ public class LevelManager {
 
         // If player exits arena through door
         if (arena.leavesArena(player)) {
+            // Add score for every new arena
+            Game.SCORE += 100;
+
             // Set player position from doors
             arena.setPlayerPosition(player);
 
