@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListPopupWindow;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -14,17 +15,17 @@ import android.widget.Switch;
 import androidx.annotation.Nullable;
 
 import com.example.exodus.R;
+import com.example.exodus.SoundPlayer;
 
 import java.lang.reflect.Field;
 
 public class OptionsActivity extends Activity implements AdapterView.OnItemSelectedListener {
     private Switch musicSwitch;
     private Spinner diffSpinner;
-
+    private SoundPlayer soundPlayer;
     private String SHARED_PREFS = "sharedPrefs";
     private String MUSICSWITCH = "musicSwitch";
     private String DIFFSPINNER = "diffSpinner";
-
     private boolean musicSwitchOnOff;
     private int diffSelected;
 
@@ -55,9 +56,8 @@ public class OptionsActivity extends Activity implements AdapterView.OnItemSelec
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    protected void onPause() {
+        super.onPause();
         // Save music switch and spinner state
         saveData();
     }
@@ -76,14 +76,30 @@ public class OptionsActivity extends Activity implements AdapterView.OnItemSelec
         editor.apply();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        soundPlayer = MainActivity.getSoundPlayer();
+        musicSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (musicSwitch.isChecked()) {
+                    soundPlayer.playMainMenu();
+                } else {
+                    soundPlayer.stopPlaying();
+                }
+            }
+        });
+    }
+
     private void loadData() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
 
         // Load music switch setting
-        musicSwitchOnOff = sharedPreferences.getBoolean(MUSICSWITCH, false);
+        musicSwitchOnOff = sharedPreferences.getBoolean(MUSICSWITCH, true);
 
         // Load difficulty setting
-        diffSelected = sharedPreferences.getInt(DIFFSPINNER, 0);
+        diffSelected = sharedPreferences.getInt(DIFFSPINNER, 1);
     }
 
     private void updateViews() {

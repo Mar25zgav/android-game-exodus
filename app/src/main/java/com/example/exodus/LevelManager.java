@@ -16,14 +16,29 @@ public class LevelManager {
     private static float gameHeight = GameActivity.getScreenHeight();
     private static float gameWidth = GameActivity.getScreenWidth();
     private static float enemyRadius = gameHeight / 37;
-    private static double enemyHealth = 1;
-    private int killsTarget = 10;
+    private static double enemyHealth;
+    private int killsTarget;
 
     public LevelManager(Player player, List<Enemy> enemyList, List<Chest> chestList, Arena arena) {
         this.player = player;
         this.arena = arena;
         this.enemyList = enemyList;
         this.chestList = chestList;
+
+        switch (GameActivity.getInstance().getDifficulty()) {
+            case 0:
+                Player.addSpeed(10);
+                Chest.addSpawns(2);
+                break;
+            case 1:
+                Player.addSpeed(20);
+                Enemy.addSpeed(10);
+                Enemy.addSpawns(5);
+                break;
+        }
+
+        enemyHealth = 1;
+        killsTarget = 10;
         Game.SCORE = 100;
     }
 
@@ -58,7 +73,7 @@ public class LevelManager {
             // Reset and power up enemies
             enemyList.clear();
             enemyHealth++;
-            Enemy.addSpeed(10);
+            Enemy.addSpeed(5);
             Enemy.addSpawns(4);
 
             // Remove all chests add spawns per minute

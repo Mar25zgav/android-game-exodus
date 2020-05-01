@@ -26,6 +26,7 @@ public class Chest {
 
     public Chest(Context context, PVector position) {
         this.context = context;
+        reset();
 
         // Set rect size
         top = (int) position.y;
@@ -104,5 +105,13 @@ public class Chest {
         SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
         UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
         updatesUntilNextSpawn = UPDATES_PER_SPAWN;
+    }
+
+    private void reset() {
+        SPAWNS_PER_MINUTE = 2;
+        SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
+        UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
+        updatesUntilNextSpawn = UPDATES_PER_SPAWN;
+        health = 3;
     }
 }

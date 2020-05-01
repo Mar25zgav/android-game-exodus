@@ -108,7 +108,7 @@ public class Hud {
         canvas.drawRoundRect(rectF, borderRadius, borderRadius, paint);
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.WHITE);
-        paint.setStrokeWidth(6);
+        paint.setStrokeWidth(8);
     }
 
     static float getTimerWidth() { return timerWidth; }

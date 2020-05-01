@@ -103,4 +103,13 @@ public class Enemy extends Circle {
         health -= damage;
         hit = true;
     }
+
+    public void reset() {
+        SPEED_PIXELS_PER_SECOND = 130;
+        MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+        SPAWNS_PER_MINUTE = 20;
+        SPAWNS_PER_SECOND = SPAWNS_PER_MINUTE / 60;
+        UPDATES_PER_SPAWN = GameLoop.MAX_UPS / SPAWNS_PER_SECOND;
+        updatesUntilNextSpawn = UPDATES_PER_SPAWN;
+    }
 }

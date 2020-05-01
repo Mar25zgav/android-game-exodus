@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.exodus.Game;
 import com.example.exodus.GameLoop;
 import com.example.exodus.R;
+import com.example.exodus.SoundPlayer;
 
 import java.util.Objects;
 
@@ -30,6 +31,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private Toast backToast;
     private TextView scoreLabel, bestScoreLabel;
     private Game game;
+    private SoundPlayer soundPlayer;
     private long backPressedTime;
     public static int width, height;
     private String SHARED_PREFS = "sharedPrefs";
@@ -40,6 +42,8 @@ public class GameActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
+
+        soundPlayer = new SoundPlayer(this);
 
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
@@ -57,36 +61,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
         setContentView(game);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            hideSystemUI();
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Pause game if it is running and show pause menu
-        if (GameLoop.isRunning) {
-            game.pause();
-            showPauseMenu();
-        } else { // If back button pressed twice in 2 seconds exit app
-            if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                backToast.cancel();
-                pauseDialog.dismiss();
-                finish();
-                moveTaskToBack(true);
-            } else {
-                backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
-                backToast.show();
-            }
-
-            backPressedTime = System.currentTimeMillis();
-        }
-    }
-
     public void showPauseMenu() {
+        soundPlayer.pauseMusic();
+
         // Hide nav bar
         dialogHideNav(pauseDialog);
 
@@ -107,6 +84,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
     public void showGameOver() {
         this.runOnUiThread(() -> {
+            // Play music
+            soundPlayer.stopPlaying();
+            soundPlayer.playGameOver();
+
             // Hide nav bar
             dialogHideNav(gameoverDialog);
 
@@ -151,38 +132,19 @@ public class GameActivity extends Activity implements View.OnClickListener {
         scoreLabel.setText(Game.SCORE + "");
     }
 
-    public static GameActivity getInstance() {
-        return instance;
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_resume:
-                pauseDialog.dismiss();
-                game.resume();
-                break;
-            case R.id.btn_restart:
-                pauseDialog.dismiss();
-                game = new Game(this);
-                setContentView(game);
-                break;
-            case R.id.btn_mainmenu:
-                pauseDialog.dismiss();
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-            case R.id.btn_exit:
-                gameoverDialog.dismiss();
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-            case R.id.btn_playagain:
-                gameoverDialog.dismiss();
-                game = new Game(this);
-                setContentView(game);
-                break;
-        }
+    public static GameActivity getInstance() {
+        return instance;
     }
 
     public static int getScreenWidth() {
@@ -195,15 +157,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
         return height = size.y;
     }
 
-    private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    public int getDifficulty() {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        return sharedPreferences.getInt("diffSpinner", 1);
     }
 
     private static void dialogHideNav(Dialog d) {
@@ -216,6 +172,80 @@ public class GameActivity extends Activity implements View.OnClickListener {
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_resume:
+                soundPlayer.playGame();
+                pauseDialog.dismiss();
+                game.resume();
+                break;
+            case R.id.btn_restart:
+                soundPlayer.resetMusic();
+                soundPlayer.playGame();
+                pauseDialog.dismiss();
+                game = new Game(this);
+                setContentView(game);
+                break;
+            case R.id.btn_mainmenu:
+                pauseDialog.dismiss();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_exit:
+                soundPlayer.stopPlaying();
+                gameoverDialog.dismiss();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_playagain:
+                soundPlayer.playGame();
+                gameoverDialog.dismiss();
+                game = new Game(this);
+                setContentView(game);
+                break;
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Play music if switch on
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        boolean musicOn = sharedPreferences.getBoolean("musicSwitch", true);
+        if (musicOn)
+            soundPlayer.playGame();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            hideSystemUI();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Pause game if it is running and show pause menu
+        if (GameLoop.isRunning) {
+            game.pause();
+            showPauseMenu();
+        } else { // If back button pressed twice in 2 seconds exit app
+            if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                backToast.cancel();
+                pauseDialog.dismiss();
+                finish();
+                moveTaskToBack(true);
+            } else {
+                backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+                backToast.show();
+            }
+
+            backPressedTime = System.currentTimeMillis();
+        }
     }
 
     @Override

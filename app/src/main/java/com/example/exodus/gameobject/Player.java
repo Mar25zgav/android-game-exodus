@@ -107,4 +107,9 @@ public class Player extends Circle {
         SPEED_PIXELS_PER_SECOND += speed;
         MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
     }
+
+    public void reset() {
+        SPEED_PIXELS_PER_SECOND = 250;
+        MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
+    }
 }

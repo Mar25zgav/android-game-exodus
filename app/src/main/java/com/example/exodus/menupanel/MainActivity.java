@@ -2,6 +2,7 @@ package com.example.exodus.menupanel;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -10,19 +11,24 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.exodus.R;
+import com.example.exodus.SoundPlayer;
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    Button btn_play, btn_shop, btn_options, btn_scores, btn_help;
+    private Button btn_play, btn_shop, btn_options, btn_scores, btn_help;
     public static int width, height;
+    private static SoundPlayer soundPlayer;
     private static Display display;
     private static Point size;
     private long backPressedTime;
     private Toast backToast;
+    private boolean musicSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.mainmenu_layout);
+
+        soundPlayer = new SoundPlayer(this);
 
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
@@ -39,6 +45,23 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btn_options.setOnClickListener(this);
         btn_scores.setOnClickListener(this);
         btn_help.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Play music if enabled
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        musicSwitch = sharedPreferences.getBoolean("musicSwitch", true);
+        if (musicSwitch) {
+            soundPlayer.playMainMenu();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        soundPlayer.stopPlaying();
+        super.onStop();
     }
 
     @Override
@@ -63,18 +86,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
         backPressedTime = System.currentTimeMillis();
     }
 
-    private void hideSystemUI() {
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -97,6 +108,17 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 
+    private void hideSystemUI() {
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
     public static int getScreenWidth() {
         display.getRealSize(size);
         return width = size.x;
@@ -105,5 +127,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
     public static int getScreenHeight() {
         display.getRealSize(size);
         return height = size.y;
+    }
+
+    public static SoundPlayer getSoundPlayer() {
+        return soundPlayer;
     }
 }
