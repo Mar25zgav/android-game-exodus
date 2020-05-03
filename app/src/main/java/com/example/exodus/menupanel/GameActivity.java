@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
@@ -20,22 +21,25 @@ import com.example.exodus.GameLoop;
 import com.example.exodus.R;
 import com.example.exodus.SoundPlayer;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Objects;
 
 public class GameActivity extends Activity implements View.OnClickListener {
     private Button btn_resume, btn_restart, btn_mainmenu, btn_exit, btn_playagain;
     private Dialog pauseDialog, gameoverDialog;
+    private TextView scoreLabel, bestScoreLabel;
+    private SoundPlayer soundPlayer;
+    private Connection connection;
+    private Toast backToast;
+    private Game game;
+    static GameActivity instance;
     private static Display display;
     private static Point size;
-    static GameActivity instance;
-    private Toast backToast;
-    private TextView scoreLabel, bestScoreLabel;
-    private Game game;
-    private SoundPlayer soundPlayer;
     private long backPressedTime;
-    public static int width, height;
-    private String SHARED_PREFS = "sharedPrefs";
-    private String BEST_SCORE = "bestScore";
     private int best_score;
 
     @Override
@@ -43,22 +47,109 @@ public class GameActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         instance = this;
 
+        // Initialize sound player
         soundPlayer = new SoundPlayer(this);
 
+        // Calculate display size
         display = getWindowManager().getDefaultDisplay();
         size = new Point();
 
+        // Hide system ui and keep screen on
         hideSystemUI();
-
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
+        // Initialize pause and game over dialog with no title
         pauseDialog = new Dialog(this);
         gameoverDialog = new Dialog(this);
         pauseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         gameoverDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+        // Create a new game and set content view to it
         game = new Game(this);
         setContentView(game);
+
+        // Load best score
+        loadData();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Play music if music switch is on
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        boolean musicOn = sharedPreferences.getBoolean("musicSwitch", true);
+        if (musicOn)
+            soundPlayer.playGame();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_resume:
+                // Resume game, play game music and close pause dialog
+                soundPlayer.playGame();
+                pauseDialog.dismiss();
+                game.resume();
+                break;
+            case R.id.btn_restart:
+                // Restart game music, close pause dialog and start a new game
+                soundPlayer.resetMusic();
+                soundPlayer.playGame();
+                pauseDialog.dismiss();
+                game = new Game(this);
+                setContentView(game);
+                break;
+            case R.id.btn_mainmenu:
+                // Close pause dialog, finish and go to previous activity
+                pauseDialog.dismiss();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_exit:
+                // Stop game over music and close game over dialog, finish activity and go to previous
+                soundPlayer.stopPlaying();
+                gameoverDialog.dismiss();
+                finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                break;
+            case R.id.btn_playagain:
+                // Reset game music, close game over dialog and start a new game
+                soundPlayer.playGame();
+                gameoverDialog.dismiss();
+                game = new Game(this);
+                setContentView(game);
+                break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Pause game if it is running and show pause menu
+        if (GameLoop.isRunning) {
+            game.pause();
+            showPauseMenu();
+        } else {
+            // If back button pressed twice in 2 seconds exit app
+            if (backPressedTime + 2000 > System.currentTimeMillis()) {
+                backToast.cancel();
+                pauseDialog.dismiss();
+                finish();
+                moveTaskToBack(true);
+            } else {
+                backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+                backToast.show();
+            }
+            // Save time when back button pressed
+            backPressedTime = System.currentTimeMillis();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        // Pause game and finish activity
+        game.pause();
+        finish();
+        super.onPause();
     }
 
     public void showPauseMenu() {
@@ -91,10 +182,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
             // Hide nav bar
             dialogHideNav(gameoverDialog);
 
+            // Set game over dialog
             gameoverDialog.setContentView(R.layout.gameover_layout);
             gameoverDialog.setCanceledOnTouchOutside(false);
             Objects.requireNonNull(gameoverDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+            // Set buttons in game over dialog and listeners
             btn_exit = gameoverDialog.findViewById(R.id.btn_exit);
             btn_playagain = gameoverDialog.findViewById(R.id.btn_playagain);
             scoreLabel = gameoverDialog.findViewById(R.id.score_label);
@@ -102,34 +195,120 @@ public class GameActivity extends Activity implements View.OnClickListener {
             btn_exit.setOnClickListener(instance);
             btn_playagain.setOnClickListener(instance);
 
-            loadData();
             // Save score if higher than best
             if (Game.SCORE > best_score) {
                 saveData();
             }
+
+            // Update score and best score in game over dialog
             updateViews();
 
+            // Show game over dialog
             gameoverDialog.show();
         });
     }
 
     private void saveData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(BEST_SCORE, Game.SCORE);
-        editor.apply();
+        PreparedStatement preparedStatement = null;
+        try {
+            String strSQL = "UPDATE exodus SET bestscore = " + Game.SCORE + ", diff = '" + getDifficulty() + "' WHERE id = " + MainActivity.getUserID();
+            preparedStatement = connection.prepareStatement(strSQL);
+            connection.setAutoCommit(false);
+            preparedStatement.executeUpdate();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Log.d(null, "SQL error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(null, "SQL error: " + e.getMessage());
+        } finally {
+            try {
+                preparedStatement.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void loadData() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        // Get best score
-        best_score = sharedPreferences.getInt(BEST_SCORE, 0);
+        // Initialize statement result set and connection from main activity
+        Statement stmt = null;
+        ResultSet rs = null;
+        connection = MainActivity.getInstance().getConnection();
+        try {
+            // Create statement
+            stmt = connection.createStatement();
+            // Select query
+            rs = stmt.executeQuery("SELECT bestscore FROM exodus WHERE id = " + MainActivity.getUserID());
+            // Going through the result set
+            while (rs.next()) {
+                // Get best score from current user
+                best_score = rs.getInt("bestscore");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+        }
     }
 
     private void updateViews() {
         // Set score labels
         bestScoreLabel.setText(best_score + "");
         scoreLabel.setText(Game.SCORE + "");
+    }
+
+    public String getDifficulty() {
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        int diff = sharedPreferences.getInt("diffSpinner", 1);
+        switch (diff) {
+            case 0:
+                return "easy";
+            case 1:
+                return "medium";
+            case 2:
+                return "hard";
+        }
+        return "medium";
+    }
+
+    public static void dialogHideNav(Dialog d) {
+        // Hide all system UI when dialog open
+        Objects.requireNonNull(d.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        d.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        d.getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+    }
+
+    public static int getScreenWidth() {
+        // Return calculated screen width
+        display.getSize(size);
+        return size.x;
+    }
+
+    public static int getScreenHeight() {
+        // Return calculated screen height
+        display.getRealSize(size);
+        return size.y;
+    }
+
+    public static GameActivity getInstance() {
+        return instance;
     }
 
     private void hideSystemUI() {
@@ -143,115 +322,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    public static GameActivity getInstance() {
-        return instance;
-    }
-
-    public static int getScreenWidth() {
-        display.getSize(size);
-        return width = size.x;
-    }
-
-    public static int getScreenHeight() {
-        display.getRealSize(size);
-        return height = size.y;
-    }
-
-    public int getDifficulty() {
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        return sharedPreferences.getInt("diffSpinner", 1);
-    }
-
-    private static void dialogHideNav(Dialog d) {
-        Objects.requireNonNull(d.getWindow()).setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-        d.getWindow().addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        d.getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_resume:
-                soundPlayer.playGame();
-                pauseDialog.dismiss();
-                game.resume();
-                break;
-            case R.id.btn_restart:
-                soundPlayer.resetMusic();
-                soundPlayer.playGame();
-                pauseDialog.dismiss();
-                game = new Game(this);
-                setContentView(game);
-                break;
-            case R.id.btn_mainmenu:
-                pauseDialog.dismiss();
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-            case R.id.btn_exit:
-                soundPlayer.stopPlaying();
-                gameoverDialog.dismiss();
-                finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                break;
-            case R.id.btn_playagain:
-                soundPlayer.playGame();
-                gameoverDialog.dismiss();
-                game = new Game(this);
-                setContentView(game);
-                break;
-        }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // Play music if switch on
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        boolean musicOn = sharedPreferences.getBoolean("musicSwitch", true);
-        if (musicOn)
-            soundPlayer.playGame();
-    }
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
+        // If focus is on this window hide all system UI
         if (hasFocus) {
             hideSystemUI();
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        // Pause game if it is running and show pause menu
-        if (GameLoop.isRunning) {
-            game.pause();
-            showPauseMenu();
-        } else { // If back button pressed twice in 2 seconds exit app
-            if (backPressedTime + 2000 > System.currentTimeMillis()) {
-                backToast.cancel();
-                pauseDialog.dismiss();
-                finish();
-                moveTaskToBack(true);
-            } else {
-                backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
-                backToast.show();
-            }
-
-            backPressedTime = System.currentTimeMillis();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        game.pause();
-        finish();
-        super.onPause();
     }
 }

@@ -26,11 +26,11 @@ public class LevelManager {
         this.chestList = chestList;
 
         switch (GameActivity.getInstance().getDifficulty()) {
-            case 0:
+            case "easy":
                 Player.addSpeed(10);
                 Chest.addSpawns(2);
                 break;
-            case 1:
+            case "hard":
                 Player.addSpeed(20);
                 Enemy.addSpeed(10);
                 Enemy.addSpawns(5);

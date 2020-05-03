@@ -12,7 +12,7 @@
     <string name="rifle">Rifle</string>
     <string name="sniper">Sniper</string>
     <string name="machine_gun">Machine gun</string>
-    <string name="instructions_text">The goal of the game is to stay alive for as long as possible and defeat all your enemies that come you way!</string>
+    <string name="instructions_text">The goal of the game is to stay alive for as long as possible and defeat all enemies that come your way!</string>
     <string name="moving_player">Moving player</string>
     <string name="touch_to_shoot">Touch to shoot</string>
     <string name="todo">TODO</string>
@@ -28,6 +28,10 @@
     <string name="main_menu">Main Menu</string>
     <string name="play_again">Play again</string>
     <string name="quit">Quit</string>
+    <string name="login">Login</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="sign_up">Sign up</string>
 
     <string-array name="difficulty">
         <item>Easy</item>

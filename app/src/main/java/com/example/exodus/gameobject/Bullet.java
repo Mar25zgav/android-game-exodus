@@ -11,7 +11,7 @@ public class Bullet extends Circle {
     private static float SPEED = 650; // per seconds
     private static float MAX_SPEED = SPEED / GameLoop.MAX_UPS;
     private static float radius = Player.getStaticRadius() / 3;
-    private static double bps = 4; // bullets per second
+    private static double bps = 3.5; // bullets per second
     private static double damage = 1;
     private static long lastShot;
 
@@ -45,7 +45,7 @@ public class Bullet extends Circle {
         MAX_SPEED = SPEED / GameLoop.MAX_UPS;
         radius = Player.getStaticRadius() / 3;
         damage = 1;
-        bps = 2;
+        bps = 3.5;
     }
 
     public static void setSpeed(float speed) {
