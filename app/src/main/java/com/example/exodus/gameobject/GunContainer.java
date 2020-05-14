@@ -2,11 +2,14 @@ package com.example.exodus.gameobject;
 
 import android.content.Context;
 
+import com.example.exodus.menupanel.MainActivity;
+
 import java.util.ArrayList;
 
 public class GunContainer {
     private static Gun pistol, musket, uzi, rifle, sniper, machine;
     private static ArrayList<Gun> guns = new ArrayList<>();
+    private static ArrayList<Gun> availableGuns = new ArrayList<>();
     private float spellRadius = Bullet.getStaticRadius();
 
     public GunContainer(Context context) {
@@ -23,14 +26,19 @@ public class GunContainer {
         guns.add(rifle);
         guns.add(sniper);
         guns.add(machine);
-    }
 
-    public static Gun getGun(int x) {
-        return guns.get(x);
+        int weaponsUnlocked = MainActivity.getInstance().getWeaponsNum();
+
+        int i = 0;
+        while (i < weaponsUnlocked) {
+            availableGuns.add(guns.get(i));
+            i++;
+        }
+
     }
 
     static Gun getRandomGun() {
-        int x = (int) (Math.random() * guns.size());
-        return guns.get(x);
+        int x = (int) (Math.random() * availableGuns.size());
+        return availableGuns.get(x);
     }
 }

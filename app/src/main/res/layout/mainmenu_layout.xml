@@ -11,7 +11,7 @@
 
     <Button
         android:id="@+id/btn_play"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="55dp"
         android:layout_marginStart="290dp"
         android:layout_marginTop="40dp"
@@ -29,7 +29,7 @@
 
     <Button
         android:id="@+id/btn_shop"
-        android:layout_width="150dp"
+        android:layout_width="160dp"
         android:layout_height="55dp"
         android:layout_marginStart="211dp"
         android:layout_marginTop="15dp"
@@ -40,6 +40,8 @@
         android:text="@string/shop"
         android:textColor="@color/background"
         android:textSize="35sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_help"
         app:layout_constraintStart_toEndOf="@+id/btn_scores"

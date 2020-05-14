@@ -153,9 +153,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 validate();
                 break;
             case R.id.btn_signup:
-                // Save user to DB and login
-                signupUser();
-                validate();
+                // If username not taken -> sign up
+                if (!userExists()) {
+                    signupUser();
+                    validate();
+                } else {
+                    Toast.makeText(MainActivity.this, "Username not available!", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
@@ -195,10 +199,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     public void connectToDB() {
         // If API higher than lolipop
-        if (android.os.Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         // Try to connect to db
         try {
             this.connection = OracleConnection.createConnection();
@@ -297,6 +300,71 @@ public class MainActivity extends Activity implements View.OnClickListener {
         editor.putBoolean("registered", true);
         editor.putInt("userID", userID);
         editor.apply();
+    }
+
+    public int getWeaponsNum() {
+        // Initialize all to null
+        Statement stmt = null;
+        ResultSet rs = null;
+        connection = getConnection();
+        int num = 0;
+        try {
+            // Create statement
+            stmt = connection.createStatement();
+            // Select query
+            rs = stmt.executeQuery("SELECT weapons FROM exodus WHERE id = " + getUserID());
+            // Going through the result set
+            while (rs.next()) {
+                num = rs.getInt("weapons");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+        }
+        return num;
+    }
+
+    private boolean userExists() {
+        // Initialize all to null
+        Statement stmt = null;
+        ResultSet rs = null;
+        try {
+            // Create statement
+            stmt = connection.createStatement();
+            // Select query
+            rs = stmt.executeQuery("SELECT username FROM exodus");
+            // Going through the result set
+            while (rs.next()) {
+                // If username entered matches any in the DB -> username taken
+                if (rs.getString("username").equals(usernameField.getText().toString())) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+        }
+        return false;
     }
 
     private void hideSystemUI() {

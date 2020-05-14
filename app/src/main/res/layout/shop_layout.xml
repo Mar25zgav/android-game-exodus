@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -15,298 +16,156 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/shop"
-            android:fontFamily="@font/titan_one"
-            android:textSize="28dp"
-            android:textAllCaps="true" />
-
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp">
 
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_centerHorizontal="true">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/shop"
+                android:fontFamily="@font/titan_one"
+                android:textSize="28sp"
+                android:textAllCaps="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <Button
+                    android:layout_marginStart="120dp"
+                    android:id="@+id/nextBtn"
+                    android:layout_alignStart="@id/content"
+                    android:layout_centerVertical="true"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/baseline_keyboard_arrow_right_black_48" />
 
                 <LinearLayout
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/content"
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="110dp"
+                    android:layout_centerHorizontal="true" />
 
-                    <RelativeLayout
-                        android:layout_width="250dp"
+                <Button
+                    android:id="@+id/prevBtn"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignEnd="@id/content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="120dp"
+                    android:background="@drawable/baseline_keyboard_arrow_left_black_48" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/reachScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-15dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/titan_one"
+                android:textSize="14sp"
+                android:text="" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:baselineAligned="false">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:elevation="6dp">
+                        android:layout_alignParentEnd="true"
+                        tools:ignore="UselessParent">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/damage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/titan_one"
+                            android:textSize="16sp"
+                            android:text="@string/damage" />
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/titan_one"
+                            android:textSize="16sp"
+                            android:text="@string/fire_rate" />
 
-                                <TextView
-                                    android:id="@+id/pistolID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Pistol" />
+                        <TextView
+                            android:layout_marginTop="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/titan_one"
+                            android:textSize="16sp"
+                            android:text="@string/speed" />
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignBaseline="@+id/pistolID"
-                                    android:src="@drawable/pistol"
-                                    android:contentDescription="@string/pistol" />
+                    </LinearLayout>
 
-                            </RelativeLayout>
+                </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".35">
 
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="250dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:elevation="6dp">
+                        android:layout_marginStart="10dp"
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                        <ProgressBar
+                            android:layout_marginTop="6dp"
+                            android:id="@+id/damageBar"
+                            android:progress="30"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="140dp"
+                            android:layout_height="10dp"
+                            android:progressDrawable="@drawable/powerpb" />
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
+                        <ProgressBar
+                            android:layout_marginTop="16dp"
+                            android:id="@+id/firerateBar"
+                            android:progress="40"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="140dp"
+                            android:layout_height="10dp"
+                            android:progressDrawable="@drawable/fireratepb" />
 
-                                <TextView
-                                    android:id="@+id/uziID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Uzi" />
+                        <ProgressBar
+                            android:layout_marginTop="17dp"
+                            android:id="@+id/speedBar"
+                            android:progress="50"
+                            style="?android:attr/progressBarStyleHorizontal"
+                            android:layout_width="140dp"
+                            android:layout_height="10dp"
+                            android:progressDrawable="@drawable/speedpb" />
 
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/uzi_block"
-                                    android:layout_alignBaseline="@+id/uziID"
-                                    android:contentDescription="@string/submachine" />
+                    </LinearLayout>
 
-                            </RelativeLayout>
+                </RelativeLayout>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="6dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/musketID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Musket" />
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/musket_block"
-                                    android:layout_alignBaseline="@id/musketID"
-                                    android:contentDescription="@string/musket" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="6dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/rifleID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Rifle" />
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/rifle_block"
-                                    android:layout_alignBaseline="@id/rifleID"
-                                    android:contentDescription="@string/rifle" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="6dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/sniperID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Sniper" />
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/sniper_block"
-                                    android:layout_alignBaseline="@id/sniperID"
-                                    android:contentDescription="@string/sniper" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="250dp"
-                        android:layout_height="wrap_content"
-                        android:elevation="6dp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:id="@+id/machineID"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="center"
-                                    android:fontFamily="@font/titan_one"
-                                    android:textSize="18dp"
-                                    android:text="Machine gun" />
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/machine_block"
-                                    android:layout_alignBaseline="@id/machineID"
-                                    android:contentDescription="@string/machine_gun" />
-
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight=".5"
-                                android:orientation="vertical"></RelativeLayout>
-
-                        </LinearLayout>
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </ScrollView>
+            </LinearLayout>
 
         </LinearLayout>
 

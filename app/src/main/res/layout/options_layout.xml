@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -37,21 +38,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp">
+                android:layout_marginEnd="20dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:layout_centerInParent="true"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sound"
                         android:fontFamily="@font/titan_one"
-                        android:layout_toStartOf="@id/musicSwitch"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginEnd="10dp"
                         android:textSize="16sp" />
 
                     <Switch
@@ -74,13 +74,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                    android:layout_centerInParent="true"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="15dp"
-                        android:layout_toStartOf="@+id/diffSpinner"
                         android:fontFamily="@font/titan_one"
                         android:text="@string/difficulty"
                         android:textSize="16sp" />
@@ -106,7 +106,8 @@
                     android:layout_height="wrap_content"
                     android:padding="15dp"
                     android:orientation="vertical"
-                    android:background="@drawable/credits_bg">
+                    android:background="@drawable/credits_bg"
+                    tools:ignore="UselessParent">
 
                     <TextView
                         android:layout_width="match_parent"

@@ -23,14 +23,14 @@ public class Joystick {
 
     public Joystick() {
         //Outer and inner circle make up the joystick
-        outerCircleCenterPositionX = Arena.getWallSize() * 5.5f;
-        outerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 5.5f;
-        innerCircleCenterPositionX = Arena.getWallSize() * 5.5f;
-        innerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 5.5f;
+        outerCircleCenterPositionX = Arena.getWallSize() * 6.2f;
+        outerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 6.2f;
+        innerCircleCenterPositionX = Arena.getWallSize() * 6.2f;
+        innerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 6.2f;
 
         //Radius of each circle
-        this.outerCircleRadius = Arena.getWallSize() * 2.8f;
-        this.innerCircleRadius = Arena.getWallSize() * 1.8f;
+        this.outerCircleRadius = Arena.getWallSize() * 3.2f;
+        this.innerCircleRadius = Arena.getWallSize() * 2.2f;
 
         //Paint of circles
         outerCirclePaint = new Paint();

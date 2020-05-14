@@ -1,5 +1,6 @@
 package com.example.exodus;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
@@ -73,6 +74,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //Handle touch event actions
@@ -150,7 +152,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
 
         // Draw game panels
         hud.draw(canvas);
-        performance.draw(canvas);
+        //performance.draw(canvas);
         inventory.draw(canvas);
     }
 
@@ -270,6 +272,7 @@ public class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void pause() {
+        shooting = false;
         timer.pause();
         gameLoop.stopLoop();
     }

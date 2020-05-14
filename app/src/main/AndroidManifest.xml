@@ -15,7 +15,7 @@
 
         <activity
             android:name=".menupanel.MainActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
@@ -26,28 +26,32 @@
 
         <activity
             android:name=".menupanel.GameActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
 
         <activity
             android:name=".menupanel.ShopActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
         <activity
             android:name=".menupanel.OptionsActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
         <activity
             android:name=".menupanel.ScoresActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 
         <activity
             android:name=".menupanel.HelpActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.WindowPopUpTheme">
         </activity>
 

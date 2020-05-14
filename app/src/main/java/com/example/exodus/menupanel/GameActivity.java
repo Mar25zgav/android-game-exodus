@@ -41,6 +41,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private static Point size;
     private long backPressedTime;
     private int best_score;
+    private boolean musicOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         super.onStart();
         // Play music if music switch is on
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        boolean musicOn = sharedPreferences.getBoolean("musicSwitch", true);
+        musicOn = sharedPreferences.getBoolean("musicSwitch", true);
         if (musicOn)
             soundPlayer.playGame();
     }
@@ -87,14 +88,17 @@ public class GameActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_resume:
                 // Resume game, play game music and close pause dialog
-                soundPlayer.playGame();
+                if (musicOn)
+                    soundPlayer.playGame();
                 pauseDialog.dismiss();
                 game.resume();
                 break;
             case R.id.btn_restart:
                 // Restart game music, close pause dialog and start a new game
-                soundPlayer.resetMusic();
-                soundPlayer.playGame();
+                if (musicOn) {
+                    soundPlayer.resetMusic();
+                    soundPlayer.playGame();
+                }
                 pauseDialog.dismiss();
                 game = new Game(this);
                 setContentView(game);
@@ -107,7 +111,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_exit:
                 // Stop game over music and close game over dialog, finish activity and go to previous
-                soundPlayer.stopPlaying();
+                if (musicOn) {
+                    soundPlayer.stopPlaying();
+                }
                 gameoverDialog.dismiss();
                 finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -176,8 +182,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
     public void showGameOver() {
         this.runOnUiThread(() -> {
             // Play music
-            soundPlayer.stopPlaying();
-            soundPlayer.playGameOver();
+            if (musicOn) {
+                soundPlayer.stopPlaying();
+                soundPlayer.playGameOver();
+            }
 
             // Hide nav bar
             dialogHideNav(gameoverDialog);
@@ -211,7 +219,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
     private void saveData() {
         PreparedStatement preparedStatement = null;
         try {
-            String strSQL = "UPDATE exodus SET bestscore = " + Game.SCORE + ", diff = '" + getDifficulty() + "' WHERE id = " + MainActivity.getUserID();
+            String strSQL = "UPDATE exodus SET bestscore = " + Game.SCORE;
+            strSQL += ", diff = '" + getDifficulty() + "'";
+            if (Game.SCORE >= 1000) {
+                strSQL += ", weapons = " + getWeaponsUnlock();
+            }
+            strSQL += " WHERE id = " + MainActivity.getUserID();
             preparedStatement = connection.prepareStatement(strSQL);
             connection.setAutoCommit(false);
             preparedStatement.executeUpdate();
@@ -266,6 +279,21 @@ public class GameActivity extends Activity implements View.OnClickListener {
         // Set score labels
         bestScoreLabel.setText(best_score + "");
         scoreLabel.setText(Game.SCORE + "");
+    }
+
+    public int getWeaponsUnlock() {
+        int weapons = 1;
+        if (Game.SCORE >= 1000)
+            weapons = 2;
+        if (Game.SCORE >= 2000)
+            weapons = 3;
+        if (Game.SCORE >= 4000)
+            weapons = 4;
+        if (Game.SCORE >= 8000)
+            weapons = 5;
+        if (Game.SCORE >= 10000)
+            weapons = 6;
+        return weapons;
     }
 
     public String getDifficulty() {

@@ -32,6 +32,9 @@
     <string name="username">Username:</string>
     <string name="password">Password:</string>
     <string name="sign_up">Sign up</string>
+    <string name="damage">Damage</string>
+    <string name="fire_rate">Fire rate</string>
+    <string name="speed">Speed</string>
 
     <string-array name="difficulty">
         <item>Easy</item>
