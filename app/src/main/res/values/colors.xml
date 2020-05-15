@@ -6,7 +6,8 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="magenta">#B200B2</color>
-    <color name="player">#FFFFFF</color>
+    <color name="player">#3b5bff</color>
+    <color name="bullet">#FFFFFF</color>
     <color name="enemy">#ff0000</color>
     <color name="background">#313638</color>
     <color name="blackWall">#000000</color>
@@ -21,13 +22,13 @@
     <string-array name="arenaColors">
         <item>#FFFFFF</item>
         <item>#33FFBD</item>
-        <item>#FFBD33</item>
         <item>#DBFF33</item>
-        <item>#FF5733</item>
         <item>#75FF33</item>
+        <item>#FF5733</item>
         <item>#33DBFF</item>
+        <item>#ff6d2d</item>
         <item>#BD33FF</item>
-        <item>#496DDB</item>
+        <item>#0078ff</item>
     </string-array>
 
     <!--Main menu colors-->

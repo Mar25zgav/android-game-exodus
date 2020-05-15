@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:background="@color/player"
+        android:background="@color/bullet"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 

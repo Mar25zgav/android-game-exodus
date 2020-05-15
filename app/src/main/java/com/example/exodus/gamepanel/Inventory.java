@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 
+import com.example.exodus.LevelManager;
 import com.example.exodus.Timer;
 import com.example.exodus.gameobject.Arena;
 import com.example.exodus.gameobject.Bullet;
@@ -44,7 +45,7 @@ public class Inventory {
         // If player has picked up a weapon
         if (player.hasGun()) {
             // Player can use weapon only for 10s
-            if (timer.getElapsedTime() <= 10000) {
+            if (timer.getElapsedTime() <= LevelManager.getWeaponTime()) {
                 gunImage.draw(canvas);
             } else {
                 timer.cancel();

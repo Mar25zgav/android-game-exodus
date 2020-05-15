@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:background="@color/player"
+        android:background="@color/bullet"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true">
 
@@ -139,7 +139,7 @@
                         android:text="@string/main_menu"
                         android:textAllCaps="false"
                         android:textSize="20sp"
-                        android:textColor="@color/player"
+                        android:textColor="@color/bullet"
                         android:layout_centerHorizontal="true"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
@@ -163,7 +163,7 @@
                         android:textSize="20sp"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:textColor="@color/player"
+                        android:textColor="@color/bullet"
                         android:layout_centerHorizontal="true"
                         android:minHeight="0dp" />
 

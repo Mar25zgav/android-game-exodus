@@ -22,13 +22,13 @@ public class Joystick {
     private boolean isPressed;
 
     public Joystick() {
-        //Outer and inner circle make up the joystick
+        // Outer and inner circle make up the joystick
         outerCircleCenterPositionX = Arena.getWallSize() * 6.2f;
         outerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 6.2f;
-        innerCircleCenterPositionX = Arena.getWallSize() * 6.2f;
-        innerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 6.2f;
+        innerCircleCenterPositionX = Arena.getWallSize() * 6.1f;
+        innerCircleCenterPositionY = GameActivity.getScreenHeight() - Arena.getWallSize() * 6.1f;
 
-        //Radius of each circle
+        // Radius of each circle
         this.outerCircleRadius = Arena.getWallSize() * 3.2f;
         this.innerCircleRadius = Arena.getWallSize() * 2.2f;
 

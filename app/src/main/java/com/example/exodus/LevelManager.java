@@ -14,9 +14,9 @@ public class LevelManager {
     private List<Enemy> enemyList;
     private List<Chest> chestList;
     private static float gameHeight = GameActivity.getScreenHeight();
-    private static float gameWidth = GameActivity.getScreenWidth();
     private static float enemyRadius = gameHeight / 37;
     private static double enemyHealth;
+    private static long weaponTime;
     private int killsTarget;
 
     public LevelManager(Player player, List<Enemy> enemyList, List<Chest> chestList, Arena arena) {
@@ -37,9 +37,13 @@ public class LevelManager {
                 break;
         }
 
+        // Reset game settings
         enemyHealth = 1;
         killsTarget = 10;
         Game.SCORE = 100;
+        weaponTime = 10000;
+        Enemy.reset();
+        player.reset();
     }
 
     public void update() {
@@ -85,6 +89,9 @@ public class LevelManager {
 
             // Increment kills target
             killsTarget += 2;
+
+            // Increase weapon time
+            weaponTime += 1000;
         }
     }
 
@@ -94,5 +101,9 @@ public class LevelManager {
 
     public static float getEnemyRadius() {
         return enemyRadius;
+    }
+
+    public static long getWeaponTime() {
+        return weaponTime;
     }
 }

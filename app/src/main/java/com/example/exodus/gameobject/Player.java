@@ -20,14 +20,14 @@ public class Player extends Circle {
     private boolean hasGun = false;
     private static float SPEED_PIXELS_PER_SECOND = 250;
     private static float MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
-    private static float radius = GameActivity.getScreenHeight() * 0.035f;
+    private static float radius = GameActivity.getScreenHeight() * 0.04f;
 
     public Player(Context context, Joystick joystick) {
         super(context,
                 ContextCompat.getColor(context, R.color.player),
                 GameActivity.getScreenWidth() * 0.5f,
                 GameActivity.getScreenHeight() * 0.5f,
-                GameActivity.getScreenHeight() * 0.035f);
+                radius);
         this.joystick = joystick;
         health = 5;
         kills = 0;

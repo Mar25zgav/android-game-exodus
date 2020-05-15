@@ -14,11 +14,11 @@ public class GunContainer {
 
     public GunContainer(Context context) {
         pistol = new Gun("pistol", 1400, 2, spellRadius * 0.90f, 50, 2.5);
-        uzi = new Gun("uzi", 1800, 0.8, spellRadius * 0.65f, 30, 8);
+        uzi = new Gun("uzi", 1800, 1.5, spellRadius * 0.65f, 30, 7);
         musket = new Gun("musket", 1000, 3, spellRadius * 0.95f, 80, 1.5);
         rifle = new Gun("rifle", 1600, 3, spellRadius, 40, 6);
         sniper = new Gun("sniper", 2000, 30, spellRadius * 1.1f, 100, 1);
-        machine = new Gun("machine", 1800, 2, spellRadius, 50, 10);
+        machine = new Gun("machine", 1800, 2, spellRadius, 50, 8);
 
         guns.add(pistol);
         guns.add(uzi);

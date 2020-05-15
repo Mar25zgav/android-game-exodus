@@ -68,6 +68,9 @@ public class Enemy extends Circle {
             if (hit && player.hasGun()) {
                 velocity.normalize().mult(-player.getGun().getForce());
                 hit = false;
+            } else if (hit) {
+                velocity.normalize().mult(-20);
+                hit = false;
             }
 
             // Save current position, if collides set position to previous
@@ -104,7 +107,7 @@ public class Enemy extends Circle {
         hit = true;
     }
 
-    public void reset() {
+    public static void reset() {
         SPEED_PIXELS_PER_SECOND = 130;
         MAX_SPEED = SPEED_PIXELS_PER_SECOND / GameLoop.MAX_UPS;
         SPAWNS_PER_MINUTE = 20;

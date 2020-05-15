@@ -18,7 +18,7 @@ public class Bullet extends Circle {
     public Bullet(Context context, Player spellcaster) {
         super(
                 context,
-                ContextCompat.getColor(context, R.color.player),
+                ContextCompat.getColor(context, R.color.bullet),
                 spellcaster.getPositionX(),
                 spellcaster.getPositionY(),
                 radius
