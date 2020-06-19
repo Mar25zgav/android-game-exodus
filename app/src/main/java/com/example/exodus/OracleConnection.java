@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class OracleConnection {
     private static final String DEFAULT_DRIVER = "oracle.jdbc.driver.OracleDriver";
-    private static final String DEFAULT_URL = "jdbc:oracle:thin:@193.2.139.22:1521:ERS";
-    private static final String DEFAULT_USERNAME = "markz";
-    private static final String DEFAULT_PASSWORD = "markz";
+    private static final String DEFAULT_URL = "jdbc:oracle:thin:@IP:PORT:SID";
+    private static final String DEFAULT_USERNAME = "";
+    private static final String DEFAULT_PASSWORD = "";
 
     public static Connection createConnection(String driver, String url, String username, String password) throws ClassNotFoundException, SQLException {
         Class.forName(driver);
