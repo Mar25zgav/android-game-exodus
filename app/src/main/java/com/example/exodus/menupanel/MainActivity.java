@@ -198,7 +198,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     public void connectToDB() {
-        // If API higher than lolipop
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -271,7 +270,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 preparedStatement.setString(1, usernameField.getText().toString());
                 preparedStatement.setString(2, passwordField.getText().toString());
                 preparedStatement.setInt(3, 0);
-                preparedStatement.setString(4, "medium");
+                preparedStatement.setInt(4, 2);
                 preparedStatement.executeUpdate();
                 connection.commit();
                 Toast.makeText(MainActivity.this, "Signed up!", Toast.LENGTH_SHORT).show();

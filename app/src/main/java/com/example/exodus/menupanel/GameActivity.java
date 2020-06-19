@@ -220,7 +220,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         PreparedStatement preparedStatement = null;
         try {
             String strSQL = "UPDATE exodus SET bestscore = " + Game.SCORE;
-            strSQL += ", diff = '" + getDifficulty() + "'";
+            strSQL += ", diff = " + getDifficulty();
             if (Game.SCORE >= 1000) {
                 strSQL += ", weapons = " + getWeaponsUnlock();
             }
@@ -296,18 +296,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
         return weapons;
     }
 
-    public String getDifficulty() {
+    public int getDifficulty() {
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        int diff = sharedPreferences.getInt("diffSpinner", 1);
-        switch (diff) {
-            case 0:
-                return "easy";
-            case 1:
-                return "medium";
-            case 2:
-                return "hard";
-        }
-        return "medium";
+        int diff = sharedPreferences.getInt("diffSpinner", 2);
+        return diff;
     }
 
     public static void dialogHideNav(Dialog d) {

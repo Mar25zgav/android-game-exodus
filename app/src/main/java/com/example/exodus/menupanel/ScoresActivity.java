@@ -37,41 +37,6 @@ public class ScoresActivity extends Activity {
         populateTable();
     }
 
-    private void populateTable() {
-        // Initialize all to null
-        Statement stmt = null;
-        ResultSet rs = null;
-        connection = MainActivity.getInstance().getConnection();
-        try {
-            // Create statement
-            stmt = connection.createStatement();
-            // Select query
-            rs = stmt.executeQuery("SELECT * FROM exodus ORDER BY bestscore desc");
-            int i = 0;
-            // Going through the result set and filling up table
-            while (rs.next() && i < tableData.length) {
-                tableData[i][0] = i + 1 + "";
-                tableData[i][1] = rs.getString("username");
-                tableData[i][2] = rs.getString("bestscore");
-                tableData[i][3] = rs.getString("diff");
-                i++;
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        } finally {
-            if (rs != null) {
-                try {
-                    rs.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) { /* ignored */}
-            }
-        }
-    }
-
     private void createTable() {
         // Table for users
         tableData = new String[5][4];
@@ -92,6 +57,57 @@ public class ScoresActivity extends Activity {
         tableView.setHeaderAdapter(simpleTableHeader);
         tableView.setDataAdapter(simpleTableData);
         tableView.setColumnCount(4);
+    }
+
+    private void populateTable() {
+        // Initialize all to null
+        Statement stmt = null;
+        ResultSet rs = null;
+        connection = MainActivity.getInstance().getConnection();
+        try {
+            // Create statement
+            stmt = connection.createStatement();
+            // Select query
+            rs = stmt.executeQuery("SELECT * FROM exodus ORDER BY diff desc, bestscore desc");
+            int i = 0;
+            // Going through the result set and filling up table
+            while (rs.next() && i < tableData.length) {
+                tableData[i][0] = i + 1 + ".";
+                tableData[i][1] = rs.getString("username");
+                tableData[i][2] = rs.getString("bestscore");
+                tableData[i][3] = getDifficulty(rs.getInt("diff"));
+                i++;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) { /* ignored */}
+            }
+        }
+    }
+
+    private String getDifficulty(int diff) {
+        String diffS = "";
+        switch (diff) {
+            case 1:
+                diffS = "Easy";
+                break;
+            case 2:
+                diffS = "Medium";
+                break;
+            case 3:
+                diffS = "Hard";
+                break;
+        }
+        return diffS;
     }
 
     private void hideSystemUI() {

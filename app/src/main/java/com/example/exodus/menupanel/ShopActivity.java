@@ -21,7 +21,7 @@ public class ShopActivity extends Activity {
         super.onCreate(savedInstanceState);
         hideSystemUI();
         setContentView(R.layout.shop_layout);
-        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .55), (int) (MainActivity.getScreenHeight() * .85));
+        getWindow().setLayout((int) (MainActivity.getScreenWidth() * .70), (int) (MainActivity.getScreenHeight() * .85));
 
         layout = findViewById(R.id.content);
         prevBtn = findViewById(R.id.prevBtn);
