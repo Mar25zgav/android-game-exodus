@@ -309,7 +309,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
         int num = 0;
         try {
             // Create statement
-            stmt = connection.createStatement();
+            if (connection != null)
+                stmt = connection.createStatement();
+            else {
+                Toast.makeText(MainActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                return 0;
+            }
             // Select query
             rs = stmt.executeQuery("SELECT weapons FROM exodus WHERE id = " + getUserID());
             // Going through the result set

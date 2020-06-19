@@ -251,7 +251,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
         connection = MainActivity.getInstance().getConnection();
         try {
             // Create statement
-            stmt = connection.createStatement();
+            if (connection != null)
+                stmt = connection.createStatement();
+            else {
+                Toast.makeText(GameActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                return;
+            }
             // Select query
             rs = stmt.executeQuery("SELECT bestscore FROM exodus WHERE id = " + MainActivity.getUserID());
             // Going through the result set

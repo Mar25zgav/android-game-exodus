@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.exodus.R;
 
@@ -66,7 +67,13 @@ public class ScoresActivity extends Activity {
         connection = MainActivity.getInstance().getConnection();
         try {
             // Create statement
-            stmt = connection.createStatement();
+            if (connection != null)
+                stmt = connection.createStatement();
+            else {
+                Toast.makeText(ScoresActivity.this, "No internet connection!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             // Select query
             rs = stmt.executeQuery("SELECT * FROM exodus ORDER BY diff desc, bestscore desc");
             int i = 0;
