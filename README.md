@@ -18,11 +18,8 @@ The game uses Oracle Database, user register, scoreboard, music, shop system, on
 ---
 <br>
 
-<p float="left">
+<img src="images/image1.png" width="500" />
 
-  <img src="images/image1.png" width="500" />
-  <br><br>
-  <img src="images/image5.png" width="150" style="padding-right: 20px" />
-  <img src="images/image2.png" width="257" style="padding-right: 20px" /> 
-  <img src="images/image4.png" width="265"/>
-</p>
+![image](https://user-images.githubusercontent.com/58165352/124361884-ecd7b580-dc31-11eb-8401-8c6be6f8dc30.png)
+
+https://user-images.githubusercontent.com/58165352/124361316-c6fce180-dc2e-11eb-88e6-bc5a28b5852c.mp4
